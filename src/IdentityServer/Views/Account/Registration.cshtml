@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.ViewModels.RegistrationViewModel
+<div class="d-block">
+    <partial name="_ValidationSummary" />
+    <form asp-route="Registration" class="col-sm-2">
+        <input type="hidden" asp-for="ReturnUrl"/>
+        <div style="margin:5pt 0 5pt 0;" >
+            <label  asp-for="Email" class="col"></label>
+            <input placeholder="Email" type="email" asp-for="Email" autofocus required/>
+        </div>
+        <div style="margin:5pt 0 5pt 0;" >
+            <label asp-for="PhoneNumber" class="col"></label>
+            <input placeholder="Phone number" asp-for="PhoneNumber" required/>
+        </div>
+        <div style="margin:5pt 0 5pt 0;" >
+            <label asp-for="Username" class="col"></label>
+            <input placeholder="Username" asp-for="Username" required/>
+        </div>
+        <div style="margin:5pt 0 5pt 0;" >
+            <label asp-for="Password" class="col"></label>
+            <input placeholder="Password" type="password" asp-for="Password" required/>
+        </div>
+        <div style="margin:5pt 0 5pt 0;" >
+            <label asp-for="ConfirmPassword" class="col"></label>
+            <input placeholder="Confirm password" type="password" asp-for="ConfirmPassword" required/>
+        </div>
+        <div>
+            <input type="submit" value="Register"/>
+        </div>
+    </form>
+</div>

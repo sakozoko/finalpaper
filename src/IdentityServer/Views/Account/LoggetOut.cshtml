@@ -1,0 +1,7 @@
+﻿@model IdentityServer.ViewModels.LoggedOutViewModel
+
+<div class="d-block">
+    <h2>Logged out</h2>
+    <p>You have been logged out. If you want to log in again, click <a asp-action="Login" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">here</a>.</p>
+    <p>If you want to redirect to app click <a href="@Model.ReturnUrl">here</a>.</p>
+</div>

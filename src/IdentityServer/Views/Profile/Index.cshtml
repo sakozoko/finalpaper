@@ -1,0 +1,56 @@
+﻿@using IdentityServer.Entities
+@model IdentityServer.ViewModels.ProfileViewModel
+
+@{ var isAdmin = Context.User.IsInRole(Roles.Admin);
+}
+<div class="d-block" xmlns="http://www.w3.org/1999/html">
+    <h2>Profile</h2>
+    <partial name="_ValidationSummary" />
+    @if (!Model.User?.IsPasswordSet ?? false)
+    {
+        <div class="alert-dark">
+            <h4>Password is not setted, change it</h4>
+        </div>
+        <div>
+            <form asp-action="PasswordChanging" method="get">
+                <input type="hidden" asp-for="ReturnUrl"/>
+                <input type="submit" value="Change password"/>
+            </form>
+        </div>
+    }
+    <form method="post" class="d-flex flex-column" style="max-width:250pt;">
+        <input type="hidden" asp-for="ReturnUrl"/>
+        <div style="width:100%;margin:5pt 0 5pt 0;" class="d-flex justify-content-between">
+            <label class="flex-grow-1" asp-for="Email"></label>
+            <input placeholder="Email" asp-for="Email"  disabled/>
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div style="width:100%;margin:5pt 0 5pt 0;" class="d-flex justify-content-between">
+            <label class="flex-grow-1"  asp-for="Username"></label>
+            @if (Model.User?.CanChangeUsername ?? false)
+            {
+                <input placeholder="Username" asp-for="Username" autofocus/>
+            }
+            else
+            {
+                <input placeholder="Username" asp-for="Username" disabled/>
+            }
+            <span asp-validation-for="Username"></span>
+        </div>
+        <div style="width:100%;margin:5pt 0 5pt 0;" class="d-flex justify-content-between">
+            @if (Model.User?.CanChangeUsername ?? false)
+            {
+                <input class="flex-grow-1"  type="submit" value="Submit"/>
+            }
+        </div>
+    </form>
+    @if (Model.User?.IsPasswordSet??false)
+    {
+        <div>
+            <form asp-action="PasswordChanging" method="get">
+                <input type="hidden" asp-for="ReturnUrl"/>
+                <input type="submit" value="Change password"/>
+            </form>
+        </div>
+    }
+</div>

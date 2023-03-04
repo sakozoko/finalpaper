@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.ViewModels.LoginViewModel;
+<div class="d-flex flex-wrap">
+    <div class="col-sm-6">
+        <partial name="_ValidationSummary" />
+        <form asp-route="Login" method="post">
+            <input type="hidden" asp-for="ReturnUrl"/>
+            <div style="margin:5pt 0 5pt 0;">
+                <label asp-for="Username" class="col"></label>
+                <input placeholder="Username" asp-for="Username" autofocus/>
+                <span asp-validation-for="Username"></span>
+            </div>
+            <div style="margin:5pt 0 5pt 0;">
+                <label asp-for="Password" class="col"></label>
+                <input placeholder="Password" type="password" asp-for="Password"/>
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div style="margin:5pt 0 5pt 0;">
+                <input type="checkbox" asp-for="RememberLogin"/>
+                <label asp-for="RememberLogin">Remember My Login</label>
+            </div>
+            <div style="margin:5pt 0 5pt 0;">
+                <input type="submit" value="Login"/>
+            </div>
+        </form>
+        <div>
+            <h5>Forgot password?</h5>
+            <a asp-action="SendResetPassword" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">Click here</a>
+        </div>
+    </div>
+    
+    @if (Model.VisibleExternalProviders.Any())
+    {
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>External Account</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-inline">
+                        @foreach (var provider in Model.VisibleExternalProviders)
+                        {
+                            <li class="list-inline-item">
+                                <a class="btn btn-secondary"
+                                   asp-controller="External"
+                                   asp-action="Challenge"
+                                   asp-route-scheme="@provider.AuthenticationScheme"
+                                   asp-route-returnUrl="@Model.ReturnUrl">
+                                    @provider.DisplayName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>
