@@ -120,7 +120,7 @@ public class AccountController : Controller
         var result = await _userManager.CreateAsync(user, model.Password!);
         
         if (result.Succeeded)
-            return RedirectToAction("Login", "Account", model.ReturnUrl);
+            return Redirect(model.ReturnUrl!);
 
 
         foreach (var error in result.Errors)
@@ -129,10 +129,15 @@ public class AccountController : Controller
     }
     [Authorize]
     [HttpGet("Logout")]
-    public async Task<IActionResult> Logout(string returnUrl)
+    public async Task<IActionResult> Logout(string? returnUrl)
     {
+        if (returnUrl is null)
+            returnUrl = Url.Action("Login", "Account")!;
         await _signInManager.SignOutAsync();
         await HttpContext.SignOutAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme);
+        await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
+        await HttpContext.SignOutAsync();
+        return Redirect(returnUrl);
         return View("LoggetOut", new LoggedOutViewModel(returnUrl));
     }
     

@@ -1,0 +1,16 @@
+<div class="container-fluid p-2">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Останні новини від користувачів</h3>
+    </div>
+    <div class="card-body">
+      <div *ngFor="let publicNew of news">
+        <app-public-new [publicNew]="publicNew"></app-public-new>
+      </div>
+    </div>
+    <div class="card-footer">
+      <app-pagination *ngIf="!homeViewed" [paginationService]="paginationService"></app-pagination>
+      <a *ngIf="homeViewed" href="/public-news" class="btn btn-primary">Переглянути всі новини</a>
+    </div>
+  </div>
+</div>

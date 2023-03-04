@@ -1,26 +1,16 @@
 import { Component } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ClientApp';
+  public title = 'Інформаційна Волонтерська Система';
 
   constructor(public OidcSecurityService: OidcSecurityService) {
-    OidcSecurityService.checkAuth().subscribe((auth) => {
-      console.log('app authenticated', auth);
-    });
+      this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
+      });
   }
-  login() {
-    this.OidcSecurityService.authorize();
-  }
-  refreshSession() {
-    this.OidcSecurityService.authorize();
-  }
-  logout() {
-    this.OidcSecurityService.logoff();
-  }
+
 }
