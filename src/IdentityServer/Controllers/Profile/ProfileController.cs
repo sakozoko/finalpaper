@@ -1,4 +1,6 @@
-﻿using IdentityServer.Entities;
+﻿using System.Text.Encodings.Web;
+using IdentityServer.Abstraction;
+using IdentityServer.Entities;
 using IdentityServer.Features;
 using IdentityServer.Models;
 using IdentityServer.ViewModels;
@@ -12,11 +14,13 @@ namespace IdentityServer.Controllers.Profile;
 [Route("profile")]
 public class ProfileController : Controller
 {
+    private readonly IEmailSender _emailSender;
     private readonly UserManager _userManager;
     private readonly SignInManager<User> _signInManager;
 
-    public ProfileController(UserManager userManager, SignInManager<User> signInManager)
+    public ProfileController(UserManager userManager, SignInManager<User> signInManager, IEmailSender emailSender)
     {
+        _emailSender = emailSender;
         _userManager = userManager;
         _signInManager = signInManager;
     }
@@ -28,7 +32,7 @@ public class ProfileController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Index(string username, string returnUrl)
+    public async Task<IActionResult> Index(string username, string phoneNumber, string returnUrl)
     {
         var user = await _userManager.GetUserAsync(User);
         if (user is null)
@@ -40,11 +44,13 @@ public class ProfileController : Controller
         {
             return GetIndexView(user, returnUrl);
         }
-        
-        user.UserName = username;
+        if (user.UserName != username)
+            await _userManager.SetUserNameAsync(user, username);
+        await _userManager.SetUserNameAsync(user, username);
+        user.PhoneNumber = phoneNumber;
         await _userManager.UpdateAsync(user);
         await _signInManager.RefreshSignInAsync(user);
-        return GetIndexView(user, returnUrl);
+        return Redirect(returnUrl);
     }
     
     
@@ -95,6 +101,51 @@ public class ProfileController : Controller
         }
         return View("PasswordChanging", vm);
     }
+
+    [HttpGet("send-confirmation-email")]
+    public async Task<IActionResult> SendConfirmationEmail(string returnUrl){
+        var vm = new ConfirmEmailViewModel(){ReturnUrl=returnUrl};
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            ModelState.AddModelError(string.Empty, "User not found");
+            return View("ConfirmationEmailSent",vm);
+        }
+        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var callbackUrl = Url.Action("ConfirmEmail", "Profile", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+        var emailSendingResult = await _emailSender.SendEmailAsync(user.Email!, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
+        if(!emailSendingResult)
+        {
+            ModelState.AddModelError(string.Empty, "Email sending failed");
+            return View("ConfirmationEmailSent", vm);
+        }
+        vm.IsSuccessful = true;
+        return View("ConfirmationEmailSent", vm);
+    }
+
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(string userId, string code)
+    {
+        if (userId is null || code is null)
+        {
+            ModelState.AddModelError(string.Empty, "User Id and code are required");
+            return View("ConfirmEmail");
+        }
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null)
+        {
+            ModelState.AddModelError(string.Empty, "User not found");
+            return View("ConfirmEmail");
+        }
+        var result = await _userManager.ConfirmEmailAsync(user, code);
+        if(result.Succeeded){
+            ModelState.AddModelError(string.Empty, "Email confirmation error");
+            return View("ConfirmEmail");
+        }
+            
+        ModelState.AddModelError(string.Empty, "Email confirmation failed");
+        return View("ConfirmEmail");
+    }
     
     private IActionResult GetIndexView(User? user, string returnUrl)
     {
@@ -111,6 +162,7 @@ public class ProfileController : Controller
             vm.User = userViewModel;
             vm.Email = user.Email;
             vm.Username = user.UserName;
+            vm.PhoneNumber = user.PhoneNumber;
             vm.ReturnUrl = returnUrl;
         }
         return View(vm);
@@ -122,7 +174,10 @@ public class ProfileController : Controller
             user.Email ?? string.Empty, 
             user.ProviderName ?? string.Empty,
             user.PasswordHash is not null,
-            Guid.TryParse(user.UserName, out _));
+            Guid.TryParse(user.UserName, out _),
+            user.PhoneNumber ?? string.Empty,
+            user.EmailConfirmed,
+            user.PhoneNumberConfirmed);
     }
     
 }

@@ -1,11 +1,13 @@
-<div class="container-fluid p-2">
+<div class="container-fluid">
+  <app-search *ngIf="!homeViewed" [search]="search" [clear]="clear"></app-search>
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Останні новини від користувачів</h3>
+      <h3 *ngIf="homeViewed" class="card-title">Останні новини від користувачів</h3>
+      <h3 *ngIf="!homeViewed" class="card-title">Новини від користувачів</h3>
     </div>
     <div class="card-body">
-      <div *ngFor="let publicNew of news">
-        <app-public-new [publicNew]="publicNew"></app-public-new>
+      <div *ngFor="let publicNew of publicNews">
+        <app-public-new [publicNew]="publicNew" [fullViewed]="false"></app-public-new>
       </div>
     </div>
     <div class="card-footer">

@@ -1,0 +1,35 @@
+@model IdentityServer.ViewModels.ConfirmEmailViewModel
+    <div class="container">
+        <partial name="_ValidationSummary" />
+        @if(Model.IsSuccessful)
+        {
+            <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="text-center text-bg-success p-2">
+                                    <h6>Повідомлення було відправлене на пошту, яку вказано в вашому акаунту, для підтвердження перейдіть за посиланням у повідомленні.</h6>
+                                </div>
+                            </div>
+                            <div class="col text-center mt-2">
+                                <a href="@Model.ReturnUrl">
+                                    <button class="btn btn-primary" type="submit">Повернутись назад</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+        @if(!Model.IsSuccessful)
+        {
+            <div class="text-center mt-2">
+            <a href="@Model.ReturnUrl">
+                <button class="btn btn-primary" type="submit">Повернутись назад</button>
+                </a>
+            </div>
+        }
+    </div>

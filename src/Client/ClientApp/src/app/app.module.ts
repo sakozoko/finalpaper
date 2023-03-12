@@ -13,6 +13,10 @@ import { StatisticsComponent } from './home/statistics/statistics.component';
 import { PublicNewsComponent } from './public-news/public-news.component';
 import { PublicNewComponent } from './public-news/public-new/public-new.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { NezlamnistComponent } from './nezlamnist/nezlamnist.component';
+import { SearchComponent } from './search/search.component';
+import {FormsModule} from "@angular/forms";
+import { LastNewsComponent } from './last-news/last-news.component';
 const routes: Routes = [
   {
     path: '',
@@ -22,6 +26,18 @@ const routes: Routes = [
     path: 'public-news',
     component: PublicNewsComponent,
   },
+  {
+    path:'public-new/:id',
+    component: PublicNewComponent
+  },
+  {
+    path:'nezlamnist',
+    component: NezlamnistComponent
+  },
+  {
+    path:'last-news',
+    component: LastNewsComponent
+  }
 ];
 @NgModule({
   declarations: [
@@ -33,13 +49,17 @@ const routes: Routes = [
     PublicNewsComponent,
     PublicNewComponent,
     PaginationComponent,
+    NezlamnistComponent,
+    SearchComponent,
+    LastNewsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AlertModule.forRoot(),
     AuthConfigModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

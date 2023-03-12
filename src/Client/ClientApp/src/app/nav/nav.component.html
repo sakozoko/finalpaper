@@ -1,30 +1,51 @@
-<div class="container-fluid p-3 bg-dark text-white">
-  <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-      <h5 class="text-white h4">Collapsed content</h5>
-      <span class="text-muted">Toggleable via the navbar brand.</span>
-    </div>
-  </div>
-  <div class="container-lg row align-items-center m-auto justify-content-sm-between">
-    <div class="col-sm-8">
-      <h3 class="modal-title">{{title}}</h3>
-      <p class="lead">Для усіх громадян України</p>
-    </div>
-    <div class="col-sm-4 text-center text-sm-end">
-      <div class="navbar-dark btn-group ">
-        <button type="button" class="btn btn-dark " data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <ul *ngIf="isAuthorized" class="dropdown-menu dropstart p-1">
-          <li><button class="dropdown-item"  (click)="profile()" type="button">Інформація</button></li>
-          <li><button class="dropdown-item" (click)="logout()" type="button">Вихід</button></li>
-        </ul>
-        <ul *ngIf="!isAuthorized" class="dropdown-menu dropstart p-1">
-          <li><button class="dropdown-item" (click)="login()">Вхід</button></li>
-          <li><button class="dropdown-item" (click)="register()">Реєстрація</button></li>
-        </ul>
+<div class="container-fluid p-0 mb-2">
+  <div class="container-fluid p-3 bg-dark text-white">
+    <div class="container-lg row align-items-center m-auto justify-content-sm-between">
+      <div class="col-sm-8">
+        <h3 class="modal-title">{{title}}</h3>
+        <p class="lead">Для усіх громадян України</p>
+      </div>
+      <div class="col-sm-4 text-center text-sm-end">
+        <div class="navbar-dark btn-group ">
+          <button type="button" class="btn btn-dark " data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <ul *ngIf="isAuthorized" class="dropdown-menu dropstart p-1">
+            <li><button class="dropdown-item"  (click)="profile()" type="button">Інформація</button></li>
+            <li><button class="dropdown-item" (click)="logout()" type="button">Вихід</button></li>
+          </ul>
+          <ul *ngIf="!isAuthorized" class="dropdown-menu dropstart p-1">
+            <li><button class="dropdown-item" (click)="login()">Вхід</button></li>
+            <li><button class="dropdown-item" (click)="register()">Реєстрація</button></li>
+          </ul>
 
+        </div>
       </div>
     </div>
   </div>
+  <div class="container-fluid bg-opacity-50 bg-secondary p-2">
+    <div class="container-lg">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activatedRouteIsIndex()?'disabled active':''" href="#">Головна</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activatedRouteContains('public-news')?'disabled active':''" href="/public-news">Новини</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" href="/nezlamnist">Мапа незламності</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activatedRouteContains('helpme')?'disabled active':''" href="/helpme">Отримати допомогу</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" href="/last-news">Останні події</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    </div>
+</div>
+
 </div>

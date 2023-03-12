@@ -13,20 +13,15 @@ namespace IdentityServer.Features;
 
 public class UserManager : UserManager<User>
 {
-    private readonly ISendGridClient _gridClient;
-    public UserManager(IUserStore<User> store, 
-        IOptions<IdentityOptions> optionsAccessor,
-        IPasswordHasher<User> passwordHasher, 
-        IEnumerable<IUserValidator<User>> userValidators, 
-        IEnumerable<IPasswordValidator<User>> passwordValidators,
-        ILookupNormalizer keyNormalizer, 
-        IdentityErrorDescriber errors,
-        IServiceProvider services,
-        ILogger<UserManager> logger,
-        ISendGridClient gridClient) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
-    {
-        _gridClient = gridClient;
-    }
+    public UserManager(IUserStore<User> store,
+                       IOptions<IdentityOptions> optionsAccessor,
+                       IPasswordHasher<User> passwordHasher,
+                       IEnumerable<IUserValidator<User>> userValidators,
+                       IEnumerable<IPasswordValidator<User>> passwordValidators,
+                       ILookupNormalizer keyNormalizer,
+                       IdentityErrorDescriber errors,
+                       IServiceProvider services,
+                       ILogger<UserManager> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger){}
     public async Task<User?> FindByExternalProvider(string provider, string userId)
     {
         return await Users.FirstOrDefaultAsync(c=>c.ProviderName==provider && c.ProviderSubjectId==userId);
@@ -102,25 +97,15 @@ public class UserManager : UserManager<User>
             return user;
         }
 
-    public async Task SendRecoveryMessageToEmailAsync(User user, string callbackUrl)
-    {
-        var msg = MailHelper.CreateSingleEmail(
-            new EmailAddress("olesis.ko@gmail.com"),
-            new EmailAddress(user.Email),
-            "Reset password",
-            $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.",
-            $"Please reset your password by clicking here: {callbackUrl}");
-        var result = await _gridClient.SendEmailAsync(msg);
-        if(result.IsSuccessStatusCode)
-            return;
-    }
-    
 
     public override async Task<IdentityResult> CreateAsync(User user)
     {
         var result = await base.CreateAsync(user);
         if (!result.Succeeded)
             return result;
-        return await AddToRoleAsync(user, Roles.User);
+        var role = Roles.User;
+        if(user.UserName == "admin")
+            role = Roles.Admin;
+        return await AddToRoleAsync(user, role);
     }
 }

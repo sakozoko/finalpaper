@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {environment} from "../../environment/environment";
 import {OidcSecurityService} from "angular-auth-oidc-client";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +11,14 @@ import {OidcSecurityService} from "angular-auth-oidc-client";
 export class NavComponent {
   @Input() public title: string ;
   @Input() public isAuthorized: boolean | undefined ;
-  constructor(public OidcSecurityService: OidcSecurityService) {
+  constructor(public OidcSecurityService: OidcSecurityService, private router: Router) {
+  }
+
+  activatedRouteContains(route: string): boolean {
+    return this.router.url.toString().includes(route);
+  }
+  activatedRouteIsIndex(): boolean {
+    return this.router.url.toString() === '/';
   }
 
   login() {

@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using System.Text.Encodings.Web;
 using IdentityModel;
+using IdentityServer.Abstraction;
 using IdentityServer.Entities;
 using IdentityServer.Features;
 using IdentityServer.Models;
@@ -18,6 +20,7 @@ namespace IdentityServer.Controllers.Account;
 [Route("Account")]
 public class AccountController : Controller
 {
+    private readonly IEmailSender _emailSender;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager _userManager;
     private readonly IIdentityServerInteractionService _interaction;
@@ -28,8 +31,9 @@ public class AccountController : Controller
         UserManager userManager,
         IIdentityServerInteractionService interaction,
         IAuthenticationSchemeProvider schemeProvider,
-        IClientStore clientStore)
+        IClientStore clientStore, IEmailSender emailSender)
     {
+        _emailSender = emailSender;
         _signInManager = signInManager;
         _userManager = userManager;
         _interaction = interaction;
@@ -55,16 +59,17 @@ public class AccountController : Controller
         {
             return View(vm);
         }
+        var user = await _userManager.FindByEmailAsync(model.Email!);
 
-        if (model.Username is null ||
-            !(await _signInManager.PasswordSignInAsync(model.Username, model.Password!, model.RememberLogin, true))
+        if (user is null ||
+            !(await _signInManager.PasswordSignInAsync(user.UserName!, model.Password!, model.RememberLogin, true))
                 .Succeeded)
         {
             ModelState.AddModelError(string.Empty, "Invalid username or password");
             return View(vm);
         }
         
-        var user = await _userManager.FindByNameAsync(model.Username);
+        
         
         if (user == null) return Redirect(model.ReturnUrl!);
         var roles = await _userManager.GetRolesAsync(user);
@@ -98,9 +103,9 @@ public class AccountController : Controller
     
     [AllowAnonymous]
     [HttpGet("Registration")]
-    public IActionResult Registration(string returnUrl)
+    public async Task<IActionResult> Registration(string returnUrl)
     {
-        var vm = new RegistrationViewModel(returnUrl);
+        var vm = await BuildRegistrationViewModel(returnUrl);
 
         return View(vm);
     }
@@ -110,7 +115,7 @@ public class AccountController : Controller
     [HttpPost("Registration")]
     public async Task<IActionResult> Registration(RegistrationInputModel model)
     {
-        var vm = new RegistrationViewModel(model.ReturnUrl!);
+        var vm = await BuildRegistrationViewModel(model.ReturnUrl!);
         if(!ModelState.IsValid || model.Password != model.ConfirmPassword)
         {
             ModelState.AddModelError(string.Empty, "Invalid username or password");
@@ -138,7 +143,6 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
         await HttpContext.SignOutAsync();
         return Redirect(returnUrl);
-        return View("LoggetOut", new LoggedOutViewModel(returnUrl));
     }
     
     [HttpGet("SendResetPassword")]
@@ -163,6 +167,11 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, "Invalid username or email");
             return View("SendResetPassword", vm);
         }
+        if(user.EmailConfirmed == false)
+        {
+            ModelState.AddModelError(string.Empty, "Email not confirmed");
+            return View("SendResetPassword", vm);
+        }
             
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, model.ReturnUrl}, Request.Scheme);
@@ -171,7 +180,11 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty,"Bad request");
             return View(vm);
         }
-        await _userManager.SendRecoveryMessageToEmailAsync(user, callbackUrl);
+        var sendingEmailResult = await _emailSender.SendEmailAsync(user.Email!,"Reset password",$"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        if(!sendingEmailResult){
+            ModelState.AddModelError(string.Empty,"Error sending email");
+            return View(vm);
+        }
         vm.StatusMessage = "Reset password link sent to your email";
         return View("SendResetPassword", vm);
     }
@@ -241,7 +254,8 @@ public class AccountController : Controller
             // this is meant to short circuit the UI and only trigger the one external IdP
             var vm = new LoginViewModel(returnUrl)
             {
-                Username = context.LoginHint,
+                Email = context.LoginHint,
+                ReturnUrl = returnUrl,
             };
 
             if (!local)
@@ -273,7 +287,52 @@ public class AccountController : Controller
 
         return new LoginViewModel(returnUrl)
         {
-            Username = context?.LoginHint,
+            Email = context?.LoginHint,
+            ExternalProviders = providers.ToArray()
+        };
+    }
+    private async Task<RegistrationViewModel> BuildRegistrationViewModel(string returnUrl)
+    {
+                var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+        if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
+        {
+            var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
+
+            // this is meant to short circuit the UI and only trigger the one external IdP
+            var vm = new RegistrationViewModel(returnUrl)
+            {
+                ReturnUrl = returnUrl,
+            };
+
+            if (!local)
+            {
+                vm.ExternalProviders = new[] { new ExternalProvider("", context.IdP) };
+            }
+
+            return vm;
+        }
+
+        var schemes = await _schemeProvider.GetAllSchemesAsync();
+
+        var providers = schemes
+            .Where(x => x.DisplayName != null)
+            .Select(x => new ExternalProvider(x.DisplayName ?? x.Name, x.Name)).ToList();
+        
+        if (context?.Client.ClientId != null)
+        {
+            var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
+            if (client != null)
+            {
+
+                if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
+                {
+                    providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+                }
+            }
+        }
+
+        return new RegistrationViewModel(returnUrl)
+        {
             ExternalProviders = providers.ToArray()
         };
     }

@@ -1,5 +1,8 @@
 <app-nav [title]="title"
          [isAuthorized]="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated">
 </app-nav>
-<router-outlet></router-outlet>
+<div class="container-xxl p-0">
+  <router-outlet></router-outlet>
+</div>
+
 <app-footer [title]="title"></app-footer>

@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {PublicNewsRepositoryService} from "../../repositories/public-news-repository.service";
 
 @Component({
   selector: 'app-public-new',
@@ -9,10 +10,17 @@ import {Router} from "@angular/router";
 export class PublicNewComponent {
   @Input() public publicNew: publicNew;
   public truncated:boolean=true;
-  constructor(private _router : Router) {
+  @Input()
+  public fullViewed:boolean=true;
+  constructor(private _router : Router,
+              private _publicNewsRepository : PublicNewsRepositoryService,
+              private _activatedRoute: ActivatedRoute) {
+  if(!this.publicNew){
+    this.publicNew = _publicNewsRepository.getPublicNewById(_activatedRoute.snapshot.params['id']) ?? new publicNew();
+  }
   }
   showFullNew(){
-    this._router.navigate(['/public-news', this.publicNew.id]);
+    this._router.navigate(['/public-new', this.publicNew.id]);
   }
 
 }

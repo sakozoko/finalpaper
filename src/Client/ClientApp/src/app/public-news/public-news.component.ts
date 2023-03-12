@@ -1,60 +1,48 @@
-import {Component, Input} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
 import {PaginationService} from "../services/pagination.service";
 import {publicNew} from "./public-new/public-new.component";
+import {PublicNewsRepositoryService} from "../repositories/public-news-repository.service";
 
 @Component({
   selector: 'app-public-news',
   templateUrl: './public-news.component.html',
   styleUrls: ['./public-news.component.css']
 })
-export class PublicNewsComponent  {
+export class PublicNewsComponent implements OnInit{
 @Input() public homeViewed : boolean = false;
-  public news : publicNew[] = [
-    {
-      title : "Допомога військовослужбовцям",
-      description : "Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям",
-      date : new Date(2019, 10, 10,11,13,15),
-      author : "Адміністратор",
-      image : "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id : "1"
-    },
-    {
-      title : "Допомога військовослужбовцям",
-      description : "Допомога військовослужбовцям",
-      date : new Date(2019, 10, 10),
-      author : "Адміністратор",
-      image : "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id : "2"
-    },
-    {
-      title : "Допомога військовослужбовцям",
-      description : "Допомога військовослужбовцям",
-      date : new Date(2019, 10, 10),
-      author : "Адміністратор",
-      image : "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id : "3"
-    },
-    {
-      title : "Допомога військовослужбовцям",
-      description : "Допомога військовослужбовцям",
-      date : new Date(2019, 10, 10),
-      author : "Адміністратор",
-      image : "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id : "4"
-    }];
+
   private _page: number;
-  private _pageSize: number=10;
-  private _totalCount: number=40;
+  private _pageSize: number=5;
+  public publicNews : publicNew[];
 
+  constructor(public activatedRoute : ActivatedRoute,
+              public paginationService : PaginationService,
+              public publicNewsRepository : PublicNewsRepositoryService) {
 
-  constructor(public activatedRoute : ActivatedRoute, router: Router, public paginationService : PaginationService){
-    this._page = activatedRoute.snapshot.queryParams['page']?Number.parseInt(activatedRoute.snapshot.queryParams['page']):1;
-    this.paginationService.setPagination(this._totalCount, this._pageSize, this._page);
-    paginationService.currentPageChanged = (num)=>{
-      this._page = num;
-    }
    }
+
+   public search = (searchQuery : string):void=>{
+
+   }
+
+   public clear = ():void=>{
+
+   }
+
+  ngOnInit(): void {
+    if(this.homeViewed) {
+      this._page = 1;
+      this._pageSize = 3;
+    }
+    this._page = this.activatedRoute.snapshot.queryParams['page']?Number.parseInt(this.activatedRoute.snapshot.queryParams['page']):1;
+    this.publicNews = this.publicNewsRepository.getPublicNews(this._page, this._pageSize);
+    this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
+    this.paginationService.currentPageChanged = (num)=>{
+      this._page = num;
+      this.publicNews = this.publicNewsRepository.getPublicNews(this._page, this._pageSize);
+    }
+  }
 
 }
 
