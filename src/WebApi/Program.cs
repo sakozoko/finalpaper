@@ -1,15 +1,16 @@
 using HtmlAgilityPack;
 using WebApiAbstraction.Repositories;
-using WebApiAbstraction.Services;
+using WebApiApplication;
+using WebApiApplication.Services;
 using WebApiInfrastructure.Repositories;
-using WebApiService.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped(typeof(HtmlWeb));
 builder.Services.AddScoped<ILatestNewRepository, LatestNewRepository>();
-builder.Services.AddTransient<ILatestNewService, LatestNewService>();
+builder.Services.AddApplication();
 
 builder.Services.AddControllers();
 builder.Services.AddCors(opt=>

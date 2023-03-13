@@ -1,8 +1,7 @@
 ﻿using WebApiAbstraction.Repositories;
-using WebApiAbstraction.Services;
 using WebApiCore.Models;
 
-namespace WebApiService.Services;
+namespace WebApiApplication.Services;
 
 public class LatestNewService : ILatestNewService
 {

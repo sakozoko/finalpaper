@@ -1,27 +1,48 @@
 ﻿using System.Security.Claims;
 using IdentityModel;
 using IdentityServer.Entities;
-using IdentityServer4.Test;
+using IdentityServer.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using static System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler;
 
 namespace IdentityServer.Features;
 
 public class UserManager : UserManager<User>
 {
+    private readonly IdentityServerContext _context;
+
     public UserManager(IUserStore<User> store,
-                       IOptions<IdentityOptions> optionsAccessor,
-                       IPasswordHasher<User> passwordHasher,
-                       IEnumerable<IUserValidator<User>> userValidators,
-                       IEnumerable<IPasswordValidator<User>> passwordValidators,
-                       ILookupNormalizer keyNormalizer,
-                       IdentityErrorDescriber errors,
-                       IServiceProvider services,
-                       ILogger<UserManager> logger) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger){}
+        IOptions<IdentityOptions> optionsAccessor,
+        IPasswordHasher<User> passwordHasher,
+        IEnumerable<IUserValidator<User>> userValidators,
+        IEnumerable<IPasswordValidator<User>> passwordValidators,
+        ILookupNormalizer keyNormalizer,
+        IdentityErrorDescriber errors,
+        IServiceProvider services,
+        ILogger<UserManager> logger,
+        IdentityServerContext context) : base(store, optionsAccessor, passwordHasher, userValidators,
+        passwordValidators, keyNormalizer, errors, services, logger)
+    {
+        _context= context;
+    }
+
+    public async Task<int> GeneratePhoneConfirmationCodeAsync(User user)
+    {
+        var phoneNumber = await GetPhoneNumberAsync(user);
+        if(phoneNumber is null)
+            throw new ArgumentNullException(nameof(phoneNumber),"Phone number is not set");
+        var code = new Random().Next(100000, 999999);
+        var verifySmsCode = new VerificationSmsCode
+        {
+            PhoneNumber = phoneNumber,
+            Code = code
+        };
+        await _context.VerifySmsCodes.AddAsync(verifySmsCode);
+        await _context.SaveChangesAsync();
+        return code;
+    } 
     public async Task<User?> FindByExternalProvider(string provider, string userId)
     {
         return await Users.FirstOrDefaultAsync(c=>c.ProviderName==provider && c.ProviderSubjectId==userId);
@@ -30,7 +51,6 @@ public class UserManager : UserManager<User>
     {
         // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
-
             foreach (var claim in claims)
             {
                 // if the external system sends a display name - translate that to the standard OIDC name claim

@@ -13,9 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WebApiAbstraction\WebApiAbstraction.csproj" />
       <ProjectReference Include="..\WebApiInfrastructure\WebApiInfrastructure.csproj" />
-      <ProjectReference Include="..\WebApiService\WebApiService.csproj" />
     </ItemGroup>
 
 </Project>
