@@ -1,4 +1,4 @@
-using IdentityServer;
+using System.Reflection;
 using IdentityServer.Entities;
 using IdentityServer.Features;
 using IdentityServer.Persistence;
@@ -9,6 +9,8 @@ using SendGrid;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
+using IdentityModel;
+using IdentityServer;
 using IdentityServer.Abstraction;
 using IdentityServer.Services;
 
@@ -25,7 +27,6 @@ var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]
         Mode = RetryMode.Exponential
      }
 });
-
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -46,17 +47,29 @@ builder.Services.AddIdentity<User, Role>(options =>
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireDigit = false;
+        options.ClaimsIdentity.EmailClaimType = JwtClaimTypes.Email;
+        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
+        options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
+        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
     })
     .AddEntityFrameworkStores<IdentityServerContext>()
     .AddUserManager<UserManager>()
     .AddTokenProvider<DataProtectorTokenProvider<User>>("Default");
 
 builder.Services.AddIdentityServer()
+    .AddOperationalStore(options =>
+    {
+        options.ConfigureDbContext =
+            b=>b.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value,
+                sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
+    })
+    .AddConfigurationStore(options =>
+    {
+        options.ConfigureDbContext =
+            b => b.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value,
+                sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
+    })
     .AddAspNetIdentity<User>()
-    .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryApiResources(Config.ApiResources)
-    .AddInMemoryClients(Config.Clients)
-    .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddDeveloperSigningCredential();
 builder.Services.AddAuthentication().AddGoogle("Google", "Google", opt =>
 {
@@ -90,7 +103,7 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
-
+Config.InitializeDatabase(app);
 app.MapControllers();
 app.MapControllerRoute(name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
