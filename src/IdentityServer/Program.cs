@@ -35,6 +35,9 @@ builder.Services.AddDbContext<IdentityServerContext>(options=>
 
 builder.Services.AddScoped<ISendGridClient>(_ => new SendGridClient(((KeyVaultSecret)secretClient.GetSecret("SendGridKey")).Value));
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
+
+builder.Services.AddTransient<IModelStateErrorMessageStore, UkranianModelStateErrorStore>();
+
 builder.Services.AddIdentity<User, Role>(options =>
     {
         options.User.RequireUniqueEmail = true;

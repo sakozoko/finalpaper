@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
+using System.Web;
 using IdentityModel;
 using IdentityServer.Abstraction;
 using IdentityServer.Entities;
@@ -20,6 +21,7 @@ namespace IdentityServer.Controllers.Account;
 [Route("Account")]
 public class AccountController : Controller
 {
+    private readonly IModelStateErrorMessageStore _errorStore;
     private readonly IEmailSender _emailSender;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager _userManager;
@@ -31,8 +33,11 @@ public class AccountController : Controller
         UserManager userManager,
         IIdentityServerInteractionService interaction,
         IAuthenticationSchemeProvider schemeProvider,
-        IClientStore clientStore, IEmailSender emailSender)
+        IClientStore clientStore,
+        IEmailSender emailSender,
+        IModelStateErrorMessageStore errorStore)
     {
+        _errorStore = errorStore;
         _emailSender = emailSender;
         _signInManager = signInManager;
         _userManager = userManager;
@@ -65,11 +70,9 @@ public class AccountController : Controller
             !(await _signInManager.PasswordSignInAsync(user.UserName!, model.Password!, model.RememberLogin, true))
                 .Succeeded)
         {
-            ModelState.AddModelError(string.Empty, "Invalid username or password");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidEmailOrPassword"));
             return View(vm);
         }
-        
-        
         
         if (user == null) return Redirect(model.ReturnUrl!);
         var roles = await _userManager.GetRolesAsync(user);
@@ -96,7 +99,7 @@ public class AccountController : Controller
             return Redirect(model.ReturnUrl!);
         }
 
-        ModelState.AddModelError(string.Empty,"ReturnUrl incorrect");
+        ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("BadRequest"));
         return View(vm);
 
     }
@@ -116,9 +119,11 @@ public class AccountController : Controller
     public async Task<IActionResult> Registration(RegistrationInputModel model)
     {
         var vm = await BuildRegistrationViewModel(model.ReturnUrl!);
-        if(!ModelState.IsValid || model.Password != model.ConfirmPassword)
+        if(!ModelState.IsValid)
+            return View(vm);
+        if(model.Password != model.ConfirmPassword)
         {
-            ModelState.AddModelError(string.Empty, "Invalid username or password");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("PasswordNotMatch"));
             return View(vm);
         }
         var user = new User(){UserName = model.Username, Email = model.Email, PhoneNumber = model.PhoneNumber};
@@ -164,28 +169,29 @@ public class AccountController : Controller
             user = await _userManager.FindByNameAsync(model.Credential!);
         if (user == null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid username or email");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidEmailOrUsername"));
             return View("SendResetPassword", vm);
         }
         if(user.EmailConfirmed == false)
         {
-            ModelState.AddModelError(string.Empty, "Email not confirmed");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("EmailUnconfirmedError"));
             return View("SendResetPassword", vm);
         }
             
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, model.ReturnUrl}, Request.Scheme);
+        var returnUrl = HttpUtility.ParseQueryString(model.ReturnUrl!)["redirect_uri"]+"/?login";
+        var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, returnUrl}, Request.Scheme);
         if (callbackUrl is null)
         {
-            ModelState.AddModelError(string.Empty,"Bad request");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("BadRequest"));
             return View(vm);
         }
-        var sendingEmailResult = await _emailSender.SendEmailAsync(user.Email!,"Reset password",$"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        var sendingEmailResult = await _emailSender.SendEmailAsync(user.Email!,"Скидання паролю",$"Ви можете скинути пароль за <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>цим посиланням</a>.");
         if(!sendingEmailResult){
-            ModelState.AddModelError(string.Empty,"Error sending email");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("EmailSendingError"));
             return View(vm);
         }
-        vm.StatusMessage = "Reset password link sent to your email";
+        vm.StatusMessage = "Повідомлення з посиланням на скидання паролю відправлено";
         return View("SendResetPassword", vm);
     }
     
@@ -195,7 +201,7 @@ public class AccountController : Controller
         var user = await _userManager.FindByIdAsync(id);
         if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid user id");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("UserNotFound"));
             return View("SendResetPassword", new SendResetPasswordViewModel()
             {
                 ReturnUrl = returnUrl,
@@ -204,7 +210,7 @@ public class AccountController : Controller
         var result = await _userManager.VerifyUserTokenAsync(user, "Default", UserManager.ResetPasswordTokenPurpose, token); 
         if (!result)
         {
-            ModelState.AddModelError(string.Empty, "Invalid token");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidToken"));
             return View("SendResetPassword", new SendResetPasswordViewModel()
             {
                 ReturnUrl = returnUrl,
@@ -222,7 +228,7 @@ public class AccountController : Controller
         var vm = new ResetPasswordViewModel(){ReturnUrl = model.ReturnUrl, Token = model.Token, Id = model.Id};
         if (!ModelState.IsValid || model.Password != model.ConfirmPassword)
         {
-            ModelState.AddModelError(string.Empty, "Invalid password or confirm password");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("PasswordsNotMatch"));
             return View(vm);
         }
         
@@ -230,13 +236,13 @@ public class AccountController : Controller
         
         if (user == null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid user id");
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("UserNotFound"));
             return View(vm);
         }
 
         var result = await _userManager.ResetPasswordAsync(user, model.Token!, model.Password!);
         if (result.Succeeded)
-            return RedirectToAction("Login", "Account", new{returnUrl=model.ReturnUrl});
+            return Redirect(model.ReturnUrl!);
         foreach (var error in result.Errors)
         {
             ModelState.AddModelError(string.Empty, error.Description);

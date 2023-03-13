@@ -18,26 +18,11 @@ import { SearchComponent } from './search/search.component';
 import {FormsModule} from "@angular/forms";
 import { LastNewsComponent } from './last-news/last-news.component';
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  },
-  {
-    path: 'public-news',
-    component: PublicNewsComponent,
-  },
-  {
-    path:'public-new/:id',
-    component: PublicNewComponent
-  },
-  {
-    path:'nezlamnist',
-    component: NezlamnistComponent
-  },
-  {
-    path:'last-news',
-    component: LastNewsComponent
-  }
+  { path: '', component: HomeComponent },
+  { path: 'public-news', component: PublicNewsComponent },
+  { path:'public-new/:id', component: PublicNewComponent },
+  { path:'nezlamnist', component: NezlamnistComponent},
+  { path:'last-news', component: LastNewsComponent }
 ];
 @NgModule({
   declarations: [
@@ -51,7 +36,7 @@ const routes: Routes = [
     PaginationComponent,
     NezlamnistComponent,
     SearchComponent,
-    LastNewsComponent,
+    LastNewsComponent
   ],
   imports: [
     BrowserModule,

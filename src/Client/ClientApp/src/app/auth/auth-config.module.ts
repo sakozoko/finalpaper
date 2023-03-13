@@ -14,7 +14,7 @@ import {environment} from "../../environment/environment";
               responseType: 'code',
               silentRenew: true,
               useRefreshToken: true,
-              renewTimeBeforeTokenExpiresInSeconds: 30,
+              renewTimeBeforeTokenExpiresInSeconds: 30
           }
       })],
     exports: [AuthModule],

@@ -14,12 +14,17 @@ namespace IdentityServer.Controllers.Profile;
 [Route("profile")]
 public class ProfileController : Controller
 {
+    private readonly IModelStateErrorMessageStore _errorMessageStore;
     private readonly IEmailSender _emailSender;
     private readonly UserManager _userManager;
     private readonly SignInManager<User> _signInManager;
 
-    public ProfileController(UserManager userManager, SignInManager<User> signInManager, IEmailSender emailSender)
+    public ProfileController(UserManager userManager,
+     SignInManager<User> signInManager,
+      IEmailSender emailSender,
+       IModelStateErrorMessageStore errorMessageStore)
     {
+        _errorMessageStore = errorMessageStore;
         _emailSender = emailSender;
         _userManager = userManager;
         _signInManager = signInManager;
@@ -37,7 +42,7 @@ public class ProfileController : Controller
         var user = await _userManager.GetUserAsync(User);
         if (user is null)
         {
-            ModelState.AddModelError("User.Email", "User not found");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
             return GetIndexView(user, returnUrl);
         }
         if (!ModelState.IsValid)
@@ -64,28 +69,28 @@ public class ProfileController : Controller
     [HttpPost("changing-password")]
     public async Task<IActionResult> ChangePassword(PasswordChangingInputModel model)
     {
-        var vm = new PasswordChangingViewModel() { ReturnUrl = model.ReturnUrl, IsPasswordSet = false };
-        if(model.Password != model.ConfirmPassword || string.IsNullOrEmpty(model.Password))
-        {
-            ModelState.AddModelError(string.Empty, "Passwords do not match");
-            return View("PasswordChanging", vm);
-        }
+        var vm = new PasswordChangingViewModel() { ReturnUrl = model.ReturnUrl, IsPasswordSet=true};
         var user = await _userManager.GetUserAsync(User);
-        if (user is null)
+        if (user is null || !ModelState.IsValid)
         {
-            ModelState.AddModelError(string.Empty, "User not found");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
             return View("PasswordChanging", vm );
         }
+
         var isPasswordSet = await _userManager.HasPasswordAsync(user);
+        vm.IsPasswordSet=isPasswordSet;
+        if(!ModelState.IsValid)
+            return View("PasswordChanging", vm);
+
+        if(model.Password != model.ConfirmPassword || string.IsNullOrEmpty(model.Password))
+        {
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("PasswordsNotMatch"));
+            return View("PasswordChanging", vm);
+        }
         IdentityResult? result;
         if (isPasswordSet)
         {
-            if (string.IsNullOrEmpty(model.OldPassword))
-            {
-                ModelState.AddModelError(string.Empty, "Old password is required");
-                return View("PasswordChanging", vm);
-            }
-            result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
+            result = await _userManager.ChangePasswordAsync(user, model.OldPassword!, model.Password);
         }
         else
             result = await _userManager.AddPasswordAsync(user, model.Password);
@@ -108,15 +113,15 @@ public class ProfileController : Controller
         var user = await _userManager.GetUserAsync(User);
         if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "User not found");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
             return View("ConfirmationEmailSent",vm);
         }
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var callbackUrl = Url.Action("ConfirmEmail", "Profile", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-        var emailSendingResult = await _emailSender.SendEmailAsync(user.Email!, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
+        var emailSendingResult = await _emailSender.SendEmailAsync(user.Email!, "Підтвердіть вашу пошту", $"Підтвердіть вашу пошту за <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>цим посиланням</a>.");
         if(!emailSendingResult)
         {
-            ModelState.AddModelError(string.Empty, "Email sending failed");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("EmailSendingError"));
             return View("ConfirmationEmailSent", vm);
         }
         vm.IsSuccessful = true;
@@ -128,22 +133,22 @@ public class ProfileController : Controller
     {
         if (userId is null || code is null)
         {
-            ModelState.AddModelError(string.Empty, "User Id and code are required");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("BadRequest"));
             return View("ConfirmEmail");
         }
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "User not found");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
             return View("ConfirmEmail");
         }
         var result = await _userManager.ConfirmEmailAsync(user, code);
         if(result.Succeeded){
-            ModelState.AddModelError(string.Empty, "Email confirmation error");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("EmailConfirmationError"));
             return View("ConfirmEmail");
         }
             
-        ModelState.AddModelError(string.Empty, "Email confirmation failed");
+        ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("EmailConfirmationError"));
         return View("ConfirmEmail");
     }
     
@@ -152,7 +157,7 @@ public class ProfileController : Controller
         var vm = new ProfileViewModel();
         if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "User not found");
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
             return View(vm);
         }
 
