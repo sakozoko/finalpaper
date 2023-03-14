@@ -27,6 +27,7 @@ public class AccountController : Controller
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IClientStore _clientStore;
+    private readonly IPhoneValidator _phoneValidator;
 
     public AccountController(SignInManager<User> signInManager,
         UserManager userManager,
@@ -34,8 +35,10 @@ public class AccountController : Controller
         IAuthenticationSchemeProvider schemeProvider,
         IClientStore clientStore,
         IEmailSender emailSender,
-        IModelStateErrorMessageStore errorStore)
+        IModelStateErrorMessageStore errorStore,
+        IPhoneValidator phoneValidator)
     {
+        _phoneValidator = phoneValidator;
         _errorStore = errorStore;
         _emailSender = emailSender;
         _signInManager = signInManager;
@@ -72,8 +75,6 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidEmailOrPassword"));
             return View(vm);
         }
-        
-        if (user == null) return Redirect(model.ReturnUrl!);
         var roles = await _userManager.GetRolesAsync(user);
         AuthenticationProperties? props = null;
         if (model.RememberLogin)
@@ -125,7 +126,14 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("PasswordNotMatch"));
             return View(vm);
         }
-        var user = new User(){UserName = model.Username, Email = model.Email, PhoneNumber = model.PhoneNumber};
+
+        var phoneValidationResult = await _phoneValidator.ValidatePhoneNumberAsync(model.PhoneNumber);
+        if (!phoneValidationResult.IsValid)
+        {
+            ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidPhoneNumber"));
+            return View(vm);
+        }
+        var user = new User(){UserName = model.Username, Email = model.Email, PhoneNumber = phoneValidationResult.International};
         var result = await _userManager.CreateAsync(user, model.Password!);
         
         if (result.Succeeded)
@@ -178,7 +186,7 @@ public class AccountController : Controller
         }
             
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        var returnUrl = HttpUtility.ParseQueryString(model.ReturnUrl!)["redirect_uri"]+"/?login";
+        var returnUrl = HttpUtility.ParseQueryString(model.ReturnUrl!)["redirect_uri"]+"/sing-in-oidc";
         var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, returnUrl}, Request.Scheme);
         if (callbackUrl is null)
         {

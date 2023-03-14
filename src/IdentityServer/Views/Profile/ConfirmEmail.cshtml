@@ -1,22 +1,4 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
     <div class="container">
         <partial name="_ValidationSummary" />
-        @if(ViewContext.ModelState.IsValid)
-        {
-            <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="text-center text-bg-success p-2">
-                                    <h6>Пошта успішно підтверджена</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        }
     </div>

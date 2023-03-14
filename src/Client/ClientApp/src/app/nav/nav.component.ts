@@ -12,7 +12,8 @@ export class NavComponent {
   @Input() public title: string ;
   @Input() public isAuthorized: boolean | undefined ;
   constructor(public OidcSecurityService: OidcSecurityService, private router: Router) {
-  }
+    
+}
 
   activatedRouteContains(route: string): boolean {
     return this.router.url.toString().includes(route);
@@ -22,14 +23,14 @@ export class NavComponent {
   }
 
   login() {
-    this.OidcSecurityService.authorize();
+    this.router.navigate(['/sign-in-oidc']);
   }
   register(){
     window.location.href=environment.authority + '/Account/Registration'+ '?returnUrl=' + environment.clientUrl;
   }
   logout() {
-    this.OidcSecurityService.logoffLocal();
     window.location.href=environment.authority + '/Account/Logout'+ '?returnUrl=' + environment.clientUrl;
+    this.OidcSecurityService.logoffLocal();
   }
   profile(){
     window.location.href=environment.authority + '/Profile'+ '?returnUrl=' + environment.clientUrl;

@@ -34,11 +34,18 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<IdentityServerContext>(options=>
     options.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value));
 
-builder.Services.AddScoped<ISendGridClient>(_ => new SendGridClient(((KeyVaultSecret)secretClient.GetSecret("SendGridKey")).Value));
+builder.Services.AddScoped<ISendGridClient>(_ => 
+    new SendGridClient(((KeyVaultSecret)secretClient.GetSecret("SendGridKey")).Value));
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
 
 builder.Services.AddTransient<IModelStateErrorMessageStore, UkranianModelStateErrorStore>();
 
+builder.Services.AddTransient<ISmsSender>(c=>
+    new TwilioSmsSender(((KeyVaultSecret)secretClient.GetSecret("twilioAccountSID")).Value,
+    ((KeyVaultSecret)secretClient.GetSecret("twilioAuthToken")).Value));
+
+builder.Services.AddScoped<IPhoneValidator>(c=>
+    new PhoneValidator(((KeyVaultSecret)secretClient.GetSecret("abstractApiPhoneValidationKey")).Value));
 builder.Services.AddIdentity<User, Role>(options =>
     {
         options.User.RequireUniqueEmail = true;

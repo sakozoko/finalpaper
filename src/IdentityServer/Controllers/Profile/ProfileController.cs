@@ -18,12 +18,18 @@ public class ProfileController : Controller
     private readonly IEmailSender _emailSender;
     private readonly UserManager _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly ISmsSender _smsSender;
+    private readonly IPhoneValidator _phoneValidator;
 
     public ProfileController(UserManager userManager,
      SignInManager<User> signInManager,
       IEmailSender emailSender,
-       IModelStateErrorMessageStore errorMessageStore)
+       ISmsSender smsSender,
+        IModelStateErrorMessageStore errorMessageStore,
+     IPhoneValidator phoneValidator)
     {
+        _phoneValidator = phoneValidator;
+        _smsSender = smsSender;
         _errorMessageStore = errorMessageStore;
         _emailSender = emailSender;
         _userManager = userManager;
@@ -49,13 +55,30 @@ public class ProfileController : Controller
         {
             return GetIndexView(user, returnUrl);
         }
-        if (user.UserName != username)
+
+        if (user.PhoneNumber != phoneNumber 
+            && !user.PhoneNumberConfirmed 
+            && !string.IsNullOrWhiteSpace(phoneNumber))
+        {
+            var phoneValidationResult = await _phoneValidator.ValidatePhoneNumberAsync(phoneNumber);
+            if (!phoneValidationResult.IsValid)
+            {
+                ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("InvalidPhoneNumber"));
+                return GetIndexView(user, returnUrl);
+            }
+            user.PhoneNumber = phoneValidationResult.International;
+            await _userManager.UpdateAsync(user);
+        }
+
+
+
+        if (Guid.TryParse(user.UserName, out _) && user.UserName != username)
+        {
             await _userManager.SetUserNameAsync(user, username);
-        await _userManager.SetUserNameAsync(user, username);
-        user.PhoneNumber = phoneNumber;
-        await _userManager.UpdateAsync(user);
-        await _signInManager.RefreshSignInAsync(user);
-        return Redirect(returnUrl);
+            await _signInManager.RefreshSignInAsync(user);
+        }
+            
+        return GetIndexView(user, returnUrl);
     }
     
     
@@ -117,7 +140,7 @@ public class ProfileController : Controller
             return View("ConfirmationEmailSent",vm);
         }
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var callbackUrl = Url.Action("ConfirmEmail", "Profile", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+        var callbackUrl = Url.Action("ConfirmEmail", "Profile", new { userId = user.Id, code, returnUrl }, protocol: HttpContext.Request.Scheme);
         var emailSendingResult = await _emailSender.SendEmailAsync(user.Email!, "Підтвердіть вашу пошту", $"Підтвердіть вашу пошту за <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>цим посиланням</a>.");
         if(!emailSendingResult)
         {
@@ -129,9 +152,9 @@ public class ProfileController : Controller
     }
 
     [HttpGet("confirm-email")]
-    public async Task<IActionResult> ConfirmEmail(string userId, string code)
+    public async Task<IActionResult> ConfirmEmail(string? userId, string? code,string? returnUrl)
     {
-        if (userId is null || code is null)
+        if (userId is null || code is null || returnUrl is null)
         {
             ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("BadRequest"));
             return View("ConfirmEmail");
@@ -144,12 +167,60 @@ public class ProfileController : Controller
         }
         var result = await _userManager.ConfirmEmailAsync(user, code);
         if(result.Succeeded){
-            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("EmailConfirmationError"));
-            return View("ConfirmEmail");
+            RedirectToAction("Index", new {returnUrl});
         }
-            
         ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("EmailConfirmationError"));
         return View("ConfirmEmail");
+    }
+
+    [HttpGet("send-confirmation-phone")]
+    public async Task<IActionResult> SendConfirmationPhone(string returnUrl)
+    {
+        var vm = new ConfirmPhoneViewModel() { ReturnUrl = returnUrl };
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
+            return View("ConfirmationPhoneSent", vm);
+        }
+        var phoneValidationResult = await _phoneValidator.ValidatePhoneNumberAsync(user.PhoneNumber);
+        if (!phoneValidationResult.IsValid)
+        {
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("InvalidPhoneNumber"));
+            return View("ConfirmationPhoneSent", vm);
+        }
+
+        var code = await _userManager.GeneratePhoneConfirmationCodeAsync(user);
+
+        var smsSendingResult = await _smsSender.SendSmsAsync(phoneValidationResult.International!, $"Ваш код підтвердження: {code}");
+        if (!smsSendingResult)
+        {
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("SmsSendingError"));
+            return View("ConfirmationPhoneSent", vm);
+        }
+        vm.IsSuccessful = true;
+        return View("ConfirmationPhoneSent", vm);
+    }
+    
+    [HttpPost("confirm-phone")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ConfirmPhone(ConfirmPhoneInputModel model)
+    {
+        var vm = new ConfirmPhoneViewModel(){ReturnUrl=model.ReturnUrl};
+        if (!ModelState.IsValid)
+            return View("ConfirmationPhoneSent", vm);
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("UserNotFound"));
+            return View("ConfirmationPhoneSent",vm);
+        }
+        var result = await _userManager.ValidatePhoneConfirmationCodeAsync(user, model.Code);
+        
+        if (result) return RedirectToAction("Index", "Profile", new { returnUrl = model.ReturnUrl });
+        
+        ModelState.AddModelError(string.Empty, _errorMessageStore.GetErrorMessage("PhoneConfirmationError"));
+        return View("ConfirmationPhoneSent", vm);
     }
     
     private IActionResult GetIndexView(User? user, string returnUrl)
@@ -162,7 +233,6 @@ public class ProfileController : Controller
         }
 
         var userViewModel = CreateUserViewModel(user);
-
         {
             vm.User = userViewModel;
             vm.Email = user.Email;

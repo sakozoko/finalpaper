@@ -33,6 +33,8 @@ namespace IdentityServer.Services
             _errors.TryAdd("BadRequest","Невірний запит");
             _errors.TryAdd("EmailConfirmationError","Помилка підтвердження email");
             _errors.TryAdd("EmailUnconfirmedError", "Пошта не підтверджена, спочатку підтвердіть пошту");
+            _errors.TryAdd("SmsSendingError","Помилка відправки sms");
+            _errors.TryAdd("PhoneConfirmationError", "Помилка підтвердження телефону");
         }
         public string GetErrorMessage(string key)
         {

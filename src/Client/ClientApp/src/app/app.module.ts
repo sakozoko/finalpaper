@@ -17,12 +17,19 @@ import { NezlamnistComponent } from './nezlamnist/nezlamnist.component';
 import { SearchComponent } from './search/search.component';
 import {FormsModule} from "@angular/forms";
 import { LastNewsComponent } from './last-news/last-news.component';
+import { GetHelpComponent } from './get-help/get-help.component';
+import { SignInOidcComponent } from './auth/sign-in-oidc/sign-in-oidc.component';
+import { SignInOidcCallbackComponent } from './auth/sign-in-oidc-callback/sign-in-oidc-callback.component';
+import { AuthGuard } from './auth/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path:'sign-in-oidc', component: SignInOidcComponent},
+  { path: 'sign-in-oidc-callback', component: SignInOidcCallbackComponent},
   { path: 'public-news', component: PublicNewsComponent },
   { path:'public-new/:id', component: PublicNewComponent },
   { path:'nezlamnist', component: NezlamnistComponent},
-  { path:'last-news', component: LastNewsComponent }
+  { path:'last-news', component: LastNewsComponent },
+  { path:'get-help', component: GetHelpComponent, canActivate: [AuthGuard]}
 ];
 @NgModule({
   declarations: [
@@ -36,7 +43,8 @@ const routes: Routes = [
     PaginationComponent,
     NezlamnistComponent,
     SearchComponent,
-    LastNewsComponent
+    LastNewsComponent,
+    GetHelpComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +54,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     FormsModule
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,9 +9,10 @@
                     <h2>Інформація профілю</h2>
                 </div>
             </div>
-                <partial name="_ValidationSummary" />
+                
             <div class="row d-flex justify-content-center" style="margin: 0px;">
                 <div class="col-md-10 col-lg-8 col-xl-6">
+                <partial name="_ValidationSummary" />
                     <div class="card mb-5">
                         <div class="card-header">
                             <a class="d-inline-block" href="@Model.ReturnUrl"><i class="fas fa-arrow-left btn"></i></a>
@@ -65,7 +66,7 @@
                                             </svg></div>
                                         <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="tel" name="phonenumber" placeholder="Номер телефону" asp-for="PhoneNumber"></div>
                                         <div class="col">
-                                            <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationEmail" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;номер телефону&nbsp;</p>
+                                            <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationPhone" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;номер телефону&nbsp;</p>
                                         </div>
                                     }
 
@@ -75,7 +76,7 @@
                                     }
 
                                 </div>
-                                <div class="row text-center card-footer p-0">
+                                <div class="row text-center card-footer p-0 bg-white">
                                         <div class="col-12 col-sm-6 my-2"><button class="btn btn-primary" type="submit">Зберегти</button></div>
                                         <div class="col-12 col-sm-6 my-2">
                                             <a asp-action="PasswordChanging" asp-route-returnUrl="@Model.ReturnUrl">

@@ -42,7 +42,23 @@ public class UserManager : UserManager<User>
         await _context.VerifySmsCodes.AddAsync(verifySmsCode);
         await _context.SaveChangesAsync();
         return code;
-    } 
+    }
+    public async Task<bool> ValidatePhoneConfirmationCodeAsync(User user, string code)
+    {
+        var phoneNumber = await GetPhoneNumberAsync(user);
+        if(phoneNumber is null)
+            throw new ArgumentNullException(nameof(phoneNumber),"Phone number is not set");
+        var verifySmsCode = await _context.VerifySmsCodes.OrderBy(c=>c.Id).LastOrDefaultAsync(c=>c.PhoneNumber==phoneNumber && c.Code.ToString()==code);
+        if(verifySmsCode is null)
+            return false;
+        _context.VerifySmsCodes.Where(c=>c.PhoneNumber==phoneNumber)
+            .ToList()
+            .ForEach(c=>_context.VerifySmsCodes.Remove(c));
+        user.PhoneNumberConfirmed = true;
+        _context.Update(user);
+        await _context.SaveChangesAsync();
+        return true;
+    }
     public async Task<User?> FindByExternalProvider(string provider, string userId)
     {
         return await Users.FirstOrDefaultAsync(c=>c.ProviderName==provider && c.ProviderSubjectId==userId);

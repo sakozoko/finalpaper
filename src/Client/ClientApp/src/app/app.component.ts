@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 @Component({
   selector: 'app-root',
@@ -9,13 +9,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent {
   public title = 'Інформаційна Волонтерська Система';
 
-  constructor(public OidcSecurityService: OidcSecurityService, activatedRoute : ActivatedRoute) {
-      this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
-      });
-      activatedRoute.queryParams.subscribe(params => {
-        if(params['login'] !== undefined){
-          this.OidcSecurityService.authorize();
-        }
-      });
+  constructor(public OidcSecurityService: OidcSecurityService, router : Router) {
+    this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
+    });
   }
 }
