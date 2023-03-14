@@ -127,7 +127,7 @@ public class AccountController : Controller
             return View(vm);
         }
 
-        var phoneValidationResult = await _phoneValidator.ValidatePhoneNumberAsync(model.PhoneNumber);
+        var phoneValidationResult = await _phoneValidator.ValidatePhoneNumberAsync(model.PhoneNumber!);
         if (!phoneValidationResult.IsValid)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidPhoneNumber"));
@@ -137,12 +137,12 @@ public class AccountController : Controller
         var result = await _userManager.CreateAsync(user, model.Password!);
         
         if (result.Succeeded)
-            return Redirect(model.ReturnUrl!);
+            return Redirect(model.ReturnUrl!+"/sign-in-oidc");
 
 
         foreach (var error in result.Errors)
             ModelState.AddModelError(error.Code, error.Description);
-        return View("Login", new LoginViewModel(model.ReturnUrl!));
+        return View("Registration", vm);
     }
     [Authorize]
     [HttpGet("Logout")]

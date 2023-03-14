@@ -10,21 +10,32 @@
     
     <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/assets/css/Login-Form-Basic-icons.css">
     <link rel="stylesheet" href="~/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/css/intlTelInput.min.css"/>
 </head>
 <body>
 <div class="container">
         @RenderBody()
-    </div>
-
-    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/js/bs-init.js"></script>
-    @RenderSection("scripts", required: false)
+        </div>
+<script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/assets/js/bs-init.js"></script>
+<script src="~/js/intlTelInput-jquery.min.js"></script>
+<script src="~/js/intlTelInput.min.js"></script>
+<script>
+    
+const input = document.querySelector('input[type="tel"]');
+intlTelInput(input, {
+    initialCountry:'ua',
+    utilsScript: "/js/utils.js",
+    separateDialCode: true,
+    hiddenInput:"PhoneNumber"
+});
+</script>
+@RenderSection("scripts", required: false)
 </body>
 </html>
