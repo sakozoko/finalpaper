@@ -10,6 +10,7 @@ using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
 using Duende.IdentityServer;
 using IdentityModel;
+using IdentityServer;
 using IdentityServer.Abstraction;
 using IdentityServer.Services;
 
@@ -55,21 +56,7 @@ builder.Services.AddIdentity<User, Role>(options =>
     .AddUserManager<UserManager>()
     .AddTokenProvider<DataProtectorTokenProvider<User>>("Default");
 
-builder.Services.AddIdentityServer()
-    .AddOperationalStore(options =>
-    {
-        options.ConfigureDbContext =
-            b=>b.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value,
-                sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
-    })
-    .AddConfigurationStore(options =>
-    {
-        options.ConfigureDbContext =
-            b => b.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value,
-                sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
-    })
-    .AddAspNetIdentity<User>()
-    .AddDeveloperSigningCredential();
+builder.Services.AddIdentityConfiguration(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value);
 builder.Services.AddAuthentication().AddGoogle("Google", "Google", opt =>
 {
     opt.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
