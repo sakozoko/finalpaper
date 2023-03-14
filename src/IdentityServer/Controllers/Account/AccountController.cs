@@ -1,20 +1,19 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Web;
+using Duende.IdentityServer;
+using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Stores;
 using IdentityModel;
 using IdentityServer.Abstraction;
 using IdentityServer.Entities;
 using IdentityServer.Features;
 using IdentityServer.Models;
 using IdentityServer.ViewModels;
-using IdentityServer4;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SendGrid.Helpers.Mail;
 
 namespace IdentityServer.Controllers.Account;
 

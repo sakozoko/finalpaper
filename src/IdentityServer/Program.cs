@@ -2,15 +2,14 @@ using System.Reflection;
 using IdentityServer.Entities;
 using IdentityServer.Features;
 using IdentityServer.Persistence;
-using IdentityServer4;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using SendGrid;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Azure.Core;
+using Duende.IdentityServer;
 using IdentityModel;
-using IdentityServer;
 using IdentityServer.Abstraction;
 using IdentityServer.Services;
 
@@ -103,7 +102,6 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
-Config.InitializeDatabase(app);
 app.MapControllers();
 app.MapControllerRoute(name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
