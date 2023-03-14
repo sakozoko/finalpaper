@@ -16,8 +16,15 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="card mb-5">
                         <div class="card-header">
-                            <a class="d-inline-block" href="@HttpUtility.ParseQueryString(Model.ReturnUrl!)["redirect_uri"] ?? Model.ReturnUrl"><i class="fas fa-arrow-left btn"></i></a>
-                            </div>
+                            @if (string.IsNullOrWhiteSpace(HttpUtility.ParseQueryString(Model.ReturnUrl!)["redirect_uri"]))
+                            {
+                                <a class="d-inline-block" href="@Model.ReturnUrl"><i class="fas fa-arrow-left btn"></i></a>
+                            }
+                            else
+                            {
+                                <a class="d-inline-block" href="@HttpUtility.ParseQueryString(Model.ReturnUrl!)["redirect_uri"]"><i class="fas fa-arrow-left btn"></i></a>
+                            }
+                        </div>
                         <div class="card-body d-flex flex-column align-items-center">
                             <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
