@@ -10,7 +10,7 @@ import {environment} from "../../environment/environment";
               redirectUrl: window.location.origin,
               postLogoutRedirectUri: window.location.origin,
               clientId: 'webapp',
-              scope: 'openid profile offline_access roles webapi', // 'openid profile offline_access ' + your scopes
+              scope: 'openid profile offline_access roles phoneNumberVerified emailVerified webapi', // 'openid profile offline_access ' + your scopes
               responseType: 'code',
               silentRenew: true,
               useRefreshToken: true,
