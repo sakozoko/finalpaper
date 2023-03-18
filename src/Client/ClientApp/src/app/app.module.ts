@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {AlertModule} from "ngx-bootstrap/alert";
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthConfigModule } from './auth/auth-config.module';
@@ -15,7 +14,7 @@ import { PublicNewComponent } from './public-news/public-new/public-new.componen
 import { PaginationComponent } from './pagination/pagination.component';
 import { NezlamnistComponent } from './nezlamnist/nezlamnist.component';
 import { SearchComponent } from './search/search.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LastNewsComponent } from './last-news/last-news.component';
 import { GetHelpComponent } from './get-help/get-help.component';
 import { SignInOidcComponent } from './auth/sign-in-oidc/sign-in-oidc.component';
@@ -52,7 +51,8 @@ const routes: Routes = [
     AlertModule.forRoot(),
     AuthConfigModule,
     RouterModule.forRoot(routes),
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

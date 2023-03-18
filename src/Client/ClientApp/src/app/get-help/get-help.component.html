@@ -8,27 +8,38 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="row d-flex justify-content-center">
-                        <div *ngIf="!CanSendRequest" class="col">
+                        <div *ngIf="!CanSendRequest" class="col-12">
                             <div class="text-bg-danger p-3 m-2 rounded-2">
                                 <h6 class="m-0">На жаль, ця можливість доступна лише користувача з підтвердженими поштою та номером телефону, будь-ласка, підтвердіть їх в профілі.</h6>
+                            </div>
+                        </div>
+                        <div *ngIf="RequestResultMessage!==''" class="col-12">
+                            <div class="text-bg-success p-3 m-2 rounded-2">
+                                <h6 class="m-0">{{RequestResultMessage}}</h6>
                             </div>
                         </div>
                         <div class="col-11">
                             <div></div>
                             <p>Розкажіть нам про вашу проблему, наші волонтери знайдуть рішення та нададуть вам інформацію, яким чином краще діяти у вашій ситуації. Запити, зазвичай, оброблюються напротязі дня.</p>
                         </div>
-                        <div class="col">
-                            <form>
+                        <div class="col-11">
+                            <form *ngIf="!SendingRequest" [formGroup]="HelpRequestForm" (ngSubmit)="onSubmit()">
                                 <div class="row text-center d-flex d-md-flex justify-content-center justify-content-md-center">
-                                    <div class="col-11 mb-2"><textarea class="form-control" autofocus="" autocomplete="on" required="" placeholder="Опишіть вашу ситуацію"></textarea></div>
+                                    <div class="col-11 mb-2"><input type="text" placeholder="Заголовок вашого звернення" autofocus required class="form-control" formControlName="title"/></div>
+                                    <div class="col-11 mb-2"><textarea formControlName="description" class="form-control" autocomplete="on" required="" placeholder="Опишіть вашу ситуацію"></textarea></div>
                                     <div class="col" *ngIf="CanSendRequest">
-                                        <div class="card-footer"><button class="btn btn-primary" type="button">Відправити запит</button></div>
+                                        <div class="card-footer bg-white"><button class="btn btn-primary" type="submit">Відправити запит</button></div>
                                     </div>
                                     <div class="col" *ngIf="!CanSendRequest">
-                                        <div class="card-footer"><button class="btn btn-primary disabled" type="button">Відправити запит</button></div>
+                                        <div class="card-footer bg-white"><button class="btn btn-primary disabled" type="button">Відправити запит</button></div>
                                     </div>
                                 </div>
                             </form>
+                            <div *ngIf="SendingRequest" class="d-flex justify-content-center pb-5">
+                                <div class="spinner-border" role="status">
+                                  <span class="sr-only"></span>
+                                </div>
+                              </div>                              
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { HelpRequestRepositoryService } from './repositories/help-request-repository.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,8 +10,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent {
   public title = 'Інформаційна Волонтерська Система';
 
-  constructor(public OidcSecurityService: OidcSecurityService, router : Router) {
-    this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
+  constructor(public OidcSecurityService: OidcSecurityService, router : Router, helpRequestRepository : HelpRequestRepositoryService) {
+    this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {  
     });
   }
 }

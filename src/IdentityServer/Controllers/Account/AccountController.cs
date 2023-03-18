@@ -186,6 +186,7 @@ public class AccountController : Controller
         }
             
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //TODO: redirected to https://client.net/sign-in-oidc-callback/sign-in-oidc need to fix to https://client.net/sign-in-oidc
         var returnUrl = HttpUtility.ParseQueryString(model.ReturnUrl!)["redirect_uri"]+"/sing-in-oidc";
         var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, returnUrl}, Request.Scheme);
         if (callbackUrl is null)

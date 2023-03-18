@@ -17,12 +17,12 @@ public class LatestNewsController : ControllerBase
     {
         return Ok(await _latestNewService.GetLatestNewsByPage(page, pageSize));
     }
-    [HttpGet("count")]
+    [HttpGet("latestnews/count")]
     public async Task<IActionResult> GetLatestNewsCount()
     {
         return Ok(await _latestNewService.GetLatestNewsCount());
     }
-    [HttpGet("filter")]
+    [HttpGet("latestnews/filter")]
     public async Task<IActionResult> GetLatestNewsByFilter(string filter)
     {
         return Ok(await _latestNewService.GetLatestNewsByFilter(filter));
