@@ -14,17 +14,17 @@ public class LatestNewsController : ControllerBase
         _mediator = mediator;
     }
     [HttpGet("latestnews")]
-    public async Task<IActionResult> GetLatestNews(GetLatestNewsByPageCommand command)
+    public async Task<IActionResult> GetLatestNews(GetLatestNewsByPageQuery command)
     {
         return Ok(await _mediator.Send(command));
     }
     [HttpGet("latestnews/count")]
-    public async Task<IActionResult> GetLatestNewsCount(GetLatestNewsCountCommand command)
+    public async Task<IActionResult> GetLatestNewsCount(GetLatestNewsCountQuery command)
     {
         return Ok(await _mediator.Send(command));
     }
     [HttpGet("latestnews/filter")]
-    public async Task<IActionResult> GetLatestNewsByFilter(GetLatestNewsByFilterCommand command)
+    public async Task<IActionResult> GetLatestNewsByFilter(GetLatestNewsByFilterQuery command)
     {
         return Ok(await _mediator.Send(command));
     }

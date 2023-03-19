@@ -7,16 +7,16 @@ using WebApiAbstraction.Repositories;
 
 namespace WebApiApplication.Features.LatestNewFeatures.Commands
 {
-    public class GetLatestNewsCountCommand : IRequest<int>
+    public class GetLatestNewsCountQuery : IRequest<int>
     {
-        public class GetLatestNewsCountCommandHandler : IRequestHandler<GetLatestNewsCountCommand, int>
+        public class GetLatestNewsCountCommandHandler : IRequestHandler<GetLatestNewsCountQuery, int>
         {
             private readonly ILatestNewRepository repository;
             public GetLatestNewsCountCommandHandler(ILatestNewRepository repository)
             {
             this.repository = repository;
             }
-            public async Task<int> Handle(GetLatestNewsCountCommand request, CancellationToken cancellationToken)
+            public async Task<int> Handle(GetLatestNewsCountQuery request, CancellationToken cancellationToken)
             {
                 return await repository.GetLatestNewsCount();
             }

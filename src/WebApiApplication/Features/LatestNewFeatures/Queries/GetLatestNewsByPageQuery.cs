@@ -9,11 +9,11 @@ using WebApiCore.Models;
 
 namespace WebApiApplication.Features.LatestNewFeatures.Commands
 {
-    public class GetLatestNewsByPageCommand : IRequest<IEnumerable<LatestNew>>
+    public class GetLatestNewsByPageQuery : IRequest<IEnumerable<LatestNew>>
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public class GetLatestNewsByPageCommandValidator : AbstractValidator<GetLatestNewsByPageCommand>
+        public class GetLatestNewsByPageCommandValidator : AbstractValidator<GetLatestNewsByPageQuery>
         {
             public GetLatestNewsByPageCommandValidator()
             {
@@ -21,14 +21,14 @@ namespace WebApiApplication.Features.LatestNewFeatures.Commands
                 RuleFor(x => x.PageSize).NotEmpty();
             }
         }
-        public class GetLatestNewsByPageCommandHandler : IRequestHandler<GetLatestNewsByPageCommand, IEnumerable<LatestNew>>
+        public class GetLatestNewsByPageCommandHandler : IRequestHandler<GetLatestNewsByPageQuery, IEnumerable<LatestNew>>
         {
             private readonly ILatestNewRepository _repository;
             public GetLatestNewsByPageCommandHandler(ILatestNewRepository repository)
             {
                 _repository = repository;
             }
-            public async Task<IEnumerable<LatestNew>> Handle(GetLatestNewsByPageCommand command, CancellationToken cancellationToken)
+            public async Task<IEnumerable<LatestNew>> Handle(GetLatestNewsByPageQuery command, CancellationToken cancellationToken)
             {
                 if(command.Page < 1 || command.PageSize < 1)
                 {
