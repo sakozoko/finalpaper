@@ -10,10 +10,10 @@ namespace WebApiCore.Models
     {
         [MaxLength(100)]
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = default!;
         [Required]
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = default!;
         [Required]
         public Guid UserId { get; set; }
         [Required]

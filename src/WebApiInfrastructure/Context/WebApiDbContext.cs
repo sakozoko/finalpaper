@@ -6,7 +6,7 @@ namespace WebApiInfrastructure.Context
 {
     public class WebApiDbContext : DbContext, IWebApiDbContext
     {
-        public  DbSet<HelpRequestEntity> HelpRequests {get;set;}
+        public  DbSet<HelpRequestEntity> HelpRequests {get;set;} = default!;
         public WebApiDbContext(DbContextOptions<WebApiDbContext> options) : base(options)
         {
         }

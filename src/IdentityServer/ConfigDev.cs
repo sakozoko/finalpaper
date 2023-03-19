@@ -23,13 +23,17 @@ public static class ConfigDev
     }
     public static void InitializeDatabase(IApplicationBuilder app)
     {
-        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
         {
-            serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+            serviceScope?.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
-            var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+            var context = serviceScope?.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+            if(context is null)
+            {
+                return;
+            }
             context.Database.Migrate();
-            if (!context.Clients.Any())
+            if (!context.Clients.Any()) 
             {
                 foreach (var client in ConfigDev.Clients)
                 {
@@ -42,7 +46,6 @@ public static class ConfigDev
             {
                 foreach (var resource in ConfigDev.IdentityResources)
                 {
-                    
                     context.IdentityResources.Add(resource.ToEntity());
                 }
                 context.SaveChanges();
