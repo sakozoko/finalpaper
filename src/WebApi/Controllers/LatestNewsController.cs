@@ -1,30 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApiApplication.Services;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using WebApiApplication.Features.LatestNewFeatures.Commands;
 
 namespace WebApi.Controllers;
 
 [Route("api")]
 public class LatestNewsController : ControllerBase
 {
-    private readonly ILatestNewService _latestNewService;
+    private readonly IMediator _mediator;
 
-    public LatestNewsController(ILatestNewService latestNewService)
+    public LatestNewsController(IMediator mediator)
     {
-        _latestNewService = latestNewService;
+        _mediator = mediator;
     }
     [HttpGet("latestnews")]
-    public async Task<IActionResult> GetLatestNews(int page = 1, int pageSize = 10)
+    public async Task<IActionResult> GetLatestNews(GetLatestNewsByPageCommand command)
     {
-        return Ok(await _latestNewService.GetLatestNewsByPage(page, pageSize));
+        return Ok(await _mediator.Send(command));
     }
     [HttpGet("latestnews/count")]
-    public async Task<IActionResult> GetLatestNewsCount()
+    public async Task<IActionResult> GetLatestNewsCount(GetLatestNewsCountCommand command)
     {
-        return Ok(await _latestNewService.GetLatestNewsCount());
+        return Ok(await _mediator.Send(command));
     }
     [HttpGet("latestnews/filter")]
-    public async Task<IActionResult> GetLatestNewsByFilter(string filter)
+    public async Task<IActionResult> GetLatestNewsByFilter(GetLatestNewsByFilterCommand command)
     {
-        return Ok(await _latestNewService.GetLatestNewsByFilter(filter));
+        return Ok(await _mediator.Send(command));
     }
 }

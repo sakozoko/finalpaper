@@ -11,8 +11,8 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Commands
 {
     public class CreateHelpRequestCommand : IRequest<Guid>
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = default!;
+        public string Description { get; set; }= default!;
         public Guid UserId { get; set; }
         public bool EmailConfirmed { get; set; }
 
