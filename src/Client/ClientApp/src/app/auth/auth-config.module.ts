@@ -16,7 +16,7 @@ import { SignInOidcCallbackComponent } from './sign-in-oidc-callback/sign-in-oid
               responseType: 'code',
               silentRenew: true,
               useRefreshToken: true,
-              renewTimeBeforeTokenExpiresInSeconds: 30
+              renewTimeBeforeTokenExpiresInSeconds: 60
           }
       })],
     exports: [AuthModule],

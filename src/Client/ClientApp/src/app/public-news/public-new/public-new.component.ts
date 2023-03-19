@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PublicNewsRepositoryService} from "../../repositories/public-news-repository.service";
 
@@ -7,7 +7,7 @@ import {PublicNewsRepositoryService} from "../../repositories/public-news-reposi
   templateUrl: './public-new.component.html',
   styleUrls: ['./public-new.component.css']
 })
-export class PublicNewComponent {
+export class PublicNewComponent implements OnInit {
   @Input() public publicNew: publicNew;
   public truncated:boolean=true;
   @Input()
@@ -15,9 +15,12 @@ export class PublicNewComponent {
   constructor(private _router : Router,
               private _publicNewsRepository : PublicNewsRepositoryService,
               private _activatedRoute: ActivatedRoute) {
-  if(!this.publicNew){
-    this.publicNew = _publicNewsRepository.getPublicNewById(_activatedRoute.snapshot.params['id']) ?? new publicNew();
+  
   }
+  ngOnInit(): void {
+    if(!this.publicNew){
+      this.publicNew = this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.params['id']) ?? new publicNew();
+    }
   }
   showFullNew(){
     this._router.navigate(['/public-new', this.publicNew.id]);

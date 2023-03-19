@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {LastNewsRepositoryService} from "../repositories/last-news-repository.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PaginationService} from "../services/pagination.service";
@@ -8,7 +8,7 @@ import {PaginationService} from "../services/pagination.service";
   templateUrl: './last-news.component.html',
   styleUrls: ['./last-news.component.css']
 })
-export class LastNewsComponent {
+export class LastNewsComponent implements OnInit {
   public lastNews: LastNew[] = [];
   public tLastNews: LastNew[] = [];
   public _page: number;
@@ -18,7 +18,10 @@ export class LastNewsComponent {
   constructor(private lastNewsRepository: LastNewsRepositoryService,
               private activatedRoute: ActivatedRoute,
               public paginationService: PaginationService) {
-                this._page = this.activatedRoute.snapshot.queryParams['page'] ? Number.parseInt(this.activatedRoute.snapshot.queryParams['page']) : 1;
+                
+  }
+  ngOnInit(): void {
+    this._page = this.activatedRoute.snapshot.queryParams['page'] ? Number.parseInt(this.activatedRoute.snapshot.queryParams['page']) : 1;
     this.clearLoading();
   }
 
@@ -51,7 +54,6 @@ export class LastNewsComponent {
       this.tLastNews = data
       this.lastNews = this.tLastNews.slice(0, this.pageSize);
       this.paginationService.setPagination(this.tLastNews.length, this.pageSize, this._page);
-      console.log(this.paginationService)
       this.loading = false;
     });
     this.paginationService.currentPageChanged = (num) => {

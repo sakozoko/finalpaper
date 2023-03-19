@@ -1,0 +1,41 @@
+
+<div class="container-fluid" [ngClass]="pagination?'':'mt-2'">
+
+  <div class="row d-flex d-xl-flex justify-content-center justify-content-xl-center">
+      <div class="col">
+          <app-search *ngIf="pagination" [search]="search" [clear]="clear"></app-search>
+          <div class="card">
+              <div class="card-header">
+                  <h3 *ngIf="pagination">Запити про допомогу</h3>
+                  <h3 *ngIf="!pagination">Останні запити про допомогу</h3>
+              </div>
+              <div class="card-body">
+                  <div class="row d-flex justify-content-center">
+                      <div class="col-11">
+                        <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
+                          <div class="d-flex justify-content-center p-5">
+                            <div class="spinner-border" role="status">
+                              <span class="sr-only"></span>
+                            </div>
+                          </div>   
+                        </div>
+                        <div *ngIf="lastRequests.length===0 && !loading" class="bg-secondary bg-opacity-10 p-3">
+                          <h6>Ви ще не відправляли запити</h6>
+                        </div>
+                        <div *ngIf="lastRequests.length>0 && !loading">
+                          <div class="m-2" *ngFor="let request of lastRequests" >
+                             <app-last-help-request [request]="request"></app-last-help-request>
+                        </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div *ngIf="!loading && pagination" class="card-footer">
+                <app-pagination [paginationService]="paginationService"> </app-pagination>
+              </div>
+              <div *ngIf="!loading && !pagination && lastRequests.length>0" class="card-footer">
+                <a class="btn btn-primary" [routerLink]="['/help-requests']">Переглянути всі запити</a>
+          </div>
+      </div>
+  </div>
+</div>

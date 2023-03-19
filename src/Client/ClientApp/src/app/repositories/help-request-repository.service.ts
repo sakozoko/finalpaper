@@ -20,6 +20,48 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
+  public getHelpRequestForUserByPage(page : number, pageSize : number) {
+    let subj = new Subject<HelpRequestModel[]>();
+    this._oidcSecurityService.getAccessToken().subscribe(token => {
+      let header = {'Authorization': 'Bearer ' + token};
+      this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest?page=' + page + '&pageSize=' + pageSize, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
+  }
+  public getHelpRequestCountForUser(){
+    let subj = new Subject<number>();
+    this._oidcSecurityService.getAccessToken().subscribe(token => {
+      let header = {'Authorization': 'Bearer ' + token};
+      this._httpClient.get<number>(environment.api + '/api/helprequest/count', {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
+  }
+  public getHelpRequestBySearchString(filter : string, page : number, pageSize : number){
+    let subj = new Subject<HelpRequestModel[]>();
+    this._oidcSecurityService.getAccessToken().subscribe(token => {
+      let header = {'Authorization': 'Bearer ' + token};
+      this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/search?filter=' + filter + '&page=' + page + '&pageSize=' + pageSize, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
+  }
+  public getHelpRequestBySearchStringCount(filter : string){
+    let subj = new Subject<number>();
+    this._oidcSecurityService.getAccessToken().subscribe(token => {
+      let header = {'Authorization': 'Bearer ' + token};
+      this._httpClient.get<number>(environment.api + '/api/helprequest/search/count?filter=' + filter, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
+  }
+
+
 }
 
 export class HelpRequestRequestModel{
@@ -30,8 +72,9 @@ export class HelpRequestRequestModel{
 }
 
 export class HelpRequestModel{
-   id:string;
+    id:string;
     title:string;
     description:string;
     createdAt:Date;
+    status:string;
 }

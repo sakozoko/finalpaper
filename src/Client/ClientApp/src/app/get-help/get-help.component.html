@@ -1,7 +1,7 @@
 
 <div class="container-fluid">
     <div class="row d-lg-flex justify-content-lg-center">
-        <div class="col-lg-11 col-xl-9 col-xxl-7">
+        <div class="col">
             <div class="card">
                 <div class="card-header">
                     <h3>Отримайте інформаційну допомогу</h3>
@@ -23,10 +23,24 @@
                             <p>Розкажіть нам про вашу проблему, наші волонтери знайдуть рішення та нададуть вам інформацію, яким чином краще діяти у вашій ситуації. Запити, зазвичай, оброблюються напротязі дня.</p>
                         </div>
                         <div class="col-11">
-                            <form *ngIf="!SendingRequest" [formGroup]="HelpRequestForm" (ngSubmit)="onSubmit()">
+                            <form *ngIf="!SendingRequest" [formGroup]="HelpRequestForm" #ngForm="ngForm" (ngSubmit)="HelpRequestForm.valid && onSubmit()">
                                 <div class="row text-center d-flex d-md-flex justify-content-center justify-content-md-center">
-                                    <div class="col-11 mb-2"><input type="text" placeholder="Заголовок вашого звернення" autofocus required class="form-control" formControlName="title"/></div>
-                                    <div class="col-11 mb-2"><textarea formControlName="description" class="form-control" autocomplete="on" required="" placeholder="Опишіть вашу ситуацію"></textarea></div>
+                                    <div class="col-11 mb-2">
+                                        <input type="text" [ngClass]="{ 'is-invalid': ngForm.submitted && HelpRequestForm.controls.title.invalid }" placeholder="Заголовок вашого звернення"  autofocus class="form-control" formControlName="title"/>
+                                        <div *ngIf="HelpRequestForm.controls.title.invalid && ngForm.submitted" class="invalid-feedback ">
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('title')?.hasError('required')"> Заголовок обов'язковий до заповнення</p>
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('title')?.hasError('minlength')"> Мінімальна довжина повинна складати 5 символів
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('title')?.hasError('maxlength')"> Максимальна довжина повинна складати 100 символів
+                                        </div>
+                                    </div>
+                                    <div class="col-11 mb-2">
+                                        <textarea formControlName="description" [ngClass]="{ 'is-invalid': ngForm.submitted && HelpRequestForm.controls.description.invalid }" class="form-control" autocomplete="on" placeholder="Опишіть вашу ситуацію"></textarea>
+                                        <div *ngIf="HelpRequestForm.controls.description.invalid && ngForm.submitted" class="invalid-feedback ">
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('description')?.hasError('required')"> Заголовок обов'язковий до заповнення</p>
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('description')?.hasError('minlength')"> Мінімальна довжина повинна складати 50 символів
+                                            <p class="m-0 text-end" *ngIf="HelpRequestForm.get('description')?.hasError('maxlength')"> Максимальна довжина повинна складати 2000 символів
+                                        </div>
+                                    </div>
                                     <div class="col" *ngIf="CanSendRequest">
                                         <div class="card-footer bg-white"><button class="btn btn-primary" type="submit">Відправити запит</button></div>
                                     </div>
@@ -47,3 +61,4 @@
         </div>
     </div>
 </div>
+<app-last-help-requests [pageSize]="3" [pagination]="false" [resetForm]="reloadForm.asObservable()" class="mt-2" ></app-last-help-requests>
