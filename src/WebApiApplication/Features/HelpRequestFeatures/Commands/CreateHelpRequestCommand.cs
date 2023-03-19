@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using WebApiApplication.Context;
@@ -31,20 +32,18 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Commands
         public class CreateHelpRequestCommandHandler : IRequestHandler<CreateHelpRequestCommand, Guid>
         {
             private readonly IWebApiDbContext _context;
+            private readonly IMapper _mapper;
 
-            public CreateHelpRequestCommandHandler(IWebApiDbContext context)
+            public CreateHelpRequestCommandHandler(IWebApiDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper  = mapper;
             }
 
             public async Task<Guid> Handle(CreateHelpRequestCommand command, CancellationToken cancellationToken)
             {
                 var helpRequest = new HelpRequestEntity();
-                helpRequest.Title = command.Title;
-                helpRequest.Description = command.Description;
-                helpRequest.UserId = command.UserId;
-                helpRequest.Status = HelpRequestStatus.New;
-                helpRequest.CreatedAt = DateTime.UtcNow;
+                helpRequest = _mapper.Map<HelpRequestEntity>(command);
                 _context.HelpRequests.Add(helpRequest);
                 await _context.SaveChangesAsync();
                 return helpRequest.Id;

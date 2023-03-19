@@ -30,9 +30,12 @@ namespace WebApiApplication.Features.LatestNewFeatures.Commands
             }
             public async Task<IEnumerable<LatestNew>> Handle(GetLatestNewsByPageQuery command, CancellationToken cancellationToken)
             {
-                if(command.Page < 1 || command.PageSize < 1)
+                if(command.Page < 1)
                 {
                     command.Page=1;
+                }
+                if(command.PageSize < 1)
+                {
                     command.PageSize=10;
                 }
                 return await _repository.GetLatestNewsByPage(command.Page, command.PageSize);
