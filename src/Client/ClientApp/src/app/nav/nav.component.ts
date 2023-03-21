@@ -1,8 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {environment} from "../../environment/environment";
 import {OidcSecurityService} from "angular-auth-oidc-client";
 import {ActivatedRoute, Router} from "@angular/router";
-
+import { environment } from '../environment/environment';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -11,6 +10,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class NavComponent {
   @Input() public title: string ;
   @Input() public isAuthorized: boolean | undefined ;
+  collapsed = true;
+  collapsedPc = true;
   constructor(public OidcSecurityService: OidcSecurityService, private router: Router) {
     
 }
@@ -21,7 +22,7 @@ export class NavComponent {
   activatedRouteIsIndex(): boolean {
     return this.router.url.toString() === '/';
   }
-
+  
   login() {
     this.router.navigate(['/sign-in-oidc']);
   }
@@ -35,4 +36,39 @@ export class NavComponent {
   profile(){
     window.location.href=environment.authority + '/Profile'+ '?returnUrl=' + environment.clientUrl;
   }
+  
+  closePcMenu(){
+    this.collapsedPc = true;
+    let fullmenu = document.getElementById("fullmenu");
+    if(fullmenu)
+    {
+      fullmenu.style.width="0px";
+      fullmenu.style.padding="0px";
+    }
+    let menu = document.getElementById("menu");
+    if(menu)
+    {
+      menu.style.height="0px";
+      menu.style.width="0px";
+      menu.style.padding="0px";
+    }
+  }
+  openPcMenu(){
+    this.collapsedPc = false;
+    let fullmenu = document.getElementById("fullmenu");
+    if(fullmenu)
+    {
+      fullmenu.style.width="";
+      fullmenu.style.padding="";
+    }
+    setTimeout(() => {
+    let menu = document.getElementById("menu");
+    if(menu)
+    {
+      menu.style.width="";
+      menu.style.height="";
+      menu.style.padding="";
+    }},50);
+  }
+
 }

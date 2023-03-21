@@ -1,6 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
+import { MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from "@angular/router";
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Observable, firstValueFrom, Subject } from 'rxjs';
+import { AuthorizationService } from 'src/app/auth/authorization.service';
 import {PublicNewsRepositoryService} from "../../repositories/public-news-repository.service";
+import { EditPublicNewComponent } from './edit-public-new/edit-public-new.component';
+
 
 @Component({
   selector: 'app-public-new',
@@ -12,18 +18,49 @@ export class PublicNewComponent implements OnInit {
   public truncated:boolean=true;
   @Input()
   public fullViewed:boolean=true;
+  
+  modalRef: MatDialogRef<any>;
   constructor(private _router : Router,
               private _publicNewsRepository : PublicNewsRepositoryService,
-              private _activatedRoute: ActivatedRoute) {
+              private _activatedRoute: ActivatedRoute,
+              public dialog: MatDialog,
+              public authorizationService: AuthorizationService) {
   
   }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef=this.dialog.open(template,
+      {autoFocus: false});
+ }
+
   ngOnInit(): void {
     if(!this.publicNew){
       this.publicNew = this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.params['id']) ?? new publicNew();
     }
   }
-  showFullNew(){
-    this._router.navigate(['/public-new', this.publicNew.id]);
+  @Input()
+  onDeleted=(id:string)=>{
+
+  }
+
+  @Input()
+  onEdited=(publicNew:publicNew)=>{
+  }
+
+  openEditModal(){
+    this.modalRef = this.dialog.open(EditPublicNewComponent,{
+      data:{
+      publicNew:this.publicNew,
+      onEdited:(publicNew:publicNew)=>
+      {this.publicNew=publicNew;this.onEdited(publicNew);},
+    },
+    width: '100%',
+    height : 'auto',
+    autoFocus: false});
+  }
+
+  deleteNew(){
+    this._publicNewsRepository.deletePublicNewById(this.publicNew.id);
+    this.onDeleted(this.publicNew.id);
   }
 
 }

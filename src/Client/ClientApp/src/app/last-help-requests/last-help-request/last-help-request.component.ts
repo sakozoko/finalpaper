@@ -9,7 +9,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 })
 export class LastHelpRequestComponent {
 @Input()
-request : HelpRequestModel;
+request : HelpRequestModel=new HelpRequestModel();
 truncated = true;
   constructor(private clipboard : Clipboard) { }
 copyId(){

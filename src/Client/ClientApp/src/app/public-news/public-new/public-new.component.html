@@ -1,3 +1,17 @@
+
+<ng-template #deletingModal>
+  <div mat-dialog-title>
+     <h4 class="modal-title pull-left">Видалення новини</h4>
+  </div>
+  <mat-dialog-content>
+    <p>Ви дійсно бажаєте видалити новину?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn btn-danger mx-2" (click)="modalRef.close();deleteNew();">Так</button>
+    <button class="btn btn-success" (click)="modalRef.close();">Ні</button>
+  </mat-dialog-actions>
+</ng-template>
+
 <div *ngIf="fullViewed" class="card my-3 m-2">
   <div class="card-body">
     <h3 class="card-title">{{publicNew.title}}</h3>
@@ -12,8 +26,27 @@
 
 <div *ngIf="!fullViewed" class="card my-3">
   <div class="card-body">
-    <img src="{{publicNew.image}}" class="card-img-top" alt="...">
-    <h5 class="card-title">{{publicNew.title}}</h5>
+    <div *ngIf="(authorizationService.isAdmin() | async)" class="float-end d-none d-sm-block">
+      <div class="row">
+        <div class="col px-1">
+          <div class="btn btn-outline-dark" (click)="openEditModal()"  placement="top" ngbTooltip="Редагувати"
+          [openDelay]="200"
+          [closeDelay]="200">
+            <i class="fas fa-edit"></i>
+          </div>
+        </div>
+       <div class="col px-1">
+        <div class="btn btn-outline-danger" (click)="openModal(deletingModal)" placement="top" ngbTooltip="Видалити"
+        [openDelay]="200"
+        [closeDelay]="200" >
+          <i class="fas fa-trash-alt"></i>
+        </div>
+      </div>
+      </div>
+    </div>
+        
+        <h5 class="card-title">{{publicNew.title}}</h5>
+    <img *ngIf="publicNew.image" src="{{publicNew.image}}" class="card-img-top" alt="..." onerror="this.remove()">
     <p  class="card-text">{{truncated ? (publicNew.description | slice:0:30):
       (publicNew.description | slice:0:100)}}
     <a *ngIf="truncated && publicNew.description.length>30" (click)="truncated = !truncated" class="card-link" style="cursor: pointer;" >далі</a>
@@ -21,8 +54,36 @@
     </p>
     <div class="card-text">
       <small class="text-muted">{{publicNew.date | date:'dd.MM.yyyy HH:mm:ss'}}</small>
-</div>
-    <a href="#" class="card-link">{{publicNew.author}}</a>
-    <div class="btn btn-secondary card-link float-end" (click)="showFullNew()">Читати</div>
-  </div>
+    </div>
+    
+    
+    
+    <div class="row">
+      <div class="col-12 col-sm-8">
+        <p>Автор: 
+          <a href="#" class="card-link">{{publicNew.author}}</a></p>
+      </div>
+      <div class="col-12 col-sm-4">
+        <div class="row align-items-center">
+          <div class="col-6 col-sm-12">
+            <div class="btn btn-secondary card-link float-sm-end" [routerLink]="['/public-new/'+publicNew.id]">Читати</div>
+          </div>
+            <div *ngIf="(authorizationService.isAdmin() | async)" class="col-6 d-sm-none float-end">
+              <div class="row text-end">
+                <div class="col px-1">
+                  <div class="btn btn-outline-dark" (click)="openEditModal()">
+                    <i class="fas fa-edit"></i>
+                  </div>
+                </div>
+               <div class="col px-1">
+                <div class="btn btn-outline-danger" (click)="openModal(deletingModal)">
+                  <i class="fas fa-trash-alt"></i>
+                </div>
+               </div>
+            </div>
+          </div>
+          </div>
+        </div>   
+    </div>
+    </div>
 </div>

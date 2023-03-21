@@ -3,6 +3,10 @@ import {ActivatedRoute} from "@angular/router";
 import {PaginationService} from "../services/pagination.service";
 import {publicNew} from "./public-new/public-new.component";
 import {PublicNewsRepositoryService} from "../repositories/public-news-repository.service";
+import { MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { CreatePublicNewComponent } from './public-new/create-public-new/create-public-new.component';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { AuthorizationService } from '../auth/authorization.service';
 
 @Component({
   selector: 'app-public-news',
@@ -15,11 +19,27 @@ export class PublicNewsComponent implements OnInit{
   private _page: number;
   private _pageSize: number=5;
   public publicNews : publicNew[];
-
+  public modalRef : MatDialogRef<CreatePublicNewComponent>;
   constructor(public activatedRoute : ActivatedRoute,
               public paginationService : PaginationService,
-              public publicNewsRepository : PublicNewsRepositoryService) {
+              public publicNewsRepository : PublicNewsRepositoryService,
+              public dialog: MatDialog,
+              public authorizationService : AuthorizationService) {
 
+   }
+
+   openModal(){
+      this.modalRef = this.dialog.open(CreatePublicNewComponent,{
+        data:{
+          onCreated:(publicNew:publicNew)=>{
+            this.publicNews.push(publicNew);
+            this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
+            this.paginationService.goToPage(this._page);
+          }
+        },
+        width: '100%',
+        height : 'auto',
+        autoFocus: false});
    }
 
    public search = (searchQuery : string):void=>{
@@ -30,6 +50,12 @@ export class PublicNewsComponent implements OnInit{
 
    }
 
+   onDeleted = (id:string)=>{
+    this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
+    this.publicNews = this.publicNews.filter(c=>c.id!=id);
+    this.paginationService.goToPage(this._page);
+   }
+
   ngOnInit(): void {
     if(this.homeViewed) {
       this._page = 1;
@@ -37,6 +63,7 @@ export class PublicNewsComponent implements OnInit{
     }
     this._page = this.activatedRoute.snapshot.queryParams['page']?Number.parseInt(this.activatedRoute.snapshot.queryParams['page']):1;
     this.publicNews = this.publicNewsRepository.getPublicNews(this._page, this._pageSize);
+    console.log('updated')
     this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
     this.paginationService.currentPageChanged = (num)=>{
       this._page = num;

@@ -1,18 +1,22 @@
-<div class="container-fluid">
+
+<div class="container-fluid mt-2">
   <app-search *ngIf="!homeViewed" [search]="search" [clear]="clear"></app-search>
-  <div class="card">
+  <div class="card my-2">
     <div class="card-header">
+      <div *ngIf="(authorizationService.isAuthenticated() | async)" class="btn btn-dark d-flex float-end" (click)="openModal()">
+        <i class="fas fa-plus" style="font-size: 20px;"></i>
+      </div>
       <h3 *ngIf="homeViewed" class="card-title">Останні новини від користувачів</h3>
       <h3 *ngIf="!homeViewed" class="card-title">Новини від користувачів</h3>
     </div>
     <div class="card-body">
       <div *ngFor="let publicNew of publicNews">
-        <app-public-new [publicNew]="publicNew" [fullViewed]="false"></app-public-new>
+        <app-public-new [publicNew]="publicNew" [fullViewed]="false" [onDeleted]="onDeleted"></app-public-new>
       </div>
     </div>
     <div class="card-footer">
       <app-pagination *ngIf="!homeViewed" [paginationService]="paginationService"></app-pagination>
-      <a *ngIf="homeViewed" href="/public-news" class="btn btn-primary">Переглянути всі новини</a>
+      <a *ngIf="homeViewed" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
     </div>
   </div>
 </div>

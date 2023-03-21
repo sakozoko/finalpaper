@@ -1,0 +1,22 @@
+<h3 mat-dialog-title> Створення нової новини</h3>
+<form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()" >
+  <mat-dialog-content>
+    <div class="modal-body">
+      <div class="mb-1">
+        <label for="title" class="form-label">Заголовок</label>
+        <input type="text" class="form-control" id="title" formControlName="title">
+      </div>
+      <div class="mb-1">
+        <label for="description" class="form-label">Опис</label>
+        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+      </div>
+      <div class="mb-1">
+        <label for="image" class="form-label">Зображення</label>
+        <input type="text" class="form-control" id="image" formControlName="image">
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="submit" class="btn btn-success mx-2" mat-dialog-close>Зберегти</button>
+    <button type="button" class="btn btn-danger" mat-dialog-close>Назад</button>
+  </mat-dialog-actions>

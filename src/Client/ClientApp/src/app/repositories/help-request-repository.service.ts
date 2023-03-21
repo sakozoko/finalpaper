@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environment/environment';
+import { environment } from '../environment/environment';
+
 
 @Injectable({
   providedIn: 'root'

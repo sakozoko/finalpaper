@@ -1,5 +1,5 @@
 
-<div class="container-fluid">
+<div class="container-fluid mt-2">
     <div class="row d-lg-flex justify-content-lg-center">
         <div class="col">
             <div class="card">
@@ -26,7 +26,7 @@
                             <form *ngIf="!SendingRequest" [formGroup]="HelpRequestForm" #ngForm="ngForm" (ngSubmit)="HelpRequestForm.valid && onSubmit()">
                                 <div class="row text-center d-flex d-md-flex justify-content-center justify-content-md-center">
                                     <div class="col-11 mb-2">
-                                        <input type="text" [ngClass]="{ 'is-invalid': ngForm.submitted && HelpRequestForm.controls.title.invalid }" placeholder="Заголовок вашого звернення"  autofocus class="form-control" formControlName="title"/>
+                                        <input type="text" [ngClass]="{ 'is-invalid': ngForm.submitted && HelpRequestForm.controls.title.invalid }" placeholder="Заголовок вашого звернення"  ngbAutofocus class="form-control" formControlName="title"/>
                                         <div *ngIf="HelpRequestForm.controls.title.invalid && ngForm.submitted" class="invalid-feedback ">
                                             <p class="m-0 text-end" *ngIf="HelpRequestForm.get('title')?.hasError('required')"> Заголовок обов'язковий до заповнення</p>
                                             <p class="m-0 text-end" *ngIf="HelpRequestForm.get('title')?.hasError('minlength')"> Мінімальна довжина повинна складати 5 символів
@@ -61,4 +61,4 @@
         </div>
     </div>
 </div>
-<app-last-help-requests [pageSize]="3" [pagination]="false" [resetForm]="reloadForm.asObservable()" class="mt-2" ></app-last-help-requests>
+<app-last-help-requests [pageSize]="3" [pagination]="false" [resetForm]="reloadForm.asObservable()"></app-last-help-requests>

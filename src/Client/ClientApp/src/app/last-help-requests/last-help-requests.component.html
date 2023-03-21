@@ -1,10 +1,9 @@
 
-<div class="container-fluid" [ngClass]="pagination?'':'mt-2'">
-
+<div class="container-fluid my-2">
   <div class="row d-flex d-xl-flex justify-content-center justify-content-xl-center">
       <div class="col">
           <app-search *ngIf="pagination" [search]="search" [clear]="clear"></app-search>
-          <div class="card">
+          <div class="card mt-2">
               <div class="card-header">
                   <h3 *ngIf="pagination">Запити про допомогу</h3>
                   <h3 *ngIf="!pagination">Останні запити про допомогу</h3>

@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from 'angular-auth-oidc-client';
-import {environment} from "../../environment/environment";
 import { SignInOidcComponent } from './sign-in-oidc/sign-in-oidc.component';
 import { SignInOidcCallbackComponent } from './sign-in-oidc-callback/sign-in-oidc-callback.component';
+import { environment } from '../environment/environment';
+
 
 
 @NgModule({

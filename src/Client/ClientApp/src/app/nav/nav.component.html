@@ -1,52 +1,108 @@
-<div class="container-fluid p-0 mb-2">
-  <div class="container-fluid p-3 bg-dark text-white">
-    <div class="container-lg row align-items-center m-auto justify-content-sm-between">
-      <div class="col-sm-8">
-        <h3 class="modal-title">{{title}}</h3>
-        <p class="lead">Для усіх громадян України</p>
-      </div>
-      <div class="col-sm-4 text-center text-sm-end">
-        <div class="navbar-dark btn-group" data-bs-toggle="dropdown" aria-expanded="false">
-          <div class="btn btn-dark d-inline-block rounded-3">
-            <span class="navbar-toggler-icon"></span>
-          </div>
-          
-          <ul *ngIf="isAuthorized" class="dropdown-menu dropstart p-1">
-            <li><button class="dropdown-item"  (click)="profile()" type="button">Профіль</button></li>
-            <li><button class="dropdown-item" (click)="logout()" type="button">Вихід</button></li>
-          </ul>
-          <ul *ngIf="!isAuthorized" class="dropdown-menu dropstart p-1">
-            <li><button class="dropdown-item" (click)="login()">Вхід</button></li>
-            <li><button class="dropdown-item" (click)="register()">Реєстрація</button></li>
-          </ul>
 
-        </div>
+<div class="row m-0">
+<div class="col-12 p-3 bg-dark text-white">
+  <div class="row m-auto align-items-center justify-content-between">
+    <div class="col-1 text-center d-none d-md-block">
+      <div class="btn btn-outline-light d-inline-block rounded-3" (click)="collapsedPc?openPcMenu():closePcMenu()">
+        <i class="fa fa-navicon"></i>
       </div>
     </div>
+    <div class="col-11 col-md-8">
+      <h3 class="modal-title">{{title}}</h3>
+      <p class="lead">Для усіх громадян України</p>
+    </div>
+    <div class="col-12 col-md-3 text-center">
+           <div *ngIf="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+            <div class="col-6 col-sm-10 text-start d-md-none">
+              <div class="btn btn-outline-light d-inline-block rounded-3" (click)="collapsed=!collapsed">
+                <i class="fa fa-navicon"></i>
+              </div>
+            </div>
+            <div class="col-3 col-sm-1 col-md-3">
+              <button type="button" class="btn btn-light" (click)="profile()" placement="top" ngbTooltip="Інформація профілю"
+              [openDelay]="200"
+              [closeDelay]="200">
+                <i class="fas fa-user-alt"></i></button>
+            </div>
+            <div class="col-3 col-sm-1 col-md-3">
+              <button type="button" class="btn btn-light" (click)="logout()"  placement="top" ngbTooltip="Вихід"
+              [openDelay]="200"
+              [closeDelay]="200">
+                <i class="fas fa-sign-out-alt"></i>
+              </button>
+            </div>
+             </div>
+        <div *ngIf="!(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+          <div class="col-6 col-sm-10 text-start d-md-none">
+            <div class="btn btn-outline-light d-inline-block rounded-3"  (click)="collapsed=!collapsed" [attr.aria-expanded]="!collapsed" aria-controls="collapseNavBar">
+              <i class="fa fa-navicon"></i>
+            </div>
+          </div>
+          <div class="col-3 col-sm-1 col-md-3">
+            <button type="button" class="btn btn-light" (click)="login()" placement="top" ngbTooltip="Вхід"
+            [openDelay]="200"
+            [closeDelay]="200">
+              <i class="fas fa-sign-in-alt"></i></button>
+          </div>
+          <div class="col-3 col-sm-1 col-md-3">
+            <button type="button" class="btn btn-light" (click)="register()" placement="top" ngbTooltip="Реєстрація"
+            [openDelay]="200"
+            [closeDelay]="200">
+              <i class="fas fa-user-plus"></i>
+            </button>
+          </div>
+           </div>
+      </div>
   </div>
-  <div class="container-fluid bg-opacity-50 bg-secondary p-2">
-    <div class="container-lg">
-    <ul class="nav nav-pills">
-      <li class="nav-item">
+</div>
+<div class="col col-md-2 col-xxl-1 d-none d-md-block bg-dark bg-opacity-10 sidebar"  id="fullmenu" style="width:0px;padding:0px;">
+    <ul class="nav nav-pills row py-2 sidebar" id="menu" style="width:0px;padding:0px;height: 0px;">
+      <li class="nav-item col-12">
         <a class="nav-link" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']">Головна</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [ngClass]="activatedRouteContains('public-news')?'disabled active':''" [routerLink]="['public-news']">Новини</a>
+      <li class="nav-item col-12">
+        <a class="nav-link" [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']" >Новини</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']">Мапа незламності</a>
+      <li class="nav-item col-12">
+        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']" >Мапа незламності</a>
       </li>
-      <li class="nav-item" *ngIf="isAuthorized">
-        <a class="nav-link" [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']">Отримати допомогу</a>
+      <li class="nav-item col-12">
+        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']" >Останні події</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']">Останні події</a>
+      <li class="nav-item col-12" *ngIf="isAuthorized">
+        <a class="nav-link" [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']" >Отримати допомогу</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+      <li class="nav-item col-12" *ngIf="isAuthorized">
+        <a class="nav-link" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''" [routerLink]="['help-requests']" (click)="collapsed=true" aria-controls="collapseNavBar">Запити допомоги</a>
       </li>
     </ul>
-    </div>
-</div>
+  </div>
+  <div class="col col-md-2 col-xxl-1 bg-dark bg-opacity-10 d-md-none">
+    <ul class="nav nav-pills row" id="collapseNavBar" #collapse="ngbCollapse" [(ngbCollapse)]="collapsed">
+      <li class="nav-item col-12 mt-2">
+        <a class="nav-link" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']" (click)="collapsed=true" aria-controls="collapseNavBar">Головна</a>
+      </li>
+      <li class="nav-item col-12">
+        <a class="nav-link" [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']" (click)="collapsed=true" aria-controls="collapseNavBar">Новини</a>
+      </li>
+      <li class="nav-item col-12">
+        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']" (click)="collapsed=true" aria-controls="collapseNavBar">Мапа незламності</a>
+      </li>
+      <li class="nav-item col-12" [ngClass]="{'mb-2':!isAuthorized}">
+        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']" (click)="collapsed=true" aria-controls="collapseNavBar">Останні події</a>
+      </li>
+      <li class="nav-item col-12" *ngIf="isAuthorized">
+        <a class="nav-link" [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']" (click)="collapsed=true" aria-controls="collapseNavBar">Отримати допомогу</a>
+      </li>
+      <li class="nav-item col-12 mb-2" *ngIf="isAuthorized">
+        <a class="nav-link" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''" [routerLink]="['help-requests']" (click)="collapsed=true" aria-controls="collapseNavBar">Запити допомоги</a>
+      </li>
+    </ul>
+  </div>
 
+
+  <div class="container p-0" style="transition: 0.5s;" [ngClass]="collapsedPc?'col-12':'col-12 col-md-10 col-xxl-11'">
+    <router-outlet></router-outlet>
+  </div>
+   
 </div>

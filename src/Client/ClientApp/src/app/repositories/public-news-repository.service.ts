@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 import {publicNew} from "../public-news/public-new/public-new.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicNewsRepositoryService {
-  public news : publicNew[] = [
+  public static news : publicNew[] = [
     {
       title : "Допомога військовослужбовцям",
       description : "Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям",
@@ -80,17 +81,40 @@ export class PublicNewsRepositoryService {
     },
 
     ];
-  constructor() { }
+  constructor(private oidcSecureService : OidcSecurityService) { }
   getPublicNews(page: number, pageSize: number) {
-    return this.news.slice((page - 1) * pageSize, page * pageSize);
+    return PublicNewsRepositoryService.news.slice((page - 1) * pageSize, page * pageSize);
   }
   getPublicNewById(id: string)  {
-    return this.news.find(x => x.id === id);
+    return PublicNewsRepositoryService.news.find(x => x.id === id);
   }
   getPublicNewsCount() {
-    return this.news.length;
+    return PublicNewsRepositoryService.news.length;
   }
   getPublicNewsByAuthor(author: string) {
-    return this.news.filter(x => x.author === author);
+    return PublicNewsRepositoryService.news.filter(x => x.author === author);
   }
+  deletePublicNewById(id:string){
+    PublicNewsRepositoryService.news = PublicNewsRepositoryService.news.filter(x => x.id !== id);
+  }
+  editPublicNew(publicNew: publicNew){
+    PublicNewsRepositoryService.news = PublicNewsRepositoryService.news.map(x => x.id === publicNew.id ? publicNew : x);
+  }
+  createPublicNew(createModel: publicNewCreateModel) : publicNew{
+    let pNew = new publicNew();
+    pNew.id = (PublicNewsRepositoryService.news.length + 1).toString();
+    pNew.title = createModel.title;
+    pNew.description = createModel.description;
+    pNew.image = createModel.image;
+    pNew.date = new Date();
+    pNew.author='Адміністратор';
+    PublicNewsRepositoryService.news.push(pNew);
+    PublicNewsRepositoryService.news.sort((a, b) => b.date.getTime() - a.date.getTime());
+    return pNew;
+  }
+}
+export class publicNewCreateModel {
+  title: string;
+  description: string;
+  image: string;
 }

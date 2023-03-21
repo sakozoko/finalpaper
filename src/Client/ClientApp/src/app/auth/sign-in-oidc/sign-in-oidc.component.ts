@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { environment } from 'src/environment/environment';
+import { OidcSecurityService } from 'angular-auth-oidc-client'
 @Component({
   selector: 'app-sign-in-oidc',
   templateUrl: './sign-in-oidc.component.html',
