@@ -6,28 +6,38 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthorizationService {
-
-  constructor(private oidcSecurityService : OidcSecurityService) { }
+  private isAuthenticate : boolean=false;
+  private isAuthorize : boolean=false;
+  private lastRole : string | null=null;
+  constructor(private oidcSecurityService : OidcSecurityService) {
+    this.oidcSecurityService.checkAuth().subscribe((isAuthenticated)=>{
+      this.isAuthenticate = isAuthenticated.isAuthenticated;
+    });
+    this.oidcSecurityService.checkSessionChanged$.subscribe((isAuthenticated)=>{
+      this.oidcSecurityService.checkAuth().subscribe((isAuthenticated)=>{
+        this.isAuthenticate = isAuthenticated.isAuthenticated;
+        this.isAuthorize = isAuthenticated.userData?.role==this.lastRole;
+      });
+    });
+   }
 
   public getAuthorizationHeaderValue() : string {
     return `${this.oidcSecurityService.getAccessToken()}`;
   }
-  public isAuthenticated() : Observable<boolean> {
-    let subject = new Subject<boolean>();
-    this.oidcSecurityService.isAuthenticated().subscribe((isAuthenticated)=>{
-      subject.next(isAuthenticated);
-    });
-    return subject.asObservable();
+  public isAuthenticated=() : boolean => {
+    return this.isAuthenticate;
   }
-  public isAdmin() : Observable<boolean> {
-    return this.isAuthorized("Admin");
+  public isAdmin=():boolean=> {
+    return this.isAuthorizedFunc("Admin");
   }
-  private isAuthorized(role:string) : Observable<boolean> {
-    let subject = new Subject<boolean>();
-    this.oidcSecurityService.checkAuth().subscribe((isAuthenticated)=>{
-      subject.next(isAuthenticated.userData.role==role);
-    });
-    return subject.asObservable();
+  private isAuthorizedFunc=(role:string) : boolean =>{
+    if(this.lastRole!=role){
+      this.oidcSecurityService.getUserData().subscribe((userData)=>{
+        this.isAuthorize = userData.role==role;
+      });
+    }
+    this.lastRole = role;
+    return this.isAuthorize;
   }
 
 }
