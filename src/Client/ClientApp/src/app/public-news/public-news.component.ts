@@ -32,8 +32,10 @@ export class PublicNewsComponent implements OnInit {
       data: {
         onCreated: (publicNew: publicNew) => {
           this.publicNews.push(publicNew);
-          this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
-          this.paginationService.goToPage(this._page);
+          this.publicNewsRepository.getPublicNewsCount().subscribe(count => {
+            this.paginationService.setPagination(count, this._pageSize, this._page);
+            this.paginationService.goToPage(this._page);
+          });
         }
       },
       width: '100%',
@@ -51,9 +53,12 @@ export class PublicNewsComponent implements OnInit {
   }
 
   onDeleted = (id: string) => {
-    this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
-    this.publicNews = this.publicNews.filter(c => c.id != id);
-    this.paginationService.goToPage(this._page);
+    this.publicNewsRepository.getPublicNewsCount().subscribe(count => {
+
+      this.paginationService.setPagination(count, this._pageSize, this._page);
+      this.publicNews = this.publicNews.filter(c => c.id != id);
+      this.paginationService.goToPage(this._page);
+    });
   }
 
   ngOnInit(): void {
@@ -62,13 +67,19 @@ export class PublicNewsComponent implements OnInit {
       this._pageSize = 3;
     }
     this._page = this.activatedRoute.snapshot.queryParams['page'] ? Number.parseInt(this.activatedRoute.snapshot.queryParams['page']) : 1;
-    this.publicNews = this.publicNewsRepository.getPublicNews(this._page, this._pageSize);
-    console.log('updated')
-    this.paginationService.setPagination(this.publicNewsRepository.getPublicNewsCount(), this._pageSize, this._page);
-    this.paginationService.currentPageChanged = (num) => {
-      this._page = num;
-      this.publicNews = this.publicNewsRepository.getPublicNews(this._page, this._pageSize);
-    }
+
+    this.publicNewsRepository.getPublicNews(this._page, this._pageSize).subscribe(result => {
+      this.publicNews = result;
+      this.publicNewsRepository.getPublicNewsCount().subscribe(count => {
+        this.paginationService.setPagination(count, this._pageSize, this._page);
+        this.paginationService.currentPageChanged = (num) => {
+          this._page = num;
+          this.publicNewsRepository.getPublicNews(num, this._pageSize).subscribe(result => {
+            this.publicNews = result;
+          });
+        }
+      });
+    });
   }
 
 }

@@ -19,7 +19,8 @@ public static class ConfigDev
             new IdentityResource("phoneNumberVerified", "Your phone number confirmation status",
                 new[] { JwtClaimTypes.PhoneNumberVerified }),
             new IdentityResource("emailVerified", "Your email confirmation status",
-                new[] { JwtClaimTypes.EmailVerified })
+                new[] { JwtClaimTypes.EmailVerified }),
+            new IdentityResource("username", "Your username", new[] { "username" })
         };
 
     public static IEnumerable<Client> Clients =>
@@ -54,7 +55,7 @@ public static class ConfigDev
             new ApiResource("webapi", "Web API")
             {
                 Scopes = { "webapi" },
-                UserClaims = { "role", JwtClaimTypes.PhoneNumberVerified, JwtClaimTypes.EmailVerified }
+                UserClaims = { "role", JwtClaimTypes.PhoneNumberVerified, JwtClaimTypes.EmailVerified, "username" }
             }
         };
 

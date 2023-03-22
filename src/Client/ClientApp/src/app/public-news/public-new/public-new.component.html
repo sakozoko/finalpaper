@@ -14,10 +14,10 @@
 <div *ngIf="fullViewed" class="card my-3 m-2">
   <div class="card-body">
     <h3 class="card-title">{{publicNew.title}}</h3>
-    <img alt="..." class="card-img-top" src="{{publicNew.image}}">
+    <img alt="..." class="card-img-top" src="{{publicNew.imageUrl}}">
     <p class="card-text">{{publicNew.description}}</p>
     <div class="card-text">
-      <small class="text-muted">{{publicNew.date | date:'dd.MM.yyyy HH:mm:ss'}}</small>
+      <small class="text-muted">{{publicNew.createdAt | date:'dd.MM.yyyy HH:mm:ss'}}</small>
     </div>
     <a class="card-link " href="#">{{publicNew.author}}</a>
   </div>
@@ -25,7 +25,7 @@
 
 <div *ngIf="!fullViewed" class="card my-3">
   <div class="card-body">
-    <div *ngIf="authorizationService.isAdmin() " class="float-end d-none d-sm-block">
+    <div *ngIf="authorizationService.isAdmin()" class="float-end d-none d-sm-block">
       <div class="row">
         <div class="col px-1">
           <div (click)="openEditModal()" [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"
@@ -45,7 +45,7 @@
     </div>
 
     <h5 class="card-title">{{publicNew.title}}</h5>
-    <img *ngIf="publicNew.image" alt="..." class="card-img-top" onerror="this.remove()" src="{{publicNew.image}}">
+    <img *ngIf="publicNew.imageUrl" alt="..." class="card-img-top" onerror="this.remove()" src="{{publicNew.imageUrl}}">
     <p class="card-text">{{truncated ? (publicNew.description | slice:0:30) :
       (publicNew.description | slice:0:100)}}
       <a (click)="truncated = !truncated" *ngIf="truncated && publicNew.description.length>30" class="card-link"
@@ -54,7 +54,7 @@
          style="cursor: pointer;">згорнути</a>
     </p>
     <div class="card-text">
-      <small class="text-muted">{{publicNew.date | date:'dd.MM.yyyy HH:mm:ss'}}</small>
+      <small class="text-muted">{{publicNew.createdAt | date:'dd.MM.yyyy HH:mm:ss'}}</small>
     </div>
 
 

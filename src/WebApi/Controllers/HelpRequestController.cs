@@ -8,6 +8,7 @@ using WebApiApplication.Features.HelpRequestFeatures.Queries;
 namespace WebApi.Controllers;
 
 [Authorize]
+[Route("api/helprequest")]
 public class HelpRequestController : ControllerBase
 {
     private readonly IMediator _mediatr;
@@ -17,14 +18,14 @@ public class HelpRequestController : ControllerBase
         _mediatr = mediatr;
     }
 
-    [HttpPost("api/helprequest")]
+    [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] CreateHelpRequestCommand command)
     {
         var result = await _mediatr.Send(command);
         return Ok(result);
     }
 
-    [HttpGet("api/helprequest")]
+    [HttpGet("")]
     public async Task<IActionResult> Get([FromQuery] int page, [FromQuery] int pageSize)
     {
         var query = new GetHelpRequestForUserByPageQuery
@@ -38,7 +39,7 @@ public class HelpRequestController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("api/helprequest/count")]
+    [HttpGet("count")]
     public async Task<IActionResult> GetCount()
     {
         var query = new GetHelpRequestCountForUserQuery
@@ -50,7 +51,7 @@ public class HelpRequestController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("api/helprequest/search")]
+    [HttpGet("search")]
     public async Task<IActionResult> Search([FromQuery] string filter, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var query = new GetHelpRequestsByFilterQuery
@@ -65,7 +66,7 @@ public class HelpRequestController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("api/helprequest/search/count")]
+    [HttpGet("search/count")]
     public async Task<IActionResult> SearchCount([FromQuery] string filter)
     {
         var query = new GetHelpRequestCountByFilterQuery

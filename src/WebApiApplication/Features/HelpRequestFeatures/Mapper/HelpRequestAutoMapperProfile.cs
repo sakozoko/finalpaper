@@ -3,11 +3,11 @@ using WebApiApplication.Features.HelpRequestFeatures.Commands;
 using WebApiApplication.Features.HelpRequestFeatures.Dto;
 using WebApiCore.Models;
 
-namespace WebApiApplication.Mapper;
+namespace WebApiApplication.Features.HelpRequestFeatures.Mapper;
 
-public class ApplicationMapperProfile : Profile
+public class HelpRequestAutoMapperProfile : Profile
 {
-    public ApplicationMapperProfile()
+    public HelpRequestAutoMapperProfile()
     {
         CreateMap<HelpRequestDto, HelpRequestEntity>();
         CreateMap<HelpRequestEntity, HelpRequestDto>();

@@ -1,22 +1,22 @@
 using MediatR;
 using WebApiAbstraction.Repositories;
 
-namespace WebApiApplication.Features.LatestNewFeatures.Commands;
+namespace WebApiApplication.Features.LatestNewFeatures.Queries;
 
 public class GetLatestNewsCountQuery : IRequest<int>
 {
     public class GetLatestNewsCountCommandHandler : IRequestHandler<GetLatestNewsCountQuery, int>
     {
-        private readonly ILatestNewRepository repository;
+        private readonly ILatestNewRepository _repository;
 
         public GetLatestNewsCountCommandHandler(ILatestNewRepository repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         public async Task<int> Handle(GetLatestNewsCountQuery request, CancellationToken cancellationToken)
         {
-            return await repository.GetLatestNewsCount();
+            return await _repository.GetLatestNewsCount();
         }
     }
 }

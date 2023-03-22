@@ -47,7 +47,7 @@ export class LastNewsComponent implements OnInit {
     this.clearLoading();
   }
 
-  private clearLoading = () => {
+  private clearLoading() {
     this.loading = true;
     this.lastNews = [];
     this.lastNewsRepository.getLatestNewsCount().subscribe(data => {

@@ -51,6 +51,7 @@ public class GetHelpRequestsByFilterQuery : IRequest<IEnumerable<HelpRequestDto>
                             || x.Description.Contains(request.Filter))
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
+                .AsNoTracking()
                 .ProjectTo<HelpRequestDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
             return helpRequests;

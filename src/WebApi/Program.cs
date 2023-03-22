@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
@@ -28,6 +29,11 @@ builder.Services.AddAuthentication().AddJwtBearer("Bearer", opt =>
     opt.Authority = "https://identityserverfinalwork.azurewebsites.net";
     opt.Audience = "webapi";
 });
+
+builder.Services.AddAuthorization(c => 
+    c.AddPolicy("Admin", p => 
+        p.RequireClaim(ClaimTypes.Role, "Admin")));
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAll", builder =>
@@ -53,6 +59,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

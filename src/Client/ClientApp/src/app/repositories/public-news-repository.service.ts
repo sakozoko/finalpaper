@@ -1,125 +1,62 @@
 import {Injectable} from '@angular/core';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
 import {publicNew} from "../public-news/public-new/public-new.component";
+import {HttpClient} from "@angular/common/http";
+import {Observable, Subject} from "rxjs";
+import {AuthorizationService} from "../auth/authorization.service";
+import {environment} from "../environment/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicNewsRepositoryService {
-  public static news: publicNew[] = [
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям,Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10, 11, 13, 15),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "1"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "2"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "3"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "4"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "5"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "6"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "7"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "8"
-    },
-    {
-      title: "Допомога військовослужбовцям",
-      description: "Допомога військовослужбовцям",
-      date: new Date(2019, 10, 10),
-      author: "Адміністратор",
-      image: "https://images.unsplash.com/photo-1542208371-7b3a8a0b3c2f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-      id: "9"
-    },
 
-  ];
-
-  constructor(private oidcSecureService: OidcSecurityService) {
+  constructor(private authorizationService : AuthorizationService, private httpClient : HttpClient) {
   }
 
-  getPublicNews(page: number, pageSize: number) {
-    return PublicNewsRepositoryService.news.slice((page - 1) * pageSize, page * pageSize);
+  getPublicNews(page: number, pageSize: number) : Observable<publicNew[]>{
+      return this.httpClient.get<publicNew[]>(environment.api+'/api/publicnew'+`?page=${page}&pageSize=${pageSize}`);
   }
 
-  getPublicNewById(id: string) {
-    return PublicNewsRepositoryService.news.find(x => x.id === id);
+  getPublicNewById(id: string) : Observable<publicNew> {
+    return this.httpClient.get<publicNew>(environment.api+'/api/publicnew/'+id);
   }
 
-  getPublicNewsCount() {
-    return PublicNewsRepositoryService.news.length;
+  getPublicNewsCount() : Observable<number> {
+    return this.httpClient.get<number>(environment.api+'/api/publicnew/count');
   }
 
-  getPublicNewsByAuthor(author: string) {
-    return PublicNewsRepositoryService.news.filter(x => x.author === author);
-  }
-
-  deletePublicNewById(id: string) {
-    PublicNewsRepositoryService.news = PublicNewsRepositoryService.news.filter(x => x.id !== id);
+  deletePublicNewById(id: string) : Observable<publicNew> {
+    let subj = new Subject<publicNew>();
+    this.authorizationService.getAccessToken().subscribe(value => {
+      let header = {'Authorization':'Bearer '+ value};
+      this.httpClient.delete<publicNew>(environment.api+'/api/publicnew/'+id, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
   }
 
   editPublicNew(publicNew: publicNew) {
-    PublicNewsRepositoryService.news = PublicNewsRepositoryService.news.map(x => x.id === publicNew.id ? publicNew : x);
+    let subj = new Subject<publicNew>();
+    this.authorizationService.getAccessToken().subscribe(value => {
+      let header = {'Authorization':'Bearer '+ value};
+      this.httpClient.put<publicNew>(environment.api+'/api/publicnew', publicNew, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
   }
 
-  createPublicNew(createModel: publicNewCreateModel): publicNew {
-    let pNew = new publicNew();
-    pNew.id = (PublicNewsRepositoryService.news.length + 1).toString();
-    pNew.title = createModel.title;
-    pNew.description = createModel.description;
-    pNew.image = createModel.image;
-    pNew.date = new Date();
-    pNew.author = 'Адміністратор';
-    PublicNewsRepositoryService.news.push(pNew);
-    PublicNewsRepositoryService.news.sort((a, b) => b.date.getTime() - a.date.getTime());
-    return pNew;
+  createPublicNew(createModel: publicNewCreateModel): Observable<publicNew> {
+    let subj = new Subject<publicNew>();
+    this.authorizationService.getAccessToken().subscribe(value => {
+      let header = {'Authorization': 'Bearer ' + value};
+      this.httpClient.post<publicNew>(environment.api+'/api/publicnew', createModel, {headers: header}).subscribe(result => {
+        subj.next(result);
+      });
+    });
+    return subj.asObservable();
   }
 }
 

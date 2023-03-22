@@ -3,7 +3,7 @@ using MediatR;
 using WebApiAbstraction.Repositories;
 using WebApiCore.Models;
 
-namespace WebApiApplication.Features.LatestNewFeatures.Commands;
+namespace WebApiApplication.Features.LatestNewFeatures.Queries;
 
 public class GetLatestNewsByPageQuery : IRequest<IEnumerable<LatestNew>>
 {

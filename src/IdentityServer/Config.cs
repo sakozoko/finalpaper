@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using IdentityServer.Entities;
+using IdentityServer.Features;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityServer;
@@ -22,7 +23,8 @@ public static class Config
                         sql => sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
             })
             .AddAspNetIdentity<User>()
-            .AddDeveloperSigningCredential();
+            .AddDeveloperSigningCredential()
+            .AddProfileService<ProfileService>();
         return services;
     }
 }

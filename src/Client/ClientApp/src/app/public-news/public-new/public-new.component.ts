@@ -12,7 +12,7 @@ import {EditPublicNewComponent} from './edit-public-new/edit-public-new.componen
   styleUrls: ['./public-new.component.css']
 })
 export class PublicNewComponent implements OnInit {
-  @Input() public publicNew: publicNew;
+  @Input() public publicNew: publicNew = new publicNew();
   public truncated: boolean = true;
   @Input()
   public fullViewed: boolean = true;
@@ -33,9 +33,11 @@ export class PublicNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.publicNew) {
-      this.publicNew = this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.params['id']) ?? new publicNew();
-    }
+    if(!this._activatedRoute.snapshot.params['id'])
+      return;
+    if(!this.publicNew.id)
+      this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.params['id']).subscribe(result => {
+      this.publicNew = result});
   }
 
   @Input()
@@ -72,8 +74,8 @@ export class PublicNewComponent implements OnInit {
 export class publicNew {
   public title: string;
   public description: string;
-  public date: Date;
+  public createdAt: Date;
   public author: string;
-  public image: string;
+  public imageUrl: string;
   public id: string
 }

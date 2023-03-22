@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,18 @@ export class AuthorizationService {
     });
   }
 
-  public getAuthorizationHeaderValue(): string {
-    return `${this.oidcSecurityService.getAccessToken()}`;
+  public getAccessToken(): Observable<string> {
+    return this.oidcSecurityService.getAccessToken();
   }
+
+  public getUserName(): Observable<string> {
+    let subj = new Subject<string>();
+    this.oidcSecurityService.getUserData().subscribe(userData => {
+      subj.next(userData.name);
+    });
+    return subj.asObservable();
+  }
+
 
   public isAuthenticated = (): boolean => {
     return this.isAuthenticate;

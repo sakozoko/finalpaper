@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApiApplication.Features.LatestNewFeatures.Commands;
+using WebApiApplication.Features.LatestNewFeatures.Queries;
 
 namespace WebApi.Controllers;
 

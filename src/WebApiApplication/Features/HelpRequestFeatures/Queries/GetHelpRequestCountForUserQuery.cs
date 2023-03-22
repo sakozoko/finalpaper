@@ -28,7 +28,7 @@ public class GetHelpRequestCountForUserQuery : IRequest<int>
 
         public async Task<int> Handle(GetHelpRequestCountForUserQuery request, CancellationToken cancellationToken)
         {
-            return await _context.HelpRequests.CountAsync(x => x.UserId == request.UserId);
+            return await _context.HelpRequests.AsNoTracking().CountAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
         }
     }
 }

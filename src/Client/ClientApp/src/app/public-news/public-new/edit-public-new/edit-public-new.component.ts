@@ -27,20 +27,20 @@ export class EditPublicNewComponent implements OnInit {
     this.form = this.formBuilder.group({
       title: this.data.publicNew.title,
       description: this.data.publicNew.description,
-      image: this.data.publicNew.image,
+      image: this.data.publicNew.imageUrl,
       author: this.data.publicNew.author,
-      date: this.data.publicNew.date
+      date: this.data.publicNew.createdAt
     })
   }
 
   onSubmit() {
     this.data.publicNew.title = this.form.value.title;
     this.data.publicNew.description = this.form.value.description;
-    this.data.publicNew.image = this.form.value.image;
+    this.data.publicNew.imageUrl = this.form.value.image;
     this.data.publicNew.author = this.form.value.author;
-    this.data.publicNew.date = new Date(this.form.value.date);
-    console.log(this.data.publicNew)
-    this._publicNewsRepository.editPublicNew(this.data.publicNew);
-    this.data.onEdited(this.data.publicNew);
+    this.data.publicNew.createdAt = new Date(this.form.value.date);
+    this._publicNewsRepository.editPublicNew(this.data.publicNew).subscribe(result => {
+      this.data.onEdited(result);
+    });
   }
 }
