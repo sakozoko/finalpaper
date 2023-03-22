@@ -1,22 +1,22 @@
 <h3 mat-dialog-title> Створення нової новини</h3>
-<form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()" >
+<form (ngSubmit)="form.valid && onSubmit()" [formGroup]="form">
   <mat-dialog-content>
     <div class="modal-body">
       <div class="mb-1">
-        <label for="title" class="form-label">Заголовок</label>
-        <input type="text" class="form-control" id="title" formControlName="title">
+        <label class="form-label" for="title">Заголовок</label>
+        <input class="form-control" formControlName="title" id="title" type="text">
       </div>
       <div class="mb-1">
-        <label for="description" class="form-label">Опис</label>
-        <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+        <label class="form-label" for="description">Опис</label>
+        <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
       </div>
       <div class="mb-1">
-        <label for="image" class="form-label">Зображення</label>
-        <input type="text" class="form-control" id="image" formControlName="image">
+        <label class="form-label" for="image">Зображення</label>
+        <input class="form-control" formControlName="image" id="image" type="text">
       </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button type="submit" class="btn btn-success mx-2" mat-dialog-close>Зберегти</button>
-    <button type="button" class="btn btn-danger" mat-dialog-close>Назад</button>
+    <button class="btn btn-success mx-2" mat-dialog-close type="submit">Зберегти</button>
+    <button class="btn btn-danger" mat-dialog-close type="button">Назад</button>
   </mat-dialog-actions>

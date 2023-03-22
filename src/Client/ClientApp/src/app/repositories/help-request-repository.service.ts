@@ -1,17 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from '../environment/environment';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {OidcSecurityService} from 'angular-auth-oidc-client';
+import {Subject} from 'rxjs';
+import {environment} from '../environment/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class HelpRequestRepositoryService {
-  constructor(private _httpClient : HttpClient, private _oidcSecurityService : OidcSecurityService) {  }
+  constructor(private _httpClient: HttpClient, private _oidcSecurityService: OidcSecurityService) {
+  }
 
-  public createHelpRequest(helpRequest : HelpRequestRequestModel) {
+  public createHelpRequest(helpRequest: HelpRequestRequestModel) {
     let subj = new Subject<string>();
     this._oidcSecurityService.getAccessToken().subscribe(token => {
       let header = {'Authorization': 'Bearer ' + token};
@@ -21,7 +22,8 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-  public getHelpRequestForUserByPage(page : number, pageSize : number) {
+
+  public getHelpRequestForUserByPage(page: number, pageSize: number) {
     let subj = new Subject<HelpRequestModel[]>();
     this._oidcSecurityService.getAccessToken().subscribe(token => {
       let header = {'Authorization': 'Bearer ' + token};
@@ -31,7 +33,8 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-  public getHelpRequestCountForUser(){
+
+  public getHelpRequestCountForUser() {
     let subj = new Subject<number>();
     this._oidcSecurityService.getAccessToken().subscribe(token => {
       let header = {'Authorization': 'Bearer ' + token};
@@ -41,7 +44,8 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-  public getHelpRequestBySearchString(filter : string, page : number, pageSize : number){
+
+  public getHelpRequestBySearchString(filter: string, page: number, pageSize: number) {
     let subj = new Subject<HelpRequestModel[]>();
     this._oidcSecurityService.getAccessToken().subscribe(token => {
       let header = {'Authorization': 'Bearer ' + token};
@@ -51,7 +55,8 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-  public getHelpRequestBySearchStringCount(filter : string){
+
+  public getHelpRequestBySearchStringCount(filter: string) {
     let subj = new Subject<number>();
     this._oidcSecurityService.getAccessToken().subscribe(token => {
       let header = {'Authorization': 'Bearer ' + token};
@@ -65,17 +70,17 @@ export class HelpRequestRepositoryService {
 
 }
 
-export class HelpRequestRequestModel{
-    title:string;
-    description:string;
-    userId:string;
-    emailConfirmed:boolean;
+export class HelpRequestRequestModel {
+  title: string;
+  description: string;
+  userId: string;
+  emailConfirmed: boolean;
 }
 
-export class HelpRequestModel{
-    id:string;
-    title:string;
-    description:string;
-    createdAt:Date;
-    status:string;
+export class HelpRequestModel {
+  id: string;
+  title: string;
+  description: string;
+  createdAt: Date;
+  status: string;
 }

@@ -1,26 +1,29 @@
 <div class="card">
-<div class="card-body">
+  <div class="card-body">
     <div class="card-title">
-      <div class="btn p-1 float-end" tooltip="Скопіювати номер запиту" placement="top" container="body" (click)="copyId()">
+      <div (click)="copyId()" class="btn p-1 float-end" container="body" placement="top"
+           tooltip="Скопіювати номер запиту">
         <i class="fas fa-copy"></i>
-    </div>
-        <p class="lead m-0">{{request.title}}</p>
+      </div>
+      <p class="lead m-0">{{request.title}}</p>
     </div>
     <div class="card-text">
-        <p class="m-0">
-      {{truncated ? (request.description | slice:0:30):
+      <p class="m-0">
+        {{truncated ? (request.description | slice:0:30) :
         request.description }}
-      <a *ngIf="truncated && request.description.length>30" (click)="truncated = !truncated" class="card-link" style="cursor: pointer;" >далі</a>
-      <a *ngIf="!truncated && request.description.length>30" (click)="truncated = !truncated" class="card-link" style="cursor: pointer;">згорнути</a>
+        <a (click)="truncated = !truncated" *ngIf="truncated && request.description.length>30" class="card-link"
+           style="cursor: pointer;">далі</a>
+        <a (click)="truncated = !truncated" *ngIf="!truncated && request.description.length>30" class="card-link"
+           style="cursor: pointer;">згорнути</a>
       </p>
     </div>
     <div class="row">
       <div class="col-12 col-sm-6 card-text">
-          <p class="m-0">{{request.createdAt | date:'dd:MM:yyyy HH:mm'}}</p>
+        <p class="m-0">{{request.createdAt | date:'dd:MM:yyyy HH:mm'}}</p>
       </div>
       <div class="col-12 col-sm-6 text-sm-end card-text">
-          <p class="m-0">Статус: {{getUkranianStatus()}}</p>
+        <p class="m-0">Статус: {{getUkranianStatus()}}</p>
       </div>
+    </div>
   </div>
-</div>
 </div>

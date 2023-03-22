@@ -7,7 +7,8 @@ import {PaginationService} from "../services/pagination.service";
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent {
-@Input() paginationService : PaginationService;
-constructor() {
-}
+  @Input() paginationService: PaginationService;
+
+  constructor() {
+  }
 }

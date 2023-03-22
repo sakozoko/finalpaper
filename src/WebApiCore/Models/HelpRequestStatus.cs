@@ -1,11 +1,10 @@
-namespace WebApiCore.Models
+namespace WebApiCore.Models;
+
+public enum HelpRequestStatus
 {
-    public enum HelpRequestStatus
-    {
-        New =1,
-        Processed = 2,
-        Closed = 3,
-        Removed = 4,
-        _ = 0
-    }
+    New = 1,
+    Processed = 2,
+    Closed = 3,
+    Removed = 4,
+    _ = 0
 }

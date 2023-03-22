@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-statistics',
@@ -9,6 +9,6 @@ export class StatisticsComponent {
   public ticketsCount: number = 1000;
   public ticketsExecuted: number = 500;
   public volunteersCount: number = 100;
-  public newsCount : number = 10;
+  public newsCount: number = 10;
 
 }

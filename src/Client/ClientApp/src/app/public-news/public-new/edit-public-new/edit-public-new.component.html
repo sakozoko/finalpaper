@@ -1,38 +1,38 @@
- 
-    <h4 class="modal-title pull-left" mat-dialog-title>Редагування новини</h4>
-    <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()" >
-    <mat-dialog-content class="mat-input-underline">
-            <div class="mb-1">
-              <label for="title" class="form-label">Заголовок</label>
-              <input type="text" class="form-control" id="title" formControlName="title">
-            </div>
-            <div class="mb-1">
-              <label for="description" class="form-label">Опис</label>
-              <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
-            </div>
-            <div class="mb-1">
-              <label for="image" class="form-label">Зображення</label>
-              <input type="text" class="form-control" id="image" formControlName="image">
-            </div>
-            <div class="mb-1">
-              <label for="author" class="form-label">Автор</label>
-              <input type="text" class="form-control" id="author" formControlName="author" >
-            </div>
-               <div class="mb-1">
-               <label for="createdAt" class="form-label" >Дата створення</label>
-               <div class="row align-items-center">
-                <div class="col-8 col-sm-10 col-md-11">
-                  <input type="text" matInput [ngxMatDatetimePicker]="picker" class="form-control" id="createdAt" formControlName="date"  >
-                </div>
-                <div class="col-4 col-sm-2 col-md-1">
-                  <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-                  <ngx-mat-datetime-picker [touchUi]="true" #picker ></ngx-mat-datetime-picker>
-                  </div>
-               </div>
-           </div>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button type="submit" class="btn btn-danger mx-2" mat-dialog-close>Зберегти</button>
-      <button type="button" class="btn btn-success" mat-dialog-close>Назад</button>
-   </mat-dialog-actions>
-  </form>
+<h4 class="modal-title pull-left" mat-dialog-title>Редагування новини</h4>
+<form (ngSubmit)="form.valid && onSubmit()" [formGroup]="form">
+  <mat-dialog-content class="mat-input-underline">
+    <div class="mb-1">
+      <label class="form-label" for="title">Заголовок</label>
+      <input class="form-control" formControlName="title" id="title" type="text">
+    </div>
+    <div class="mb-1">
+      <label class="form-label" for="description">Опис</label>
+      <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
+    </div>
+    <div class="mb-1">
+      <label class="form-label" for="image">Зображення</label>
+      <input class="form-control" formControlName="image" id="image" type="text">
+    </div>
+    <div class="mb-1">
+      <label class="form-label" for="author">Автор</label>
+      <input class="form-control" formControlName="author" id="author" type="text">
+    </div>
+    <div class="mb-1">
+      <label class="form-label" for="createdAt">Дата створення</label>
+      <div class="row align-items-center">
+        <div class="col-8 col-sm-10 col-md-11">
+          <input [ngxMatDatetimePicker]="picker" class="form-control" formControlName="date" id="createdAt" matInput
+                 type="text">
+        </div>
+        <div class="col-4 col-sm-2 col-md-1">
+          <mat-datepicker-toggle [for]="$any(picker)" matSuffix></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [touchUi]="true"></ngx-mat-datetime-picker>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn btn-danger mx-2" mat-dialog-close type="submit">Зберегти</button>
+    <button class="btn btn-success" mat-dialog-close type="button">Назад</button>
+  </mat-dialog-actions>
+</form>

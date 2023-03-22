@@ -4,14 +4,17 @@
   </div>
   <div class="card-body row py-2 m-0">
     <div class="col-12 col-sm-7 col-md-8 my-2">
-      <input [(ngModel)]="searchQuery" type="text" class="form-control" placeholder="Ключове слово, дата, им'я автора" required>
+      <input [(ngModel)]="searchQuery" class="form-control" placeholder="Ключове слово, дата, им'я автора" required
+             type="text">
     </div>
     <div class="col-12 col-sm-5 col-md-4 row m-0">
       <div class="col-6 my-2 text-end">
-        <button class="btn btn-outline-success" type="submit" (click)="privateSearch()">Шукати</button>
+        <button (click)="privateSearch()" class="btn btn-outline-success" type="submit">Шукати</button>
       </div>
       <div class="col-6 my-2 text-end">
-        <button class="btn btn-outline-danger" [ngClass]="searched?'':'disabled'" type="submit" (click)="privateClear()">Очистити</button>
+        <button (click)="privateClear()" [ngClass]="searched?'':'disabled'" class="btn btn-outline-danger"
+                type="submit">Очистити
+        </button>
       </div>
     </div>
 

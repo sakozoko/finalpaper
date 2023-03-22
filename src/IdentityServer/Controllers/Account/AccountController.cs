@@ -20,14 +20,14 @@ namespace IdentityServer.Controllers.Account;
 [Route("Account")]
 public class AccountController : Controller
 {
-    private readonly IModelStateErrorMessageStore _errorStore;
+    private readonly IClientStore _clientStore;
     private readonly IEmailSender _emailSender;
+    private readonly IModelStateErrorMessageStore _errorStore;
+    private readonly IIdentityServerInteractionService _interaction;
+    private readonly IPhoneValidator _phoneValidator;
+    private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager _userManager;
-    private readonly IIdentityServerInteractionService _interaction;
-    private readonly IAuthenticationSchemeProvider _schemeProvider;
-    private readonly IClientStore _clientStore;
-    private readonly IPhoneValidator _phoneValidator;
 
     public AccountController(SignInManager<User> signInManager,
         UserManager userManager,
@@ -47,6 +47,7 @@ public class AccountController : Controller
         _schemeProvider = schemeProvider;
         _clientStore = clientStore;
     }
+
     [AllowAnonymous]
     [HttpGet("Login")]
     public async Task<IActionResult> Login(string returnUrl)
@@ -55,17 +56,14 @@ public class AccountController : Controller
 
         return View(vm);
     }
-    
+
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
     [HttpPost("Login")]
     public async Task<IActionResult> Login(LoginInputModel model)
     {
         var vm = await BuildLoginViewModelAsync(model.ReturnUrl!);
-        if (!ModelState.IsValid)
-        {
-            return View(vm);
-        }
+        if (!ModelState.IsValid) return View(vm);
         var user = await _userManager.FindByEmailAsync(model.Email!);
 
         if (user is null ||
@@ -75,16 +73,15 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidEmailOrPassword"));
             return View(vm);
         }
+
         var roles = await _userManager.GetRolesAsync(user);
         AuthenticationProperties? props = null;
         if (model.RememberLogin)
-        {
-            props = new AuthenticationProperties()
+            props = new AuthenticationProperties
             {
                 IsPersistent = true,
                 ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromDays(30))
             };
-        }
         var isuser = new IdentityServerUser(user.Id.ToString())
         {
             DisplayName = user.UserName,
@@ -92,18 +89,14 @@ public class AccountController : Controller
             AdditionalClaims = roles.Select(x => new Claim(JwtClaimTypes.Role, x)).ToList()
         };
         await HttpContext.SignInAsync(isuser, props);
-        
+
         var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-        if (context != null)
-        {
-            return Redirect(model.ReturnUrl!);
-        }
+        if (context != null) return Redirect(model.ReturnUrl!);
 
         ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("BadRequest"));
         return View(vm);
-
     }
-    
+
     [AllowAnonymous]
     [HttpGet("Registration")]
     public async Task<IActionResult> Registration(string returnUrl)
@@ -119,9 +112,9 @@ public class AccountController : Controller
     public async Task<IActionResult> Registration(RegistrationInputModel model)
     {
         var vm = await BuildRegistrationViewModel(model.ReturnUrl!);
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
             return View(vm);
-        if(model.Password != model.ConfirmPassword)
+        if (model.Password != model.ConfirmPassword)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("PasswordNotMatch"));
             return View(vm);
@@ -133,17 +126,20 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidPhoneNumber"));
             return View(vm);
         }
-        var user = new User(){UserName = model.Username, Email = model.Email, PhoneNumber = phoneValidationResult.International};
+
+        var user = new User
+            { UserName = model.Username, Email = model.Email, PhoneNumber = phoneValidationResult.International };
         var result = await _userManager.CreateAsync(user, model.Password!);
-        
+
         if (result.Succeeded)
-            return Redirect(model.ReturnUrl!+"/sign-in-oidc");
+            return Redirect(model.ReturnUrl! + "/sign-in-oidc");
 
 
         foreach (var error in result.Errors)
             ModelState.AddModelError(error.Code, error.Description);
         return View("Registration", vm);
     }
+
     [Authorize]
     [HttpGet("Logout")]
     public async Task<IActionResult> Logout(string? returnUrl)
@@ -156,20 +152,21 @@ public class AccountController : Controller
         await HttpContext.SignOutAsync();
         return Redirect(returnUrl);
     }
-    
+
     [HttpGet("SendResetPassword")]
     public IActionResult SendResetPassword(string returnUrl)
     {
-        var vm = new SendResetPasswordViewModel(){ReturnUrl = returnUrl};
+        var vm = new SendResetPasswordViewModel { ReturnUrl = returnUrl };
 
         return View(vm);
     }
+
     [HttpPost("SendResetPassword")]
     public async Task<IActionResult> SendResetPassword(SendResetPasswordInputModel model)
     {
-        var vm = new SendResetPasswordViewModel()
+        var vm = new SendResetPasswordViewModel
         {
-            ReturnUrl = model.ReturnUrl,
+            ReturnUrl = model.ReturnUrl
         };
         var user = await _userManager.FindByEmailAsync(model.Credential!);
         if (user == null)
@@ -179,52 +176,60 @@ public class AccountController : Controller
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidEmailOrUsername"));
             return View("SendResetPassword", vm);
         }
-        if(user.EmailConfirmed == false)
+
+        if (user.EmailConfirmed == false)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("EmailUnconfirmedError"));
             return View("SendResetPassword", vm);
         }
-            
+
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var uri = new Uri(HttpUtility.ParseQueryString(model.ReturnUrl!)["redirect_uri"]!);
         var returnUrl = uri.GetLeftPart(UriPartial.Authority) + "/sign-in-oidc";
-        var callbackUrl = Url.Action("ResetPassword", "Account", new {user.Id,token, returnUrl}, Request.Scheme);
+        var callbackUrl = Url.Action("ResetPassword", "Account", new { user.Id, token, returnUrl }, Request.Scheme);
         if (callbackUrl is null)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("BadRequest"));
             return View(vm);
         }
-        var sendingEmailResult = await _emailSender.SendEmailAsync(user.Email!,"Скидання паролю",$"Ви можете скинути пароль за <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>цим посиланням</a>.");
-        if(!sendingEmailResult){
+
+        var sendingEmailResult = await _emailSender.SendEmailAsync(user.Email!, "Скидання паролю",
+            $"Ви можете скинути пароль за <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>цим посиланням</a>.");
+        if (!sendingEmailResult)
+        {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("EmailSendingError"));
             return View(vm);
         }
+
         vm.StatusMessage = "Повідомлення з посиланням на скидання паролю відправлено";
         return View("SendResetPassword", vm);
     }
-    
+
     [HttpGet("ResetPassword")]
-    public async Task<IActionResult> ResetPassword(string id, string token,string returnUrl)
+    public async Task<IActionResult> ResetPassword(string id, string token, string returnUrl)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user is null)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("UserNotFound"));
-            return View("SendResetPassword", new SendResetPasswordViewModel()
+            return View("SendResetPassword", new SendResetPasswordViewModel
             {
-                ReturnUrl = returnUrl,
+                ReturnUrl = returnUrl
             });
         }
-        var result = await _userManager.VerifyUserTokenAsync(user, "Default", UserManager.ResetPasswordTokenPurpose, token); 
+
+        var result =
+            await _userManager.VerifyUserTokenAsync(user, "Default", UserManager.ResetPasswordTokenPurpose, token);
         if (!result)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("InvalidToken"));
-            return View("SendResetPassword", new SendResetPasswordViewModel()
+            return View("SendResetPassword", new SendResetPasswordViewModel
             {
-                ReturnUrl = returnUrl,
+                ReturnUrl = returnUrl
             });
         }
-        var vm = new ResetPasswordViewModel(){ReturnUrl = returnUrl, Token = token, Id=id};
+
+        var vm = new ResetPasswordViewModel { ReturnUrl = returnUrl, Token = token, Id = id };
 
         return View(vm);
     }
@@ -233,15 +238,15 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetPasswordInputModel model)
     {
-        var vm = new ResetPasswordViewModel(){ReturnUrl = model.ReturnUrl, Token = model.Token, Id = model.Id};
+        var vm = new ResetPasswordViewModel { ReturnUrl = model.ReturnUrl, Token = model.Token, Id = model.Id };
         if (!ModelState.IsValid || model.Password != model.ConfirmPassword)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("PasswordsNotMatch"));
             return View(vm);
         }
-        
+
         var user = await _userManager.FindByIdAsync(model.Id!);
-        
+
         if (user == null)
         {
             ModelState.AddModelError(string.Empty, _errorStore.GetErrorMessage("UserNotFound"));
@@ -251,10 +256,7 @@ public class AccountController : Controller
         var result = await _userManager.ResetPasswordAsync(user, model.Token!, model.Password!);
         if (result.Succeeded)
             return Redirect(model.ReturnUrl!);
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
+        foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         return View(vm);
     }
 
@@ -269,13 +271,10 @@ public class AccountController : Controller
             var vm = new LoginViewModel(returnUrl)
             {
                 Email = context.LoginHint,
-                ReturnUrl = returnUrl,
+                ReturnUrl = returnUrl
             };
 
-            if (!local)
-            {
-                vm.ExternalProviders = new[] { new ExternalProvider("", context.IdP) };
-            }
+            if (!local) vm.ExternalProviders = new[] { new ExternalProvider("", context.IdP) };
 
             return vm;
         }
@@ -285,18 +284,14 @@ public class AccountController : Controller
         var providers = schemes
             .Where(x => x.DisplayName != null)
             .Select(x => new ExternalProvider(x.DisplayName ?? x.Name, x.Name)).ToList();
-        
+
         if (context?.Client.ClientId != null)
         {
             var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
             if (client != null)
-            {
-
                 if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
-                {
-                    providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
-                }
-            }
+                    providers = providers.Where(provider =>
+                        client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
         }
 
         return new LoginViewModel(returnUrl)
@@ -305,9 +300,10 @@ public class AccountController : Controller
             ExternalProviders = providers.ToArray()
         };
     }
+
     private async Task<RegistrationViewModel> BuildRegistrationViewModel(string returnUrl)
     {
-                var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+        var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
         if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
         {
             var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
@@ -315,13 +311,10 @@ public class AccountController : Controller
             // this is meant to short circuit the UI and only trigger the one external IdP
             var vm = new RegistrationViewModel(returnUrl)
             {
-                ReturnUrl = returnUrl,
+                ReturnUrl = returnUrl
             };
 
-            if (!local)
-            {
-                vm.ExternalProviders = new[] { new ExternalProvider("", context.IdP) };
-            }
+            if (!local) vm.ExternalProviders = new[] { new ExternalProvider("", context.IdP) };
 
             return vm;
         }
@@ -331,18 +324,14 @@ public class AccountController : Controller
         var providers = schemes
             .Where(x => x.DisplayName != null)
             .Select(x => new ExternalProvider(x.DisplayName ?? x.Name, x.Name)).ToList();
-        
+
         if (context?.Client.ClientId != null)
         {
             var client = await _clientStore.FindEnabledClientByIdAsync(context.Client.ClientId);
             if (client != null)
-            {
-
                 if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
-                {
-                    providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
-                }
-            }
+                    providers = providers.Where(provider =>
+                        client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
         }
 
         return new RegistrationViewModel(returnUrl)

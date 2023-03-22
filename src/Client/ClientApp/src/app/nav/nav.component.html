@@ -1,108 +1,121 @@
-
 <div class="row m-0">
-<div class="col-12 p-3 bg-dark text-white">
-  <div class="row m-auto align-items-center justify-content-between">
-    <div class="col-1 text-center d-none d-md-block">
-      <div class="btn btn-outline-light d-inline-block rounded-3" (click)="collapsedPc?openPcMenu():closePcMenu()">
-        <i class="fa fa-navicon"></i>
+  <div class="col-12 p-3 bg-dark text-white">
+    <div class="row m-auto align-items-center justify-content-between">
+      <div class="col-1 text-center d-none d-md-block">
+        <div (click)="collapsedPc?openPcMenu():closePcMenu()" class="btn btn-outline-light d-inline-block rounded-3">
+          <i class="fa fa-navicon"></i>
+        </div>
       </div>
-    </div>
-    <div class="col-11 col-md-8">
-      <h3 class="modal-title">{{title}}</h3>
-      <p class="lead">Для усіх громадян України</p>
-    </div>
-    <div class="col-12 col-md-3 text-center">
-           <div *ngIf="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
-            <div class="col-6 col-sm-10 text-start d-md-none">
-              <div class="btn btn-outline-light d-inline-block rounded-3" (click)="collapsed=!collapsed">
-                <i class="fa fa-navicon"></i>
-              </div>
-            </div>
-            <div class="col-3 col-sm-1 col-md-3">
-              <button type="button" class="btn btn-light" (click)="profile()" placement="top" ngbTooltip="Інформація профілю"
-              [openDelay]="200"
-              [closeDelay]="200">
-                <i class="fas fa-user-alt"></i></button>
-            </div>
-            <div class="col-3 col-sm-1 col-md-3">
-              <button type="button" class="btn btn-light" (click)="logout()"  placement="top" ngbTooltip="Вихід"
-              [openDelay]="200"
-              [closeDelay]="200">
-                <i class="fas fa-sign-out-alt"></i>
-              </button>
-            </div>
-             </div>
-        <div *ngIf="!(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+      <div class="col-11 col-md-8">
+        <h3 class="modal-title">{{title}}</h3>
+        <p class="lead">Для усіх громадян України</p>
+      </div>
+      <div class="col-12 col-md-3 text-center">
+        <div *ngIf="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
           <div class="col-6 col-sm-10 text-start d-md-none">
-            <div class="btn btn-outline-light d-inline-block rounded-3"  (click)="collapsed=!collapsed" [attr.aria-expanded]="!collapsed" aria-controls="collapseNavBar">
+            <div (click)="collapsed=!collapsed" class="btn btn-outline-light d-inline-block rounded-3">
               <i class="fa fa-navicon"></i>
             </div>
           </div>
           <div class="col-3 col-sm-1 col-md-3">
-            <button type="button" class="btn btn-light" (click)="login()" placement="top" ngbTooltip="Вхід"
-            [openDelay]="200"
-            [closeDelay]="200">
+            <button (click)="profile()" [closeDelay]="200" [openDelay]="200" class="btn btn-light"
+                    ngbTooltip="Інформація профілю"
+                    placement="top"
+                    type="button">
+              <i class="fas fa-user-alt"></i></button>
+          </div>
+          <div class="col-3 col-sm-1 col-md-3">
+            <button (click)="logout()" [closeDelay]="200" [openDelay]="200" class="btn btn-light" ngbTooltip="Вихід"
+                    placement="top"
+                    type="button">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="!(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+          <div class="col-6 col-sm-10 text-start d-md-none">
+            <div (click)="collapsed=!collapsed" [attr.aria-expanded]="!collapsed"
+                 aria-controls="collapseNavBar" class="btn btn-outline-light d-inline-block rounded-3">
+              <i class="fa fa-navicon"></i>
+            </div>
+          </div>
+          <div class="col-3 col-sm-1 col-md-3">
+            <button (click)="login()" [closeDelay]="200" [openDelay]="200" class="btn btn-light" ngbTooltip="Вхід"
+                    placement="top"
+                    type="button">
               <i class="fas fa-sign-in-alt"></i></button>
           </div>
           <div class="col-3 col-sm-1 col-md-3">
-            <button type="button" class="btn btn-light" (click)="register()" placement="top" ngbTooltip="Реєстрація"
-            [openDelay]="200"
-            [closeDelay]="200">
+            <button (click)="register()" [closeDelay]="200" [openDelay]="200" class="btn btn-light" ngbTooltip="Реєстрація"
+                    placement="top"
+                    type="button">
               <i class="fas fa-user-plus"></i>
             </button>
           </div>
-           </div>
+        </div>
       </div>
+    </div>
   </div>
-</div>
-<div class="col col-md-2 col-xxl-1 d-none d-md-block bg-dark bg-opacity-10 sidebar"  id="fullmenu" style="width:0px;padding:0px;">
+  <div class="col col-md-2 col-xxl-1 d-none d-md-block bg-dark bg-opacity-10 sidebar" id="fullmenu"
+       style="width:0px;padding:0px;">
     <ul class="nav nav-pills row py-2 sidebar" id="menu" style="width:0px;padding:0px;height: 0px;">
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']">Головна</a>
+        <a [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']" class="nav-link">Головна</a>
       </li>
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']" >Новини</a>
+        <a [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']"
+           class="nav-link">Новини</a>
       </li>
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']" >Мапа незламності</a>
+        <a [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']"
+           class="nav-link">Мапа незламності</a>
       </li>
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']" >Останні події</a>
+        <a [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']"
+           class="nav-link">Останні події</a>
       </li>
-      <li class="nav-item col-12" *ngIf="isAuthorized">
-        <a class="nav-link" [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']" >Отримати допомогу</a>
+      <li *ngIf="isAuthorized" class="nav-item col-12">
+        <a [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']"
+           class="nav-link">Отримати допомогу</a>
       </li>
-      <li class="nav-item col-12" *ngIf="isAuthorized">
-        <a class="nav-link" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''" [routerLink]="['help-requests']" (click)="collapsed=true" aria-controls="collapseNavBar">Запити допомоги</a>
+      <li *ngIf="isAuthorized" class="nav-item col-12">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''"
+           [routerLink]="['help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>
   <div class="col col-md-2 col-xxl-1 bg-dark bg-opacity-10 d-md-none">
-    <ul class="nav nav-pills row" id="collapseNavBar" #collapse="ngbCollapse" [(ngbCollapse)]="collapsed">
+    <ul #collapse="ngbCollapse" [(ngbCollapse)]="collapsed" class="nav nav-pills row" id="collapseNavBar">
       <li class="nav-item col-12 mt-2">
-        <a class="nav-link" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']" (click)="collapsed=true" aria-controls="collapseNavBar">Головна</a>
+        <a (click)="collapsed=true" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']"
+           aria-controls="collapseNavBar" class="nav-link">Головна</a>
       </li>
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']" (click)="collapsed=true" aria-controls="collapseNavBar">Новини</a>
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('public-new')?'disabled active':''"
+           [routerLink]="['public-news']" aria-controls="collapseNavBar" class="nav-link">Новини</a>
       </li>
       <li class="nav-item col-12">
-        <a class="nav-link" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''" [routerLink]="['nezlamnist']" (click)="collapsed=true" aria-controls="collapseNavBar">Мапа незламності</a>
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('nezlamnist')?'disabled active':''"
+           [routerLink]="['nezlamnist']" aria-controls="collapseNavBar" class="nav-link">Мапа незламності</a>
       </li>
-      <li class="nav-item col-12" [ngClass]="{'mb-2':!isAuthorized}">
-        <a class="nav-link" [ngClass]="activatedRouteContains('last-news')?'disabled active':''" [routerLink]="['last-news']" (click)="collapsed=true" aria-controls="collapseNavBar">Останні події</a>
+      <li [ngClass]="{'mb-2':!isAuthorized}" class="nav-item col-12">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('last-news')?'disabled active':''"
+           [routerLink]="['last-news']" aria-controls="collapseNavBar" class="nav-link">Останні події</a>
       </li>
-      <li class="nav-item col-12" *ngIf="isAuthorized">
-        <a class="nav-link" [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']" (click)="collapsed=true" aria-controls="collapseNavBar">Отримати допомогу</a>
+      <li *ngIf="isAuthorized" class="nav-item col-12">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('get-help')?'disabled active':''"
+           [routerLink]="['get-help']" aria-controls="collapseNavBar" class="nav-link">Отримати допомогу</a>
       </li>
-      <li class="nav-item col-12 mb-2" *ngIf="isAuthorized">
-        <a class="nav-link" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''" [routerLink]="['help-requests']" (click)="collapsed=true" aria-controls="collapseNavBar">Запити допомоги</a>
+      <li *ngIf="isAuthorized" class="nav-item col-12 mb-2">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''"
+           [routerLink]="['help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>
 
 
-  <div class="container p-0" style="transition: 0.5s;" [ngClass]="collapsedPc?'col-12':'col-12 col-md-10 col-xxl-11'">
+  <div [ngClass]="collapsedPc?'col-12':'col-12 col-md-10 col-xxl-11'" class="container p-0" style="transition: 0.5s;">
     <router-outlet></router-outlet>
   </div>
-   
+
 </div>

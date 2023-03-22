@@ -1,92 +1,117 @@
-﻿@using IdentityServer.Entities
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IdentityServer.ViewModels.ProfileViewModel
 
-    <section class="py-4 py-xl-5">
-        <div class="container">
-            <div class="row mb-2" style="margin: 0px;">
-                <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2>Інформація профілю</h2>
-                </div>
+<section class="py-4 py-xl-5">
+    <div class="container">
+        <div class="row mb-2" style="margin: 0px;">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h2>Інформація профілю</h2>
             </div>
-                
-            <div class="row d-flex justify-content-center" style="margin: 0px;">
-                <div class="col-md-10 col-lg-8 col-xl-6">
-                <partial name="_ValidationSummary" />
-                    <div class="card mb-5">
-                        <div class="card-header">
-                            <a class="d-inline-block" href="@Model.ReturnUrl"><i class="fas fa-arrow-left btn"></i></a>
-                        </div>
-                        <div class="card-body d-flex flex-column align-items-center">
-                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info-square">
-                                    <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                </svg></div>
-                            <form class="text-md-center" method="post" style="width: 90%;"><input class="form-control" type="hidden" asp-for="ReturnUrl">
-                                <div class="row d-flex align-items-center mb-2 justify-content-between">
-                                    <div class="col-6 col-sm-4 col-md-4"><label class="col-form-label">Пошта</label></div>
-                                    @if (!Model.User?.EmailConfirmed ?? false)
-                                    {
-                                        <div class="col-6 col-sm-1 text-end">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Не підтверджена пошта. Ви можете втратити доступ до акаунту, підтвердіть пошту в налаштуваннях">
-                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                            </svg></div>
-                                    }
-                                    <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="email" name="email" placeholder="Пошта" asp-for="Email" readonly></div>
-                                    @if (!Model.User?.EmailConfirmed ?? false)
-                                    {
-                                        <div class="col">
-                                            <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationEmail" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;пошту&nbsp;</p>
-                                        </div>
-                                    }
-                                </div>
-                                <div class="row d-sm-flex mb-2 justify-content-between align-items-center">
-                                    <div class="col-8 col-sm-4 col-md-4"><label class="col-form-label">Ім'я користувача</label></div>
-                                    @if (Model.User?.CanChangeUsername ?? false)
-                                    {
-                                        <div class="col-4 col-sm-1 text-end">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Ви можете змінити ім'я користувача. Це можна зробити лише 1 раз.">
-                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                            </svg></div>
-                                        <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="text" name="username" placeholder="Ім'я користувача" asp-for="Username"></div>
-                                    }
-                                    @if (!Model.User?.CanChangeUsername ?? false)
-                                    {
-                                        <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="text" name="username" placeholder="Ім'я користувача" asp-for="Username" readonly=""></div>
-                                    }
-                                </div>
-                                <div class="row d-flex mb-3 justify-content-between align-items-center">
-                                    <div class="col-8 col-sm-4"><label class="col-form-label">Номер телефону</label></div>
-                                    @if (!Model.User?.PhoneNumberConfirmed ?? false)
-                                    {
-                                        <div class="col-4 col-sm-1 text-end">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Номер телефону не підтверджений. Ви можете втратити доступ до акаунту. Підтвердіть номер телефону в налаштуваннях.">
-                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                            </svg></div>
-                                        <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="tel"></div>
-                                        <div class="col">
-                                            <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationPhone" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;номер телефону&nbsp;</p>
-                                        </div>
-                                    }
+        </div>
 
-                                    @if (Model.User?.PhoneNumberConfirmed ?? false)
-                                    {
-                                        <div class="col-12 col-sm-7 col-md-7"><input class="form-control" type="tel" name="phonenumber" placeholder="Номер телефону" asp-for="PhoneNumber" readonly></div>
-                                    }
-
-                                </div>
-                                <div class="row text-center card-footer p-0 bg-white">
-                                        <div class="col-12 col-sm-6 my-2"><button class="btn btn-primary" type="submit">Зберегти</button></div>
-                                        <div class="col-12 col-sm-6 my-2">
-                                            <a asp-action="PasswordChanging" asp-route-returnUrl="@Model.ReturnUrl">
-                                                <button class="btn btn-info" type="button">Змінити пароль</button>
-                                                </a></div>
-                                </div>
-                            </form>
+        <div class="row d-flex justify-content-center" style="margin: 0px;">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+                <partial name="_ValidationSummary"/>
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <a class="d-inline-block" href="@Model.ReturnUrl">
+                            <i class="fas fa-arrow-left btn"></i>
+                        </a>
+                    </div>
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info-square">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                            </svg>
                         </div>
+                        <form class="text-md-center" method="post" style="width: 90%;">
+                            <input class="form-control" type="hidden" asp-for="ReturnUrl">
+                            <div class="row d-flex align-items-center mb-2 justify-content-between">
+                                <div class="col-6 col-sm-4 col-md-4">
+                                    <label class="col-form-label">Пошта</label>
+                                </div>
+                                @if (!Model.User?.EmailConfirmed ?? false)
+                                {
+                                    <div class="col-6 col-sm-1 text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Не підтверджена пошта. Ви можете втратити доступ до акаунту, підтвердіть пошту в налаштуваннях">
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                        </svg>
+                                    </div>
+                                }
+                                <div class="col-12 col-sm-7 col-md-7">
+                                    <input class="form-control" type="email" name="email" placeholder="Пошта" asp-for="Email" readonly>
+                                </div>
+                                @if (!Model.User?.EmailConfirmed ?? false)
+                                {
+                                    <div class="col">
+                                        <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationEmail" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;пошту&nbsp;</p>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row d-sm-flex mb-2 justify-content-between align-items-center">
+                                <div class="col-8 col-sm-4 col-md-4">
+                                    <label class="col-form-label">Ім'я користувача</label>
+                                </div>
+                                @if (Model.User?.CanChangeUsername ?? false)
+                                {
+                                    <div class="col-4 col-sm-1 text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Ви можете змінити ім'я користувача. Це можна зробити лише 1 раз.">
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="col-12 col-sm-7 col-md-7">
+                                        <input class="form-control" type="text" name="username" placeholder="Ім'я користувача" asp-for="Username">
+                                    </div>
+                                }
+                                @if (!Model.User?.CanChangeUsername ?? false)
+                                {
+                                    <div class="col-12 col-sm-7 col-md-7">
+                                        <input class="form-control" type="text" name="username" placeholder="Ім'я користувача" asp-for="Username" readonly="">
+                                    </div>
+                                }
+                            </div>
+                            <div class="row d-flex mb-3 justify-content-between align-items-center">
+                                <div class="col-8 col-sm-4">
+                                    <label class="col-form-label">Номер телефону</label>
+                                </div>
+                                @if (!Model.User?.PhoneNumberConfirmed ?? false)
+                                {
+                                    <div class="col-4 col-sm-1 text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-info rounded-circle bg-danger" data-bs-toggle="tooltip" data-bss-tooltip="" style="font-size: 24px;" title="Номер телефону не підтверджений. Ви можете втратити доступ до акаунту. Підтвердіть номер телефону в налаштуваннях.">
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="col-12 col-sm-7 col-md-7">
+                                        <input class="form-control" type="tel">
+                                    </div>
+                                    <div class="col">
+                                        <p class="text-end mb-0" style="font-size: 12px;"><a asp-action="SendConfirmationPhone" asp-route-returnUrl="@Model.ReturnUrl">Підтвердіть</a>&nbsp;номер телефону&nbsp;</p>
+                                    </div>
+                                }
+
+                                @if (Model.User?.PhoneNumberConfirmed ?? false)
+                                {
+                                    <div class="col-12 col-sm-7 col-md-7">
+                                        <input class="form-control" type="tel" name="phonenumber" placeholder="Номер телефону" asp-for="PhoneNumber" readonly>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="row text-center card-footer p-0 bg-white">
+                                <div class="col-12 col-sm-6 my-2">
+                                    <button class="btn btn-primary" type="submit">Зберегти</button>
+                                </div>
+                                <div class="col-12 col-sm-6 my-2">
+                                    <a asp-action="PasswordChanging" asp-route-returnUrl="@Model.ReturnUrl">
+                                        <button class="btn btn-info" type="button">Змінити пароль</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>

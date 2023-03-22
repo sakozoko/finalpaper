@@ -1,25 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 using WebApiAbstraction.Repositories;
 
-namespace WebApiApplication.Features.LatestNewFeatures.Commands
+namespace WebApiApplication.Features.LatestNewFeatures.Commands;
+
+public class GetLatestNewsCountQuery : IRequest<int>
 {
-    public class GetLatestNewsCountQuery : IRequest<int>
+    public class GetLatestNewsCountCommandHandler : IRequestHandler<GetLatestNewsCountQuery, int>
     {
-        public class GetLatestNewsCountCommandHandler : IRequestHandler<GetLatestNewsCountQuery, int>
+        private readonly ILatestNewRepository repository;
+
+        public GetLatestNewsCountCommandHandler(ILatestNewRepository repository)
         {
-            private readonly ILatestNewRepository repository;
-            public GetLatestNewsCountCommandHandler(ILatestNewRepository repository)
-            {
             this.repository = repository;
-            }
-            public async Task<int> Handle(GetLatestNewsCountQuery request, CancellationToken cancellationToken)
-            {
-                return await repository.GetLatestNewsCount();
-            }
+        }
+
+        public async Task<int> Handle(GetLatestNewsCountQuery request, CancellationToken cancellationToken)
+        {
+            return await repository.GetLatestNewsCount();
         }
     }
 }

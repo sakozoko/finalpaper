@@ -1,75 +1,79 @@
-<div *ngIf="paginationService.getPagination().paginated" >
+<div *ngIf="paginationService.getPagination().paginated">
   <div *ngIf="paginationService.getPages().length<=10" class="pagination m-3 flex-wrap">
-    <div class="page-item m-1" [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'">
-      <div class="btn page-link" (click)="paginationService.prevPage()">
+    <div [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'" class="page-item m-1">
+      <div (click)="paginationService.prevPage()" class="btn page-link">
         Previous
       </div>
     </div>
-      <div  *ngFor="let i of paginationService.getPages()" class="m-1">
-        <div class="page-item" > 
-          <div class="btn btn-primary"
-               [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
-               (click)="paginationService.goToPage(i)">{{i}}</div>
-        </div>
+    <div *ngFor="let i of paginationService.getPages()" class="m-1">
+      <div class="page-item">
+        <div (click)="paginationService.goToPage(i)"
+             [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
+             class="btn btn-primary">{{i}}</div>
       </div>
-    <div class="page-item m-1" [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'">
+    </div>
+    <div [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'" class="page-item m-1">
       <div (click)="paginationService.nextPage()" class="btn page-link" href="#">Next</div>
     </div>
   </div>
-  <div *ngIf="paginationService.getPages().length>10" >
-    <div *ngIf="paginationService.getPagination().pageNumber<(paginationService.getPages().length/2)" class="pagination m-3 flex-wrap ">
-      <div class=" page-item m-1" [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'">
-        <div class="btn page-link" (click)="paginationService.prevPage()">Previous</div>
+  <div *ngIf="paginationService.getPages().length>10">
+    <div *ngIf="paginationService.getPagination().pageNumber<(paginationService.getPages().length/2)"
+         class="pagination m-3 flex-wrap ">
+      <div [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'" class=" page-item m-1">
+        <div (click)="paginationService.prevPage()" class="btn page-link">Previous</div>
       </div>
-      <div  *ngFor="let i of paginationService.getPages()
-      .slice((paginationService.getPagination().pageNumber-3)<0?0:(paginationService.getPagination().pageNumber-3),paginationService.getPagination().pageNumber+2)" class="mx-1 ">
-        <div class="page-item m-1" >
-          <div class="btn btn-primary"
+      <div *ngFor="let i of paginationService.getPages()
+      .slice((paginationService.getPagination().pageNumber-3)<0?0:(paginationService.getPagination().pageNumber-3),paginationService.getPagination().pageNumber+2)"
+           class="mx-1 ">
+        <div class="page-item m-1">
+          <div (click)="paginationService.goToPage(i)"
                [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
-               (click)="paginationService.goToPage(i)">{{i}}</div>
+               class="btn btn-primary">{{i}}</div>
         </div>
       </div>
       <div class=" page-item m-1">
         <div class="btn page-link">...</div>
       </div>
-      <div  *ngFor="let i of paginationService.getPages().slice(-2)" class="m-1">
-        <div class="page-item" >
-          <div class="btn btn-primary"
+      <div *ngFor="let i of paginationService.getPages().slice(-2)" class="m-1">
+        <div class="page-item">
+          <div (click)="paginationService.goToPage(i)"
                [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
-               (click)="paginationService.goToPage(i)">{{i}}</div>
+               class="btn btn-primary">{{i}}</div>
         </div>
       </div>
-      <div class="page-item m-1" [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'">
+      <div [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'" class="page-item m-1">
         <div (click)="paginationService.nextPage()" class="btn page-link" href="#">Next</div>
       </div>
     </div>
-    <div *ngIf="paginationService.getPagination().pageNumber>=(paginationService.getPages().length/2)" class="pagination m-3 flex-wrap">
-      <div class="page-item m-1" [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'">
-        <div class="btn page-link" (click)="paginationService.prevPage()">Previous</div>
+    <div *ngIf="paginationService.getPagination().pageNumber>=(paginationService.getPages().length/2)"
+         class="pagination m-3 flex-wrap">
+      <div [ngClass]="paginationService.getPagination().hasPrevious()?'':'disabled'" class="page-item m-1">
+        <div (click)="paginationService.prevPage()" class="btn page-link">Previous</div>
       </div>
-      <div  *ngFor="let i of paginationService.getPages().slice(0,2)" class="m-1">
-        <div class="page-item" >
-          <div class="btn btn-primary"
+      <div *ngFor="let i of paginationService.getPages().slice(0,2)" class="m-1">
+        <div class="page-item">
+          <div (click)="paginationService.goToPage(i)"
                [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
-               (click)="paginationService.goToPage(i)">{{i}}</div>
+               class="btn btn-primary">{{i}}</div>
         </div>
       </div>
       <div class="page-item m-1">
         <div class="btn page-link">...</div>
       </div>
-      <div  *ngFor="let i of paginationService.getPages()
-      .slice((paginationService.getPagination().pageNumber-3)<0?0:(paginationService.getPagination().pageNumber-3),paginationService.getPagination().pageNumber+2)" class="mx-1">
-        <div class="page-item m-1" >
-          <div class="btn btn-primary"
+      <div *ngFor="let i of paginationService.getPages()
+      .slice((paginationService.getPagination().pageNumber-3)<0?0:(paginationService.getPagination().pageNumber-3),paginationService.getPagination().pageNumber+2)"
+           class="mx-1">
+        <div class="page-item m-1">
+          <div (click)="paginationService.goToPage(i)"
                [ngClass]="paginationService.getPagination().pageNumber === i ? 'active disabled':' page-link'"
-               (click)="paginationService.goToPage(i)">{{i}}</div>
+               class="btn btn-primary">{{i}}</div>
         </div>
       </div>
 
-      <div class="page-item m-1" [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'">
+      <div [ngClass]="paginationService.getPagination().hasNext()?'':'disabled'" class="page-item m-1">
         <div (click)="paginationService.nextPage()" class="btn page-link" href="#">Next</div>
       </div>
     </div>
-    </div>
-
   </div>
+
+</div>

@@ -1,50 +1,50 @@
-using System.Reflection;
-using IdentityServer.Entities;
-using IdentityServer.Features;
-using IdentityServer.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using SendGrid;
+using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using Azure.Core;
 using Duende.IdentityServer;
 using IdentityModel;
 using IdentityServer;
 using IdentityServer.Abstraction;
+using IdentityServer.Entities;
+using IdentityServer.Features;
+using IdentityServer.Persistence;
 using IdentityServer.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SendGrid;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //secretClient configuration
-var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]!), new DefaultAzureCredential(), new SecretClientOptions()
-{
-    Retry =
+var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]!), new DefaultAzureCredential(),
+    new SecretClientOptions
     {
-        Delay= TimeSpan.FromSeconds(2),
-        MaxDelay = TimeSpan.FromSeconds(16),
-        MaxRetries = 5,
-        Mode = RetryMode.Exponential
-     }
-});
+        Retry =
+        {
+            Delay = TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+        }
+    });
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<IdentityServerContext>(options=>
+builder.Services.AddDbContext<IdentityServerContext>(options =>
     options.UseSqlServer(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value));
 
-builder.Services.AddScoped<ISendGridClient>(_ => 
+builder.Services.AddScoped<ISendGridClient>(_ =>
     new SendGridClient(((KeyVaultSecret)secretClient.GetSecret("SendGridKey")).Value));
 builder.Services.AddScoped<IEmailSender, SendGridEmailSender>();
 
 builder.Services.AddTransient<IModelStateErrorMessageStore, UkranianModelStateErrorStore>();
 
-builder.Services.AddTransient<ISmsSender>(c=>
+builder.Services.AddTransient<ISmsSender>(c =>
     new TwilioSmsSender(((KeyVaultSecret)secretClient.GetSecret("twilioAccountSID")).Value,
-    ((KeyVaultSecret)secretClient.GetSecret("twilioAuthToken")).Value));
+        ((KeyVaultSecret)secretClient.GetSecret("twilioAuthToken")).Value));
 
-builder.Services.AddScoped<IPhoneValidator>(c=>
+builder.Services.AddScoped<IPhoneValidator>(c =>
     new PhoneValidator(((KeyVaultSecret)secretClient.GetSecret("abstractApiPhoneValidationKey")).Value));
 builder.Services.AddIdentity<User, Role>(options =>
     {
@@ -71,11 +71,8 @@ builder.Services.AddAuthentication().AddGoogle("Google", "Google", opt =>
     opt.ClientSecret = secretClient.GetSecret("GoogleClientSecret").Value.Value;
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-});
-builder.Services.AddCors(opt=>
+builder.Services.AddAuthorization(options => { options.AddPolicy("Admin", policy => policy.RequireRole("Admin")); });
+builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAll", builder =>
     {
@@ -97,11 +94,10 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 app.MapControllers();
-app.MapControllerRoute(name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute("default",
+    "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.UseIdentityServer();
-
 
 
 app.Run();

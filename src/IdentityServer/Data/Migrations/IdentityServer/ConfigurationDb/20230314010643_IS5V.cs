@@ -1,457 +1,452 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
+namespace IdentityServer.Data.Migrations.IdentityServer.ConfigurationDb;
 
-namespace IdentityServer.Data.Migrations.IdentityServer.ConfigurationDb
+/// <inheritdoc />
+public partial class IS5V : Migration
 {
     /// <inheritdoc />
-    public partial class IS5V : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropIndex(
-                name: "IX_IdentityResourceProperties_IdentityResourceId",
-                table: "IdentityResourceProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_IdentityResourceClaims_IdentityResourceId",
-                table: "IdentityResourceClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientScopes_ClientId",
-                table: "ClientScopes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientRedirectUris_ClientId",
-                table: "ClientRedirectUris");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientProperties_ClientId",
-                table: "ClientProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId",
-                table: "ClientPostLogoutRedirectUris");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientIdPRestrictions_ClientId",
-                table: "ClientIdPRestrictions");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientGrantTypes_ClientId",
-                table: "ClientGrantTypes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientCorsOrigins_ClientId",
-                table: "ClientCorsOrigins");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientClaims_ClientId",
-                table: "ClientClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiScopeProperties_ScopeId",
-                table: "ApiScopeProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiScopeClaims_ScopeId",
-                table: "ApiScopeClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceScopes_ApiResourceId",
-                table: "ApiResourceScopes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceProperties_ApiResourceId",
-                table: "ApiResourceProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceClaims_ApiResourceId",
-                table: "ApiResourceClaims");
-
-            migrationBuilder.AddColumn<int>(
-                name: "CibaLifetime",
-                table: "Clients",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "CoordinateLifetimeWithUserSession",
-                table: "Clients",
-                type: "bit",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "PollingInterval",
-                table: "Clients",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "RedirectUri",
-                table: "ClientRedirectUris",
-                type: "nvarchar(400)",
-                maxLength: 400,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(2000)",
-                oldMaxLength: 2000);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "PostLogoutRedirectUri",
-                table: "ClientPostLogoutRedirectUris",
-                type: "nvarchar(400)",
-                maxLength: 400,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(2000)",
-                oldMaxLength: 2000);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Created",
-                table: "ApiScopes",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastAccessed",
-                table: "ApiScopes",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "NonEditable",
-                table: "ApiScopes",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Updated",
-                table: "ApiScopes",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "RequireResourceIndicator",
-                table: "ApiResources",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.CreateTable(
-                name: "IdentityProviders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Scheme = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Enabled = table.Column<bool>(type: "bit", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityProviders", x => x.Id);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceProperties_IdentityResourceId_Key",
-                table: "IdentityResourceProperties",
-                columns: new[] { "IdentityResourceId", "Key" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceClaims_IdentityResourceId_Type",
-                table: "IdentityResourceClaims",
-                columns: new[] { "IdentityResourceId", "Type" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientScopes_ClientId_Scope",
-                table: "ClientScopes",
-                columns: new[] { "ClientId", "Scope" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientRedirectUris_ClientId_RedirectUri",
-                table: "ClientRedirectUris",
-                columns: new[] { "ClientId", "RedirectUri" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientProperties_ClientId_Key",
-                table: "ClientProperties",
-                columns: new[] { "ClientId", "Key" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
-                table: "ClientPostLogoutRedirectUris",
-                columns: new[] { "ClientId", "PostLogoutRedirectUri" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientIdPRestrictions_ClientId_Provider",
-                table: "ClientIdPRestrictions",
-                columns: new[] { "ClientId", "Provider" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientGrantTypes_ClientId_GrantType",
-                table: "ClientGrantTypes",
-                columns: new[] { "ClientId", "GrantType" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientCorsOrigins_ClientId_Origin",
-                table: "ClientCorsOrigins",
-                columns: new[] { "ClientId", "Origin" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientClaims_ClientId_Type_Value",
-                table: "ClientClaims",
-                columns: new[] { "ClientId", "Type", "Value" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeProperties_ScopeId_Key",
-                table: "ApiScopeProperties",
-                columns: new[] { "ScopeId", "Key" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeClaims_ScopeId_Type",
-                table: "ApiScopeClaims",
-                columns: new[] { "ScopeId", "Type" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceScopes_ApiResourceId_Scope",
-                table: "ApiResourceScopes",
-                columns: new[] { "ApiResourceId", "Scope" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceProperties_ApiResourceId_Key",
-                table: "ApiResourceProperties",
-                columns: new[] { "ApiResourceId", "Key" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceClaims_ApiResourceId_Type",
-                table: "ApiResourceClaims",
-                columns: new[] { "ApiResourceId", "Type" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityProviders_Scheme",
-                table: "IdentityProviders",
-                column: "Scheme",
-                unique: true);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "IdentityProviders");
-
-            migrationBuilder.DropIndex(
-                name: "IX_IdentityResourceProperties_IdentityResourceId_Key",
-                table: "IdentityResourceProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_IdentityResourceClaims_IdentityResourceId_Type",
-                table: "IdentityResourceClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientScopes_ClientId_Scope",
-                table: "ClientScopes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientRedirectUris_ClientId_RedirectUri",
-                table: "ClientRedirectUris");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientProperties_ClientId_Key",
-                table: "ClientProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
-                table: "ClientPostLogoutRedirectUris");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientIdPRestrictions_ClientId_Provider",
-                table: "ClientIdPRestrictions");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientGrantTypes_ClientId_GrantType",
-                table: "ClientGrantTypes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientCorsOrigins_ClientId_Origin",
-                table: "ClientCorsOrigins");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ClientClaims_ClientId_Type_Value",
-                table: "ClientClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiScopeProperties_ScopeId_Key",
-                table: "ApiScopeProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiScopeClaims_ScopeId_Type",
-                table: "ApiScopeClaims");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceScopes_ApiResourceId_Scope",
-                table: "ApiResourceScopes");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceProperties_ApiResourceId_Key",
-                table: "ApiResourceProperties");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ApiResourceClaims_ApiResourceId_Type",
-                table: "ApiResourceClaims");
-
-            migrationBuilder.DropColumn(
-                name: "CibaLifetime",
-                table: "Clients");
-
-            migrationBuilder.DropColumn(
-                name: "CoordinateLifetimeWithUserSession",
-                table: "Clients");
-
-            migrationBuilder.DropColumn(
-                name: "PollingInterval",
-                table: "Clients");
-
-            migrationBuilder.DropColumn(
-                name: "Created",
-                table: "ApiScopes");
-
-            migrationBuilder.DropColumn(
-                name: "LastAccessed",
-                table: "ApiScopes");
-
-            migrationBuilder.DropColumn(
-                name: "NonEditable",
-                table: "ApiScopes");
-
-            migrationBuilder.DropColumn(
-                name: "Updated",
-                table: "ApiScopes");
-
-            migrationBuilder.DropColumn(
-                name: "RequireResourceIndicator",
-                table: "ApiResources");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "RedirectUri",
-                table: "ClientRedirectUris",
-                type: "nvarchar(2000)",
-                maxLength: 2000,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(400)",
-                oldMaxLength: 400);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "PostLogoutRedirectUri",
-                table: "ClientPostLogoutRedirectUris",
-                type: "nvarchar(2000)",
-                maxLength: 2000,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(400)",
-                oldMaxLength: 400);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceProperties_IdentityResourceId",
-                table: "IdentityResourceProperties",
-                column: "IdentityResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceClaims_IdentityResourceId",
-                table: "IdentityResourceClaims",
-                column: "IdentityResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientScopes_ClientId",
-                table: "ClientScopes",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientRedirectUris_ClientId",
-                table: "ClientRedirectUris",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientProperties_ClientId",
-                table: "ClientProperties",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId",
-                table: "ClientPostLogoutRedirectUris",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientIdPRestrictions_ClientId",
-                table: "ClientIdPRestrictions",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientGrantTypes_ClientId",
-                table: "ClientGrantTypes",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientCorsOrigins_ClientId",
-                table: "ClientCorsOrigins",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClientClaims_ClientId",
-                table: "ClientClaims",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeProperties_ScopeId",
-                table: "ApiScopeProperties",
-                column: "ScopeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeClaims_ScopeId",
-                table: "ApiScopeClaims",
-                column: "ScopeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceScopes_ApiResourceId",
-                table: "ApiResourceScopes",
-                column: "ApiResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceProperties_ApiResourceId",
-                table: "ApiResourceProperties",
-                column: "ApiResourceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceClaims_ApiResourceId",
-                table: "ApiResourceClaims",
-                column: "ApiResourceId");
-        }
+        migrationBuilder.DropIndex(
+            "IX_IdentityResourceProperties_IdentityResourceId",
+            "IdentityResourceProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_IdentityResourceClaims_IdentityResourceId",
+            "IdentityResourceClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientScopes_ClientId",
+            "ClientScopes");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientRedirectUris_ClientId",
+            "ClientRedirectUris");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientProperties_ClientId",
+            "ClientProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientPostLogoutRedirectUris_ClientId",
+            "ClientPostLogoutRedirectUris");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientIdPRestrictions_ClientId",
+            "ClientIdPRestrictions");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientGrantTypes_ClientId",
+            "ClientGrantTypes");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientCorsOrigins_ClientId",
+            "ClientCorsOrigins");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientClaims_ClientId",
+            "ClientClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiScopeProperties_ScopeId",
+            "ApiScopeProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiScopeClaims_ScopeId",
+            "ApiScopeClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceScopes_ApiResourceId",
+            "ApiResourceScopes");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceProperties_ApiResourceId",
+            "ApiResourceProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceClaims_ApiResourceId",
+            "ApiResourceClaims");
+
+        migrationBuilder.AddColumn<int>(
+            "CibaLifetime",
+            "Clients",
+            "int",
+            nullable: true);
+
+        migrationBuilder.AddColumn<bool>(
+            "CoordinateLifetimeWithUserSession",
+            "Clients",
+            "bit",
+            nullable: true);
+
+        migrationBuilder.AddColumn<int>(
+            "PollingInterval",
+            "Clients",
+            "int",
+            nullable: true);
+
+        migrationBuilder.AlterColumn<string>(
+            "RedirectUri",
+            "ClientRedirectUris",
+            "nvarchar(400)",
+            maxLength: 400,
+            nullable: false,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(2000)",
+            oldMaxLength: 2000);
+
+        migrationBuilder.AlterColumn<string>(
+            "PostLogoutRedirectUri",
+            "ClientPostLogoutRedirectUris",
+            "nvarchar(400)",
+            maxLength: 400,
+            nullable: false,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(2000)",
+            oldMaxLength: 2000);
+
+        migrationBuilder.AddColumn<DateTime>(
+            "Created",
+            "ApiScopes",
+            "datetime2",
+            nullable: false,
+            defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+        migrationBuilder.AddColumn<DateTime>(
+            "LastAccessed",
+            "ApiScopes",
+            "datetime2",
+            nullable: true);
+
+        migrationBuilder.AddColumn<bool>(
+            "NonEditable",
+            "ApiScopes",
+            "bit",
+            nullable: false,
+            defaultValue: false);
+
+        migrationBuilder.AddColumn<DateTime>(
+            "Updated",
+            "ApiScopes",
+            "datetime2",
+            nullable: true);
+
+        migrationBuilder.AddColumn<bool>(
+            "RequireResourceIndicator",
+            "ApiResources",
+            "bit",
+            nullable: false,
+            defaultValue: false);
+
+        migrationBuilder.CreateTable(
+            "IdentityProviders",
+            table => new
+            {
+                Id = table.Column<int>("int", nullable: false)
+                    .Annotation("SqlServer:Identity", "1, 1"),
+                Scheme = table.Column<string>("nvarchar(200)", maxLength: 200, nullable: false),
+                DisplayName = table.Column<string>("nvarchar(200)", maxLength: 200, nullable: true),
+                Enabled = table.Column<bool>("bit", nullable: false),
+                Type = table.Column<string>("nvarchar(20)", maxLength: 20, nullable: false),
+                Properties = table.Column<string>("nvarchar(max)", nullable: true),
+                Created = table.Column<DateTime>("datetime2", nullable: false),
+                Updated = table.Column<DateTime>("datetime2", nullable: true),
+                LastAccessed = table.Column<DateTime>("datetime2", nullable: true),
+                NonEditable = table.Column<bool>("bit", nullable: false)
+            },
+            constraints: table => { table.PrimaryKey("PK_IdentityProviders", x => x.Id); });
+
+        migrationBuilder.CreateIndex(
+            "IX_IdentityResourceProperties_IdentityResourceId_Key",
+            "IdentityResourceProperties",
+            new[] { "IdentityResourceId", "Key" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_IdentityResourceClaims_IdentityResourceId_Type",
+            "IdentityResourceClaims",
+            new[] { "IdentityResourceId", "Type" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientScopes_ClientId_Scope",
+            "ClientScopes",
+            new[] { "ClientId", "Scope" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientRedirectUris_ClientId_RedirectUri",
+            "ClientRedirectUris",
+            new[] { "ClientId", "RedirectUri" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientProperties_ClientId_Key",
+            "ClientProperties",
+            new[] { "ClientId", "Key" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
+            "ClientPostLogoutRedirectUris",
+            new[] { "ClientId", "PostLogoutRedirectUri" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientIdPRestrictions_ClientId_Provider",
+            "ClientIdPRestrictions",
+            new[] { "ClientId", "Provider" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientGrantTypes_ClientId_GrantType",
+            "ClientGrantTypes",
+            new[] { "ClientId", "GrantType" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientCorsOrigins_ClientId_Origin",
+            "ClientCorsOrigins",
+            new[] { "ClientId", "Origin" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientClaims_ClientId_Type_Value",
+            "ClientClaims",
+            new[] { "ClientId", "Type", "Value" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiScopeProperties_ScopeId_Key",
+            "ApiScopeProperties",
+            new[] { "ScopeId", "Key" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiScopeClaims_ScopeId_Type",
+            "ApiScopeClaims",
+            new[] { "ScopeId", "Type" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceScopes_ApiResourceId_Scope",
+            "ApiResourceScopes",
+            new[] { "ApiResourceId", "Scope" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceProperties_ApiResourceId_Key",
+            "ApiResourceProperties",
+            new[] { "ApiResourceId", "Key" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceClaims_ApiResourceId_Type",
+            "ApiResourceClaims",
+            new[] { "ApiResourceId", "Type" },
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            "IX_IdentityProviders_Scheme",
+            "IdentityProviders",
+            "Scheme",
+            unique: true);
+    }
+
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropTable(
+            "IdentityProviders");
+
+        migrationBuilder.DropIndex(
+            "IX_IdentityResourceProperties_IdentityResourceId_Key",
+            "IdentityResourceProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_IdentityResourceClaims_IdentityResourceId_Type",
+            "IdentityResourceClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientScopes_ClientId_Scope",
+            "ClientScopes");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientRedirectUris_ClientId_RedirectUri",
+            "ClientRedirectUris");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientProperties_ClientId_Key",
+            "ClientProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
+            "ClientPostLogoutRedirectUris");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientIdPRestrictions_ClientId_Provider",
+            "ClientIdPRestrictions");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientGrantTypes_ClientId_GrantType",
+            "ClientGrantTypes");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientCorsOrigins_ClientId_Origin",
+            "ClientCorsOrigins");
+
+        migrationBuilder.DropIndex(
+            "IX_ClientClaims_ClientId_Type_Value",
+            "ClientClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiScopeProperties_ScopeId_Key",
+            "ApiScopeProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiScopeClaims_ScopeId_Type",
+            "ApiScopeClaims");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceScopes_ApiResourceId_Scope",
+            "ApiResourceScopes");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceProperties_ApiResourceId_Key",
+            "ApiResourceProperties");
+
+        migrationBuilder.DropIndex(
+            "IX_ApiResourceClaims_ApiResourceId_Type",
+            "ApiResourceClaims");
+
+        migrationBuilder.DropColumn(
+            "CibaLifetime",
+            "Clients");
+
+        migrationBuilder.DropColumn(
+            "CoordinateLifetimeWithUserSession",
+            "Clients");
+
+        migrationBuilder.DropColumn(
+            "PollingInterval",
+            "Clients");
+
+        migrationBuilder.DropColumn(
+            "Created",
+            "ApiScopes");
+
+        migrationBuilder.DropColumn(
+            "LastAccessed",
+            "ApiScopes");
+
+        migrationBuilder.DropColumn(
+            "NonEditable",
+            "ApiScopes");
+
+        migrationBuilder.DropColumn(
+            "Updated",
+            "ApiScopes");
+
+        migrationBuilder.DropColumn(
+            "RequireResourceIndicator",
+            "ApiResources");
+
+        migrationBuilder.AlterColumn<string>(
+            "RedirectUri",
+            "ClientRedirectUris",
+            "nvarchar(2000)",
+            maxLength: 2000,
+            nullable: false,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(400)",
+            oldMaxLength: 400);
+
+        migrationBuilder.AlterColumn<string>(
+            "PostLogoutRedirectUri",
+            "ClientPostLogoutRedirectUris",
+            "nvarchar(2000)",
+            maxLength: 2000,
+            nullable: false,
+            oldClrType: typeof(string),
+            oldType: "nvarchar(400)",
+            oldMaxLength: 400);
+
+        migrationBuilder.CreateIndex(
+            "IX_IdentityResourceProperties_IdentityResourceId",
+            "IdentityResourceProperties",
+            "IdentityResourceId");
+
+        migrationBuilder.CreateIndex(
+            "IX_IdentityResourceClaims_IdentityResourceId",
+            "IdentityResourceClaims",
+            "IdentityResourceId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientScopes_ClientId",
+            "ClientScopes",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientRedirectUris_ClientId",
+            "ClientRedirectUris",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientProperties_ClientId",
+            "ClientProperties",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientPostLogoutRedirectUris_ClientId",
+            "ClientPostLogoutRedirectUris",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientIdPRestrictions_ClientId",
+            "ClientIdPRestrictions",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientGrantTypes_ClientId",
+            "ClientGrantTypes",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientCorsOrigins_ClientId",
+            "ClientCorsOrigins",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ClientClaims_ClientId",
+            "ClientClaims",
+            "ClientId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiScopeProperties_ScopeId",
+            "ApiScopeProperties",
+            "ScopeId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiScopeClaims_ScopeId",
+            "ApiScopeClaims",
+            "ScopeId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceScopes_ApiResourceId",
+            "ApiResourceScopes",
+            "ApiResourceId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceProperties_ApiResourceId",
+            "ApiResourceProperties",
+            "ApiResourceId");
+
+        migrationBuilder.CreateIndex(
+            "IX_ApiResourceClaims_ApiResourceId",
+            "ApiResourceClaims",
+            "ApiResourceId");
     }
 }

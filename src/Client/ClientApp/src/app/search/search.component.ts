@@ -6,30 +6,33 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent {
-public searchQuery : string ;
-public lastSearchQuery : string;
-public searched = false;
-  constructor() { }
+  public searchQuery: string;
+  public lastSearchQuery: string;
+  public searched = false;
+
+  constructor() {
+  }
+
   @Input()
-  public search = (searchQuery : string):void=>{
+  public search = (searchQuery: string): void => {
 
   }
-  public privateSearch=():void=>{
-    if(this.searchQuery == this.lastSearchQuery || !this.searchQuery)
+  public privateSearch = (): void => {
+    if (this.searchQuery == this.lastSearchQuery || !this.searchQuery)
       return;
     this.lastSearchQuery = this.searchQuery;
     this.search(this.searchQuery);
     this.searched = true;
   }
 
-  public privateClear = ():void=> {
+  public privateClear = (): void => {
     this.searchQuery = "";
     this.searched = false;
     this.clear();
   }
 
   @Input()
-  public clear = ():void=>{
+  public clear = (): void => {
     this.searchQuery = "";
   }
 }

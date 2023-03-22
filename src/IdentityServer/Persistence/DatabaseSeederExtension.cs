@@ -12,8 +12,8 @@ public static class DatabaseSeederExtension
         {
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-            await roleManager.CreateAsync(new() { Name = "Admin" });
-            await roleManager.CreateAsync(new() { Name = "User" });
+            await roleManager.CreateAsync(new Role { Name = "Admin" });
+            await roleManager.CreateAsync(new Role { Name = "User" });
             var user = new User
             {
                 UserName = "admin",
@@ -24,10 +24,7 @@ public static class DatabaseSeederExtension
                 SecurityStamp = new Guid().ToString()
             };
             var result = await userManager.CreateAsync(user, "Password1");
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(user, "Admin");
-            }
+            if (result.Succeeded) await userManager.AddToRoleAsync(user, "Admin");
         }
         catch (Exception ex)
         {

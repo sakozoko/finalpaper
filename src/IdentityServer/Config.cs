@@ -12,14 +12,14 @@ public static class Config
             .AddOperationalStore(options =>
             {
                 options.ConfigureDbContext =
-                    b=>b.UseSqlServer(connectionString,
-                        sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
+                    b => b.UseSqlServer(connectionString,
+                        sql => sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
             })
             .AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext =
                     b => b.UseSqlServer(connectionString,
-                        sql=>sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
+                        sql => sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
             })
             .AddAspNetIdentity<User>()
             .AddDeveloperSigningCredential();

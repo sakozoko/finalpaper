@@ -4,19 +4,19 @@ using Azure.Security.KeyVault.Secrets;
 using WebApiApplication;
 using WebApiInfrastructure;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]!), new DefaultAzureCredential(), new SecretClientOptions()
-{
-    Retry =
+var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]!), new DefaultAzureCredential(),
+    new SecretClientOptions
     {
-        Delay= TimeSpan.FromSeconds(2),
-        MaxDelay = TimeSpan.FromSeconds(16),
-        MaxRetries = 5,
-        Mode = RetryMode.Exponential
-    }
-});
+        Retry =
+        {
+            Delay = TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+        }
+    });
 
 // Add services to the container.
 builder.Services.AddInfrastructure(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value);
@@ -28,7 +28,7 @@ builder.Services.AddAuthentication().AddJwtBearer("Bearer", opt =>
     opt.Authority = "https://identityserverfinalwork.azurewebsites.net";
     opt.Audience = "webapi";
 });
-builder.Services.AddCors(opt=>
+builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAll", builder =>
     {
@@ -46,11 +46,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    
 }
+
 app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors("AllowAll");
+app.UseSwaggerUI();
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

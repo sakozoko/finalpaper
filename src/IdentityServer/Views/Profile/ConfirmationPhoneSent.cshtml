@@ -12,7 +12,9 @@
             <partial name="_ValidationSummary"/>
             <div class="card">
                 <div class="card-body text-center">
-                    <div class="justify-content-center align-items-center bg-primary rounded-circle p-4 d-inline-flex m-3"><i class="fas fa-sms" style="font-size: 48px;"></i></div>
+                    <div class="justify-content-center align-items-center bg-primary rounded-circle p-4 d-inline-flex m-3">
+                        <i class="fas fa-sms" style="font-size: 48px;"></i>
+                    </div>
                     <div class="row d-flex justify-content-center">
                         @if (Model.IsSuccessful)
                         {
@@ -26,10 +28,14 @@
                             <form asp-action="ConfirmPhone">
                                 <input class="form-control" type="hidden" asp-for="ReturnUrl">
                                 <div class="row d-flex justify-content-center">
-                                    <div class="col-8 col-xxl-6 my-2"><input class="form-control" type="text" placeholder="Код підтвердження" autofocus="" required="" asp-for="Code" minlength="6" maxlength="6"></div>
-                                    <div class="col-xl-12 card-footer bg-white"><button class="btn btn-primary" type="submit">Підтвердити</button></div>
+                                    <div class="col-8 col-xxl-6 my-2">
+                                        <input class="form-control" type="text" placeholder="Код підтвердження" autofocus="" required="" asp-for="Code" minlength="6" maxlength="6">
+                                    </div>
+                                    <div class="col-xl-12 card-footer bg-white">
+                                        <button class="btn btn-primary" type="submit">Підтвердити</button>
+                                    </div>
                                 </div>
-                                </form>
+                            </form>
                         </div>
                     </div>
                 </div>

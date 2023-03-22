@@ -1,5 +1,5 @@
 <div class="container-fluid mt-2">
-  <app-search [search]="search" [clear]="clear"></app-search>
+  <app-search [clear]="clear" [search]="search"></app-search>
   <div class="card my-2">
     <div class="card-header">
       <h3>Останні події</h3>
@@ -10,14 +10,14 @@
           <div class="spinner-border" role="status">
             <span class="sr-only"></span>
           </div>
-        </div>   
+        </div>
       </div>
       <div *ngIf="lastNews.length===0 && !loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
         <h6>Немає подій</h6>
       </div>
       <div *ngIf="lastNews.length>0 && !loading">
         <div *ngFor="let news of lastNews" class="btn card bg-opacity-10 p-1 px-3 my-3 text-start">
-          <a href="{{news.link}}" class="text-decoration-none text-dark">
+          <a class="text-decoration-none text-dark" href="{{news.link}}">
             <h6>{{news.title}}</h6>
             <div class="card-link">{{news.dateTime}}</div>
           </a>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div *ngIf="!loading" class="card-footer">
-      <app-pagination [paginationService]="paginationService"> </app-pagination>
+      <app-pagination [paginationService]="paginationService"></app-pagination>
     </div>
   </div>
 
