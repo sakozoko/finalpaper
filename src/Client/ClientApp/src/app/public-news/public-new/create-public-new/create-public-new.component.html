@@ -1,22 +1,24 @@
 <h3 mat-dialog-title> Створення нової новини</h3>
 <form (ngSubmit)="form.valid && onSubmit()" [formGroup]="form">
   <mat-dialog-content>
-    <div class="modal-body">
-      <div class="mb-1">
-        <label class="form-label" for="title">Заголовок</label>
-        <input class="form-control" formControlName="title" id="title" type="text">
-      </div>
-      <div class="mb-1">
-        <label class="form-label" for="description">Опис</label>
-        <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
-      </div>
-      <div class="mb-1">
-        <label class="form-label" for="image">Зображення</label>
-        <input class="form-control" formControlName="image" id="image" type="text">
-      </div>
-    </div>
+      <mat-form-field class="d-flex pb-1">
+        <mat-label>Заголовок</mat-label>
+        <input matInput formControlName="title" type="text">
+        <mat-error *ngIf="form.value.title">Мінімальна довжина заголовка 10, максимальна 100</mat-error>
+      </mat-form-field>
+      <mat-form-field  class="d-flex pb-1">
+        <mat-label>Опис</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+        <mat-error *ngIf="form.value.description">Мінімальна довжина опису 50, максимальна 1000</mat-error>
+      </mat-form-field>
+      <mat-form-field class="d-flex">
+        <mat-label>Посилання на зображення</mat-label>
+        <input matInput formControlName="image" type="text">
+        <mat-error *ngIf="form.value.image">Некоректне посилання на зображення</mat-error>
+      </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button class="btn btn-success mx-2" mat-dialog-close type="submit">Зберегти</button>
+    <button class="btn btn-success mx-2" type="submit">Зберегти</button>
     <button class="btn btn-danger" mat-dialog-close type="button">Назад</button>
   </mat-dialog-actions>
+</form>

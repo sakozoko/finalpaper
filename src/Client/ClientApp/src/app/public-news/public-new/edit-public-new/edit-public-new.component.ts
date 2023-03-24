@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {PublicNewsRepositoryService} from 'src/app/repositories/public-news-repository.service';
 import {publicNew} from '../public-new.component';
@@ -16,6 +16,8 @@ export interface DialogData {
 })
 export class EditPublicNewComponent implements OnInit {
   form: FormGroup;
+  minDate = new Date(2020, 0, 1);
+  maxDate = new Date(2035, 0, 1);
 
   constructor(private formBuilder: FormBuilder,
               private _publicNewsRepository: PublicNewsRepositoryService,
@@ -24,13 +26,13 @@ export class EditPublicNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      title: this.data.publicNew.title,
-      description: this.data.publicNew.description,
-      image: this.data.publicNew.imageUrl,
-      author: this.data.publicNew.author,
-      date: this.data.publicNew.createdAt
-    })
+    this.form = new FormGroup({
+      title: new FormControl(this.data.publicNew.title, [Validators.required, Validators.maxLength(100), Validators.minLength(10)]),
+      description: new FormControl(this.data.publicNew.description, [Validators.required, Validators.maxLength(5000), Validators.minLength(50)]),
+      image: new FormControl(this.data.publicNew.imageUrl, [Validators.pattern("(http)?s?:?(\/\/[^\"']*\.(?:png|jpg|jpeg|gif|png|svg))")]),
+      author : new FormControl(this.data.publicNew.author, [Validators.required, Validators.maxLength(30), Validators.minLength(4)]),
+      date : new FormControl(this.data.publicNew.createdAt, [Validators.required, Validators.maxLength(30), Validators.minLength(4)])
+    });
   }
 
   onSubmit() {
@@ -42,5 +44,6 @@ export class EditPublicNewComponent implements OnInit {
     this._publicNewsRepository.editPublicNew(this.data.publicNew).subscribe(result => {
       this.data.onEdited(result);
     });
+    this.dialogRef.close();
   }
 }

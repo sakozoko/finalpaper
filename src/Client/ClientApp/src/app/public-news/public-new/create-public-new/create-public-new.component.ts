@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {publicNewCreateModel, PublicNewsRepositoryService} from 'src/app/repositories/public-news-repository.service';
 import {publicNew} from '../public-new.component';
@@ -34,10 +34,10 @@ export class CreatePublicNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      title: "",
-      description: "",
-      image: "",
+    this.form = new FormGroup({
+      title : new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(10)]),
+      description : new FormControl('', [Validators.required, Validators.maxLength(5000), Validators.minLength(50)]),
+      image : new FormControl('', [Validators.pattern("(http)?s?:?(\/\/[^\"']*\.(?:png|jpg|jpeg|gif|png|svg))")]),
     });
   }
 }

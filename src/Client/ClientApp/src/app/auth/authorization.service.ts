@@ -17,7 +17,7 @@ export class AuthorizationService {
     this.oidcSecurityService.checkSessionChanged$.subscribe((isAuthenticated) => {
       this.oidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
         this.isAuthenticate = isAuthenticated.isAuthenticated;
-        this.isAuthorize = isAuthenticated.userData?.role == this.lastRole;
+        this.isAuthorize = (isAuthenticated.userData?.role == this.lastRole ) && this.isAuthenticate;
       });
     });
   }
@@ -44,7 +44,7 @@ export class AuthorizationService {
   private isAuthorizedFunc = (role: string): boolean => {
     if (this.lastRole != role) {
       this.oidcSecurityService.getUserData().subscribe((userData) => {
-        this.isAuthorize = userData.role == role;
+        this.isAuthorize = userData?.role == role;
       });
     }
     this.lastRole = role;

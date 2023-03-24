@@ -14,11 +14,11 @@ import {AuthorizationService} from '../auth/authorization.service';
 })
 export class PublicNewsComponent implements OnInit {
   @Input() public homeViewed: boolean = false;
-  public publicNews: publicNew[];
+  public publicNews: publicNew[] = [];
   public modalRef: MatDialogRef<CreatePublicNewComponent>;
   private _page: number;
   private _pageSize: number = 5;
-
+  loading : boolean = true;
   constructor(public activatedRoute: ActivatedRoute,
               public paginationService: PaginationService,
               public publicNewsRepository: PublicNewsRepositoryService,
@@ -70,12 +70,15 @@ export class PublicNewsComponent implements OnInit {
 
     this.publicNewsRepository.getPublicNews(this._page, this._pageSize).subscribe(result => {
       this.publicNews = result;
+      this.loading = false;
       this.publicNewsRepository.getPublicNewsCount().subscribe(count => {
         this.paginationService.setPagination(count, this._pageSize, this._page);
         this.paginationService.currentPageChanged = (num) => {
+          this.loading = true;
           this._page = num;
           this.publicNewsRepository.getPublicNews(num, this._pageSize).subscribe(result => {
             this.publicNews = result;
+            this.loading = false;
           });
         }
       });

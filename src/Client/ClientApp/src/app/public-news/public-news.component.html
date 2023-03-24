@@ -8,14 +8,27 @@
       <h3 *ngIf="homeViewed" class="card-title">Останні новини від користувачів</h3>
       <h3 *ngIf="!homeViewed" class="card-title">Новини від користувачів</h3>
     </div>
-    <div class="card-body">
-      <div *ngFor="let publicNew of publicNews">
-        <app-public-new [fullViewed]="false" [onDeleted]="onDeleted" [publicNew]="publicNew"></app-public-new>
+    <div class="card-body" >
+      <div *ngIf="!loading">
+        <div  *ngFor="let publicNew of publicNews">
+          <app-public-new [fullViewed]="false" [onDeleted]="onDeleted" [publicNew]="publicNew"></app-public-new>
+        </div>
+      </div>
+      <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
+        <div class="d-flex justify-content-center p-5">
+          <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!loading && publicNews.length===0" class="bg-secondary bg-opacity-10 p-3">
+        <h6>Новин немає, створіть їх</h6>
       </div>
     </div>
+
     <div class="card-footer">
-      <app-pagination *ngIf="!homeViewed" [paginationService]="paginationService"></app-pagination>
-      <a *ngIf="homeViewed" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
+      <app-pagination *ngIf="!homeViewed && !loading && publicNews.length!==0" [paginationService]="paginationService"></app-pagination>
+      <a *ngIf="homeViewed && !loading && paginationService.getPagination().hasNext()" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
     </div>
   </div>
 </div>

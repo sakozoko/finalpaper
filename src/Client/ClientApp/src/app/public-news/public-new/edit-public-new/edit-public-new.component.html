@@ -1,38 +1,43 @@
 <h4 class="modal-title pull-left" mat-dialog-title>Редагування новини</h4>
 <form (ngSubmit)="form.valid && onSubmit()" [formGroup]="form">
-  <mat-dialog-content class="mat-input-underline">
-    <div class="mb-1">
-      <label class="form-label" for="title">Заголовок</label>
-      <input class="form-control" formControlName="title" id="title" type="text">
-    </div>
-    <div class="mb-1">
-      <label class="form-label" for="description">Опис</label>
-      <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
-    </div>
-    <div class="mb-1">
-      <label class="form-label" for="image">Зображення</label>
-      <input class="form-control" formControlName="image" id="image" type="text">
-    </div>
-    <div class="mb-1">
-      <label class="form-label" for="author">Автор</label>
-      <input class="form-control" formControlName="author" id="author" type="text">
-    </div>
-    <div class="mb-1">
-      <label class="form-label" for="createdAt">Дата створення</label>
+  <mat-dialog-content>
+    <mat-form-field class="d-flex mb-1">
+      <mat-label>Заголовок</mat-label>
+        <input matInput formControlName="title" type="text">
+        <mat-error *ngIf="form.value.title">Мінімальна довжина заголовка 10, максимальна 100</mat-error>
+      </mat-form-field>
+      <mat-form-field  class="d-flex pb-1">
+        <mat-label>Опис</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+        <mat-error *ngIf="form.value.description">Мінімальна довжина опису 50, максимальна 1000</mat-error>
+      </mat-form-field>
+      <mat-form-field class="d-flex pb-1">
+        <mat-label>Посилання на зображення</mat-label>
+        <input matInput formControlName="image" type="text">
+        <mat-error *ngIf="form.value.image">Некоректне посилання на зображення</mat-error>
+      </mat-form-field>
+    <mat-form-field class="d-flex pb-1">
+      <mat-label>Автор</mat-label>
+      <input matInput formControlName="author" type="text">
+      <mat-error *ngIf="form.value.author">Ім`я автора мінімум 4 букви</mat-error>
+    </mat-form-field>
+    <mat-form-field class="d-flex pb-1">
+      <mat-label>Дата створення</mat-label>
       <div class="row align-items-center">
         <div class="col-8 col-sm-10 col-md-11">
-          <input [ngxMatDatetimePicker]="picker" class="form-control" formControlName="date" id="createdAt" matInput
-                 type="text">
+          <input [ngxMatDatetimePicker]="picker" formControlName="date" id="createdAt" matInput
+                 type="text" [min]="minDate" [max]="maxDate">
         </div>
         <div class="col-4 col-sm-2 col-md-1">
           <mat-datepicker-toggle [for]="$any(picker)" matSuffix></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #picker [touchUi]="true"></ngx-mat-datetime-picker>
         </div>
       </div>
-    </div>
+      <mat-error *ngIf="form.value.createdAt">Не правильна дата</mat-error>
+    </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button class="btn btn-danger mx-2" mat-dialog-close type="submit">Зберегти</button>
+    <button class="btn btn-danger mx-2" type="submit">Зберегти</button>
     <button class="btn btn-success" mat-dialog-close type="button">Назад</button>
   </mat-dialog-actions>
 </form>
