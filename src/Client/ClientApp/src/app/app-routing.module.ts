@@ -10,6 +10,8 @@ import {PublicNewsComponent} from './public-news/public-news.component';
 import {PublicNewComponent} from './public-news/public-new/public-new.component';
 import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
 import {HomeComponent} from './home/home.component';
+import { HelpRequestsComponent } from './help-requests/help-requests.component';
+import { AdminGuard } from './auth/admin.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -21,10 +23,11 @@ const routes: Routes = [
   {path: 'last-news', component: LastNewsComponent},
   {path: 'get-help', component: GetHelpComponent, canActivate: [AuthGuard]},
   {path: 'help-requests', component: LastHelpRequestsComponent, canActivate: [AuthGuard]},
+  {path: 'admin/help-requests', component: HelpRequestsComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

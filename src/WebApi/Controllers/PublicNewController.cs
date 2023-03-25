@@ -2,6 +2,7 @@ using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Features;
 using WebApi.InputModels.PublicNew;
 using WebApiApplication.Features.PublicNewFeatures.Commands;
 using WebApiApplication.Features.PublicNewFeatures.Queries;
@@ -12,10 +13,12 @@ namespace WebApi.Controllers;
 [Route("api/publicnew")]
 public class PublicNewController : ControllerBase
 {
+    private readonly UserClaimsHandler _userClaimsRepository;
     private readonly IMediator _mediator;
 
-    public PublicNewController(IMediator mediator)
+    public PublicNewController(IMediator mediator, UserClaimsHandler userClaimsRepository)
     {
+        _userClaimsRepository = userClaimsRepository;
         _mediator = mediator;
     }
     
@@ -62,6 +65,8 @@ public class PublicNewController : ControllerBase
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] CreatePublicNewInputModel inputModel)
     {
+        var username = await _userClaimsRepository.GetClaimAsync(Request.Headers["Authorization"]!, "preferred_username");
+        if(username == null) return BadRequest("User not found");
         var command = new CreatePublicNewCommand
         {
             Title = inputModel.Title,
@@ -69,7 +74,7 @@ public class PublicNewController : ControllerBase
             ImageUrl = inputModel.ImageUrl,
             UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
                 .FirstOrDefault()!),
-            Author = User.Claims.Where(x=>x.Type=="username").Select(x=>x.Value).FirstOrDefault()!
+            Author = username.Value
         };
         var result = await _mediator.Send(command);
         return Ok(result);

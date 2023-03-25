@@ -11,6 +11,7 @@ import {environment} from '../environment/environment';
 export class NavComponent {
   @Input() public title: string;
   @Input() public isAuthorized: boolean | undefined;
+  @Input() public isAdmin: boolean | undefined;
   collapsed = true;
   collapsedPc = true;
 

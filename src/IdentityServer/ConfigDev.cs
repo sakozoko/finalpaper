@@ -16,10 +16,8 @@ public static class ConfigDev
             new IdentityResources.Profile(),
             new IdentityResources.Email(),
             new IdentityResource("roles", "Your role(s)", new[] { "role" }),
-            new IdentityResource("phoneNumberVerified", "Your phone number confirmation status",
-                new[] { JwtClaimTypes.PhoneNumberVerified }),
-            new IdentityResource("emailVerified", "Your email confirmation status",
-                new[] { JwtClaimTypes.EmailVerified }),
+            new IdentityResource("phoneNumber", "Your phone number",
+                new[] { JwtClaimTypes.PhoneNumber, JwtClaimTypes.PhoneNumberVerified}),
             new IdentityResource("username", "Your username", new[] { "username" })
         };
 
@@ -40,11 +38,11 @@ public static class ConfigDev
                 AllowedGrantTypes = GrantTypes.Code,
                 RequirePkce = false,
                 RequireClientSecret = false,
-                RedirectUris = { "https://localhost:5002/sign-in-oidc-callback" },
-                PostLogoutRedirectUris = { "https://localhost:5002/sign-out-oidc-callback" },
-                AllowedCorsOrigins = { "https://localhost:5002" },
+                RedirectUris = { "https://clientfinalwork.azurewebsites.net/sign-in-oidc-callback" },
+                PostLogoutRedirectUris = { "https://clientfinalwork.azurewebsites.net/sign-out-oidc-callback" },
+                AllowedCorsOrigins = { "https://clientfinalwork.azurewebsites.net" },
                 AllowedScopes =
-                    { "openid", "profile", "email", "roles", "phoneNumberVerified", "emailVerified", "webapi" },
+                    { "openid", "profile", "email", "roles", "webapi", "phoneNumber" },
                 AllowOfflineAccess = true
             }
         };
@@ -55,7 +53,7 @@ public static class ConfigDev
             new ApiResource("webapi", "Web API")
             {
                 Scopes = { "webapi" },
-                UserClaims = { "role", JwtClaimTypes.PhoneNumberVerified, JwtClaimTypes.EmailVerified, "username" }
+                UserClaims = { "role", JwtClaimTypes.PhoneNumberVerified, JwtClaimTypes.EmailVerified, JwtClaimTypes.PhoneNumber, JwtClaimTypes.Email, JwtClaimTypes.Role, JwtClaimTypes.Name, JwtClaimTypes.GivenName, JwtClaimTypes.FamilyName }
             }
         };
 
@@ -65,8 +63,7 @@ public static class ConfigDev
             new ApiScope("webapi", "Web API")
         };
 
-    public static IServiceCollection AddIdentityConfigurationA(this IServiceCollection services,
-        string connectionString)
+    public static IServiceCollection AddIdentityConfigurationA(this IServiceCollection services)
     {
         services.AddIdentityServer()
             .AddInMemoryClients(Clients)
@@ -82,7 +79,9 @@ public static class ConfigDev
     {
         using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
         {
-            serviceScope?.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+            var persistedContext = serviceScope?.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
+            persistedContext?.Database.Migrate();
+
 
             var context = serviceScope?.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
             if (context is null) return;

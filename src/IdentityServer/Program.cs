@@ -62,7 +62,7 @@ builder.Services.AddIdentity<User, Role>(options =>
     .AddEntityFrameworkStores<IdentityServerContext>()
     .AddUserManager<UserManager>()
     .AddTokenProvider<DataProtectorTokenProvider<User>>("Default");
-
+//builder.Services.AddIdentityConfigurationA();
 builder.Services.AddIdentityConfiguration(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value);
 builder.Services.AddAuthentication().AddGoogle("Google", "Google", opt =>
 {
@@ -82,8 +82,8 @@ builder.Services.AddCors(opt =>
     });
 });
 
-var app = builder.Build();
 
+var app = builder.Build();
 
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();

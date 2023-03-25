@@ -66,15 +66,31 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-
-
+public getHelpRequsts(page:number, pageSize:number){
+  let subj = new Subject<HelpRequestModel[]>();
+  this._oidcSecurityService.getAccessToken().subscribe(token => {
+    let header = {'Authorization': 'Bearer ' + token};
+    this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/getall?page=' + page + '&pageSize=' + pageSize, {headers: header}).subscribe(result => {
+      subj.next(result);
+    });
+  });
+  return subj.asObservable();
+}
+public getHelpRequestCount(){
+  let subj = new Subject<number>();
+  this._oidcSecurityService.getAccessToken().subscribe(token => {
+    let header = {'Authorization': 'Bearer ' + token};
+    this._httpClient.get<number>(environment.api + '/api/helprequest/getall/count', {headers: header}).subscribe(result => {
+      subj.next(result);
+    });
+  });
+  return subj.asObservable();
+}
 }
 
 export class HelpRequestRequestModel {
   title: string;
   description: string;
-  userId: string;
-  emailConfirmed: boolean;
 }
 
 export class HelpRequestModel {

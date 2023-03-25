@@ -78,9 +78,9 @@
         <a [ngClass]="activatedRouteContains('get-help')?'disabled active':''" [routerLink]="['get-help']"
            class="nav-link">Отримати допомогу</a>
       </li>
-      <li *ngIf="isAuthorized" class="nav-item col-12">
-        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''"
-           [routerLink]="['help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+      <li *ngIf="isAdmin" class="nav-item col-12">
+        <a [ngClass]="activatedRouteContains('admin/help-requests')?'disabled active':''"
+           [routerLink]="['admin/help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>
@@ -106,9 +106,9 @@
         <a (click)="collapsed=true" [ngClass]="activatedRouteContains('get-help')?'disabled active':''"
            [routerLink]="['get-help']" aria-controls="collapseNavBar" class="nav-link">Отримати допомогу</a>
       </li>
-      <li *ngIf="isAuthorized" class="nav-item col-12 mb-2">
-        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('help-requests')?'disabled active':''"
-           [routerLink]="['help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+      <li *ngIf="isAdmin" class="nav-item col-12 mb-2">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('admin/helprequests')?'disabled active':''"
+           [routerLink]="['admin/help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>

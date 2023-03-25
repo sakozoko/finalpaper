@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using WebApi.Features;
 using WebApiApplication;
 using WebApiInfrastructure;
 
@@ -22,11 +23,11 @@ var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]
 // Add services to the container.
 builder.Services.AddInfrastructure(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value);
 builder.Services.AddApplication();
-
+builder.Services.AddScoped(typeof(UserClaimsHandler));
 builder.Services.AddControllers();
 builder.Services.AddAuthentication().AddJwtBearer("Bearer", opt =>
 {
-    opt.Authority = "https://identityserverfinalwork.azurewebsites.net";
+    opt.Authority = builder.Configuration["Authority"];
     opt.Audience = "webapi";
 });
 

@@ -1,6 +1,7 @@
 <div class="container-fluid p-0">
   <app-nav [isAuthorized]="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated"
-           [title]="title"></app-nav>
+           [title]="title"
+           [isAdmin]="isAdmin"></app-nav>
 </div>
 <app-footer [title]="title"></app-footer>
 

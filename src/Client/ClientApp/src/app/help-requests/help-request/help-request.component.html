@@ -1,0 +1,68 @@
+  
+  <ng-template #deletingModal>
+      <h4 mat-dialog-title >Видалення запиту про допомогу</h4>
+    <mat-dialog-content>
+      <p>Ви дійсно бажаєте цей запит?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button (click)="modalRef.close();deleteRequest();" class="btn btn-danger mx-2">Так</button>
+      <button (click)="modalRef.close();" class="btn btn-success">Ні</button>
+    </mat-dialog-actions>
+  </ng-template>
+  <div class="card my-3">
+    <div class="card-body">
+      <div class="float-end d-none d-sm-block">
+        <div class="row">
+          <div class="col px-1">
+            <div [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"
+                 ngbTooltip="Відповісти"
+                 placement="top">
+                 <i class="fa-solid fa-reply"></i>
+            </div>
+          </div>
+          <div class="col px-1">
+            <div (click)="openModal(deletingModal)" [closeDelay]="200" [openDelay]="200" class="btn btn-outline-danger"
+                 ngbTooltip="Видалити"
+                 placement="top">
+              <i class="fas fa-trash-alt"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <h5 class="card-title">{{helpRequest.title}}</h5>
+      <p class="card-text">{{helpRequest.description}}</p>
+      <div class="card-text">
+        <small class="text-muted">{{helpRequest.createdAt | date:'dd.MM.yyyy HH:mm:ss'}}</small>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-8">
+          <p>Статус:
+            <p class="m-0">Статус: {{getUkranianStatus()}}</p>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="row align-items-center">
+            <div class="col-6 col-sm-12">
+              <div [routerLink]="['/public-new/'+helpRequest.id]" class="btn btn-secondary card-link float-sm-end">Читати
+              </div>
+            </div>
+            <!-- <div *ngIf="authorizationService.isAdmin() " class="col-6 d-sm-none float-end">
+              <div class="row text-end">
+                <div class="col px-1">
+                  <div (click)="openEditModal()" class="btn btn-outline-dark">
+                    <i class="fas fa-edit"></i>
+                  </div>
+                </div>
+                <div class="col px-1">
+                  <div (click)="openModal(deletingModal)" class="btn btn-outline-danger">
+                    <i class="fas fa-trash-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

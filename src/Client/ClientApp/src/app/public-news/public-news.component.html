@@ -28,7 +28,7 @@
 
     <div class="card-footer">
       <app-pagination *ngIf="!homeViewed && !loading && publicNews.length!==0" [paginationService]="paginationService"></app-pagination>
-      <a *ngIf="homeViewed && !loading && paginationService.getPagination().hasNext()" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
+      <a *ngIf="homeViewed && !loading && paginationService.getPagination()?.hasNext()" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
     </div>
   </div>
 </div>

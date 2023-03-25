@@ -12,7 +12,7 @@ import {environment} from '../environment/environment';
       redirectUrl: environment.clientUrl + '/sign-in-oidc-callback',
       postLogoutRedirectUri: environment.clientUrl + '/sign-out-oidc-callback',
       clientId: 'webapp',
-      scope: 'openid profile offline_access roles emailVerified phoneNumberVerified webapi', // 'openid profile offline_access ' + your scopes
+      scope: 'openid profile offline_access roles webapi email phoneNumber', // 'openid profile offline_access ' + your scopes
       responseType: 'code',
       silentRenew: true,
       useRefreshToken: true,

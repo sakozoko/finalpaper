@@ -48,9 +48,6 @@ export class GetHelpComponent implements OnInit {
     let helpRequest = new HelpRequestRequestModel();
     helpRequest.title = this.HelpRequestForm.value.title ?? '';
     helpRequest.description = this.HelpRequestForm.value.description ?? '';
-    helpRequest.emailConfirmed = this.CanSendRequest;
-    this.OidcSecurityService.checkAuth().subscribe(userdata => {
-      helpRequest.userId = userdata.userData.sub;
       this.helpRequestRepository.createHelpRequest(helpRequest).subscribe(result => {
         this.reloadForm.next(true);
         this.RequestResultMessage = 'Ваша заявка відправлена. Номер вашої заявки ' + result;
@@ -60,8 +57,6 @@ export class GetHelpComponent implements OnInit {
         this.RequestResultMessage = 'Помилка відправки заявки. Спробуйте пізніше';
         this.SendingRequest = false;
       });
-    });
-
   }
 
 }

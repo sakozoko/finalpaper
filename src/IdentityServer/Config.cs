@@ -23,8 +23,7 @@ public static class Config
                         sql => sql.MigrationsAssembly(typeof(Program).GetTypeInfo().Assembly.GetName().Name));
             })
             .AddAspNetIdentity<User>()
-            .AddDeveloperSigningCredential()
-            .AddProfileService<ProfileService>();
+            .AddDeveloperSigningCredential();
         return services;
     }
 }

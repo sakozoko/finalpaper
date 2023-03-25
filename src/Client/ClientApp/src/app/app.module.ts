@@ -32,6 +32,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
+import { HelpRequestsComponent } from './help-requests/help-requests.component';
+import { HelpRequestComponent } from './help-requests/help-request/help-request.component';
+import { AdminGuard } from './auth/admin.guard';
 
 @NgModule({
   declarations: [
@@ -51,6 +54,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     LastHelpRequestComponent,
     EditPublicNewComponent,
     CreatePublicNewComponent,
+    HelpRequestsComponent,
+    HelpRequestComponent,
 
   ],
   imports: [
@@ -70,7 +75,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatInputModule,
     MatDialogModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
