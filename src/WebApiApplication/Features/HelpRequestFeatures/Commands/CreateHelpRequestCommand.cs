@@ -10,6 +10,8 @@ public class CreateHelpRequestCommand : IRequest<Guid>
 {
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
+    public string Username { get; set; } = default!;
+    public string UserEmail { get; set; } = default!;
     public Guid UserId { get; set; }
     public bool EmailConfirmed { get; set; }
 
@@ -19,9 +21,11 @@ public class CreateHelpRequestCommand : IRequest<Guid>
         {
             RuleFor(x => x.Title).NotEmpty().WithMessage("Title is required");
             RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required");
-            RuleFor(x => x.UserId).NotEmpty().WithMessage("UserId is required");
+            RuleFor(x => x.Username).NotEmpty().WithMessage("Username is required");
+            RuleFor(x => x.UserEmail).NotEmpty().WithMessage("UserEmail is required");
             RuleFor(x => x.EmailConfirmed).NotEmpty().WithMessage("EmailConfirmed is required")
                 .Equal(true).WithMessage("Email must be confirmed");
+            RuleFor(x => x.UserId).NotEmpty().WithMessage("UserId is required");
         }
     }
 

@@ -66,21 +66,41 @@ export class HelpRequestRepositoryService {
     });
     return subj.asObservable();
   }
-public getHelpRequsts(page:number, pageSize:number){
+public getHelpRequsts(page:number, pageSize:number, status :string){
   let subj = new Subject<HelpRequestModel[]>();
   this._oidcSecurityService.getAccessToken().subscribe(token => {
     let header = {'Authorization': 'Bearer ' + token};
-    this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/getall?page=' + page + '&pageSize=' + pageSize, {headers: header}).subscribe(result => {
+    this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/getall?page=' + page + '&pageSize=' + pageSize+'&status=' + status, {headers: header}).subscribe(result => {
       subj.next(result);
     });
   });
   return subj.asObservable();
 }
-public getHelpRequestCount(){
+public getHelpRequestCount(status : string){
   let subj = new Subject<number>();
   this._oidcSecurityService.getAccessToken().subscribe(token => {
     let header = {'Authorization': 'Bearer ' + token};
-    this._httpClient.get<number>(environment.api + '/api/helprequest/getall/count', {headers: header}).subscribe(result => {
+    this._httpClient.get<number>(environment.api + '/api/helprequest/getall/count?status=' + status, {headers: header}).subscribe(result => {
+      subj.next(result);
+    });
+  });
+  return subj.asObservable();
+}
+public deleteHelpRequest(id : string){
+  let subj = new Subject<HelpRequestModel>();
+  this._oidcSecurityService.getAccessToken().subscribe(token => {
+    let header = {'Authorization': 'Bearer ' + token};
+    this._httpClient.delete<HelpRequestModel>(environment.api + '/api/helprequest/'+id, {headers: header}).subscribe(result => {
+      subj.next(result);
+    });
+  });
+  return subj.asObservable();
+}
+public answerHelpRequest(id : string, answer : string){
+  let subj = new Subject<HelpRequestModel>();
+  this._oidcSecurityService.getAccessToken().subscribe(token => {
+    let header = {'Authorization': 'Bearer ' + token};
+    this._httpClient.put<HelpRequestModel>(environment.api + '/api/helprequest/answer', {'id':id, 'answer':answer}, {headers: header}).subscribe(result => {
       subj.next(result);
     });
   });

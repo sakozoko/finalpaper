@@ -26,14 +26,19 @@ public class HelpRequestController : ControllerBase
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] CreateHelpRequestInputModel model)
     {
-        var emailConfirmed = await _userClaimsRepository.IsEmailConfirmed(Request.Headers["Authorization"].ToString().Split(" ")[1]);
+        var userClaims = await _userClaimsRepository.GetClaimsAsync(Request.Headers["Authorization"]!);
+        var emailConfirmed = bool.Parse(userClaims.FirstOrDefault(x => x.Type == "email_confirmed")?.Value!);
+        var username = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value!;
+        var userEmail = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value!;
         var command = new CreateHelpRequestCommand
         {
             Title = model.Title,
             Description = model.Description,
             UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
                 .FirstOrDefault()!),
-            EmailConfirmed = emailConfirmed
+            EmailConfirmed = emailConfirmed,
+            Username = username,
+            UserEmail = userEmail
         };
         var result = await _mediatr.Send(command);
         return Ok(result);
@@ -104,6 +109,21 @@ public class HelpRequestController : ControllerBase
     public async Task<IActionResult> GetAllCount(GetHelpRequestCountQuery query)
     {
         var result = await _mediatr.Send(query);
+        return Ok(result);
+    }
+
+    [Authorize("Admin")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(DeleteHelpRequestCommand command)
+    {
+        var result = await _mediatr.Send(command);
+        return Ok(result);
+    }
+    [Authorize("Admin")]
+    [HttpPut("answer")]
+    public async Task<IActionResult> Answer([FromBody] AnswerToHelpRequestCommand command)
+    {
+        var result = await _mediatr.Send(command);
         return Ok(result);
     }
 

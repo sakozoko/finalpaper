@@ -35,6 +35,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { HelpRequestsComponent } from './help-requests/help-requests.component';
 import { HelpRequestComponent } from './help-requests/help-request/help-request.component';
 import { AdminGuard } from './auth/admin.guard';
+import { AnswerComponent } from './help-requests/help-request/answer/answer.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { AdminGuard } from './auth/admin.guard';
     CreatePublicNewComponent,
     HelpRequestsComponent,
     HelpRequestComponent,
+    AnswerComponent,
 
   ],
   imports: [

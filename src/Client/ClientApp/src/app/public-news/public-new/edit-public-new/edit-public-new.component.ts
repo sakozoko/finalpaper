@@ -19,8 +19,7 @@ export class EditPublicNewComponent implements OnInit {
   minDate = new Date(2020, 0, 1);
   maxDate = new Date(2035, 0, 1);
 
-  constructor(private formBuilder: FormBuilder,
-              private _publicNewsRepository: PublicNewsRepositoryService,
+  constructor(private _publicNewsRepository: PublicNewsRepositoryService,
               public dialogRef: MatDialogRef<EditPublicNewComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }

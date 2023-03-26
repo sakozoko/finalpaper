@@ -1,0 +1,20 @@
+<ng-template #result>
+    <h4 mat-dialog-title> Результат</h4>
+    <mat-dialog-content>
+        <p>Відповідь успішно збережена</p>
+    </mat-dialog-content>
+</ng-template>
+<h4 mat-dialog-title> Відповідь на запит</h4>
+    <form (ngSubmit)="form.valid && onSubmit(result)" [formGroup]="form">
+    <mat-dialog-content>
+        <mat-form-field class="d-flex mb-1">
+        <mat-label>Текст відповіді</mat-label>
+            <textarea matInput formControlName="answer" rows="3"></textarea>
+            <mat-error *ngIf="form.value.answer">Мінімальна довжина відповіді 50, максимальна 5000</mat-error>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button class="btn btn-danger mx-2" type="submit">Зберегти</button>
+        <button class="btn btn-success" mat-dialog-close type="button">Назад</button>
+    </mat-dialog-actions>
+    </form>

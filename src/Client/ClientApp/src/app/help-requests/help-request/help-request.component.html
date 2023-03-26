@@ -14,7 +14,7 @@
       <div class="float-end d-none d-sm-block">
         <div class="row">
           <div class="col px-1">
-            <div [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"
+            <div (click)="openAnswerModal()" [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"
                  ngbTooltip="Відповісти"
                  placement="top">
                  <i class="fa-solid fa-reply"></i>
@@ -37,15 +37,10 @@
       </div>
       <div class="row">
         <div class="col-12 col-sm-8">
-          <p>Статус:
             <p class="m-0">Статус: {{getUkranianStatus()}}</p>
         </div>
         <div class="col-12 col-sm-4">
           <div class="row align-items-center">
-            <div class="col-6 col-sm-12">
-              <div [routerLink]="['/public-new/'+helpRequest.id]" class="btn btn-secondary card-link float-sm-end">Читати
-              </div>
-            </div>
             <!-- <div *ngIf="authorizationService.isAdmin() " class="col-6 d-sm-none float-end">
               <div class="row text-end">
                 <div class="col px-1">

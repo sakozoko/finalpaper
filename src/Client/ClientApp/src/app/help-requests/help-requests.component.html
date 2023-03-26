@@ -1,5 +1,32 @@
 <div class="container-fluid mt-2">
     <!-- <app-search *ngIf="!homeViewed" [clear]="clear" [search]="search"></app-search> -->
+    <div class="card mt-2">
+      <div class="card-header">
+        <h3 class="card-title">Фільтри</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-2">
+            <input type="text" class="form-control" [(ngModel)]="search" (keyup)="searchChanged()" placeholder="Пошук">
+          </div>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="row align-items-center">
+              <div class="col-6 col-sm-3 col-md-4">
+                <label class="form-label mb-sm-0">Статус</label>
+              </div>
+              <div class="col-8 col-sm-9 col-md-8">
+                <select class="form-select" [(ngModel)]="status" (change)="statusChanged()">
+                  <option value="new">Нові</option>
+                  <option value="processed">Оброблені</option>
+                  <option value="closed">Відхилені</option>
+                  <option value="removed">Видалені</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card my-2">
       <div class="card-header">
         <!-- <div (click)="openModal()" *ngIf="authorizationService.isAuthenticated() " class="btn btn-dark d-flex float-end">
@@ -10,7 +37,7 @@
       <div class="card-body" >
         <div *ngIf="!loading">
           <div  *ngFor="let helpRequest of helpRequests">
-            <app-help-request [helpRequest]="helpRequest"></app-help-request>    
+            <app-help-request [helpRequest]="helpRequest" [onDeleted]="onUpdated" [onAnswered]="onUpdated"></app-help-request>    
         </div>
         </div>
         <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
@@ -21,7 +48,7 @@
           </div>
         </div>
         <div *ngIf="!loading && helpRequests.length===0" class="bg-secondary bg-opacity-10 p-3">
-          <h6>Нових запитів про допомогу немає</h6>
+          <h6>Запитів немає, спробуйте змініти фільтри</h6>
         </div>
       </div>
   
