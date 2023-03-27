@@ -14,22 +14,19 @@ namespace WebApi.Controllers;
 [Route("api/helprequest")]
 public class HelpRequestController : ControllerBase
 {
-    private readonly UserClaimsHandler _userClaimsRepository;
-    private readonly IMediator _mediatr;
+        private readonly IMediator _mediatr;
 
-    public HelpRequestController(IMediator mediatr, UserClaimsHandler userClaimsRepository)
+    public HelpRequestController(IMediator mediatr)
     {
-        _userClaimsRepository = userClaimsRepository;
         _mediatr = mediatr;
     }
 
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] CreateHelpRequestInputModel model)
     {
-        var userClaims = await _userClaimsRepository.GetClaimsAsync(Request.Headers["Authorization"]!);
-        var emailConfirmed = bool.Parse(userClaims.FirstOrDefault(x => x.Type == "email_confirmed")?.Value!);
-        var username = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value!;
-        var userEmail = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value!;
+        var emailConfirmed = bool.Parse(User.Claims.FirstOrDefault(c=>c.Type == "email_verified")?.Value!);
+        var username = User.Claims.FirstOrDefault(c=>c.Type == "name")?.Value!;
+        var userEmail = User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email)?.Value!;
         var command = new CreateHelpRequestCommand
         {
             Title = model.Title,

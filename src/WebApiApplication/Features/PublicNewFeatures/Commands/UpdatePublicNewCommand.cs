@@ -14,7 +14,6 @@ public class UpdatePublicNewCommand : IRequest<PublicNewDto>
     public string Title { get; set; } = default!;
     public string Description { get; set; } = default!;
     public string? ImageUrl { get; set; }
-    public Guid UserId { get; set; }
     public string Author { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
     
@@ -25,7 +24,6 @@ public class UpdatePublicNewCommand : IRequest<PublicNewDto>
             RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.Title).NotEmpty().MaximumLength(100).MinimumLength(10);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(5000).MinimumLength(50);
-            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Author).NotEmpty().MaximumLength(30);
             RuleFor(x => x.CreatedAt).NotEmpty();
         }

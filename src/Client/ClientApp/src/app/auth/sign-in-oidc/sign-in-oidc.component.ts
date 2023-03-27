@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {OidcSecurityService} from 'angular-auth-oidc-client'
+import { Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-sign-in-oidc',
@@ -7,11 +8,11 @@ import {OidcSecurityService} from 'angular-auth-oidc-client'
   styleUrls: ['./sign-in-oidc.component.css']
 })
 export class SignInOidcComponent implements OnInit {
-  constructor(public OidcSecurityService: OidcSecurityService) {
+  constructor(public oauthService: OAuthService, public router : Router) {
 
   }
 
   ngOnInit() {
-    this.OidcSecurityService.authorize();
+    this.oauthService.initLoginFlow();
   }
 }

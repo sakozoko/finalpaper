@@ -25,7 +25,7 @@
 
 <div *ngIf="!fullViewed" class="card my-3">
   <div class="card-body">
-    <div *ngIf="authorizationService.isAdmin()" class="float-end d-none d-sm-block">
+    <div *ngIf="oauthService.hasValidAccessToken() && oauthService.getIdentityClaims()['role']=='Admin'" class="float-end d-none d-sm-block">
       <div class="row">
         <div class="col px-1">
           <div (click)="openEditModal()" [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"
@@ -69,7 +69,7 @@
             <div [routerLink]="['/public-new/'+publicNew.id]" class="btn btn-secondary card-link float-sm-end">Читати
             </div>
           </div>
-          <div *ngIf="authorizationService.isAdmin() " class="col-6 d-sm-none float-end">
+          <div *ngIf="oauthService.hasValidAccessToken() && oauthService.getIdentityClaims()['role']=='Admin'" class="col-6 d-sm-none float-end">
             <div class="row text-end">
               <div class="col px-1">
                 <div (click)="openEditModal()" class="btn btn-outline-dark">

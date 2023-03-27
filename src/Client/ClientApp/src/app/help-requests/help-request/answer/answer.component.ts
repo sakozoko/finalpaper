@@ -1,4 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
+import { Overlay } from '@angular/cdk/overlay';
 import { Component, Inject, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -21,9 +22,9 @@ export class AnswerComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AnswerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private helpRequestRepository : HelpRequestRepositoryService,
-    private dialog  : MatDialog){
-
-  }
+    private dialog  : MatDialog,
+    private overlay : Overlay) { }
+    
   onSubmit(templateRef: TemplateRef<any>){
     this.helpRequestRepository.answerHelpRequest(this.data.helpRequest.id, this.form.value.answer).subscribe(result => {
       this.data.helpRequest = result;
@@ -31,6 +32,9 @@ export class AnswerComponent implements OnInit {
         autoFocus: false,
         hasBackdrop:false,
         disableClose:true,
+        enterAnimationDuration: 150,
+        exitAnimationDuration: 500,
+        scrollStrategy: this.overlay.scrollStrategies.noop(),
         position:{top:'10px', right:'10px'}
       });
       this.dialogModal.afterOpened().subscribe(result => {

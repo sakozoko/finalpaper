@@ -1,21 +1,18 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
-import {OidcSecurityService} from "angular-auth-oidc-client";
+import { OAuthService } from "angular-oauth2-oidc";
 import {Observable} from "rxjs";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private oidcSecureService: OidcSecurityService, private router: Router) {
+  constructor(private oauthService : OAuthService, private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    this.oidcSecureService.checkAuth().subscribe((isAuthenticated) => {
-
-      if (!isAuthenticated.isAuthenticated) {
-        this.router.navigate(["/sign-in-oidc"]);
-      }
-    });
+    if(!this.oauthService.hasValidAccessToken()){
+      this.router.navigate(['/sign-in-oidc']);
+    }
     return true;
   }
 }

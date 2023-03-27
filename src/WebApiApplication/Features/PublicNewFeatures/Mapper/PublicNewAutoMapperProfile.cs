@@ -10,9 +10,10 @@ public class PublicNewAutoMapperProfile : Profile
     public PublicNewAutoMapperProfile()
     {
        CreateMap<PublicNewDto, PublicNewEntity>();
-       CreateMap<PublicNewEntity, PublicNewDto>();
+       CreateMap<PublicNewEntity, PublicNewDto>()
+            .ForMember(c=>c.CreatedAt,opt=>opt.MapFrom(x=>DateTime.Parse(x.CreatedAt.ToUniversalTime().ToString("u"))));
        CreateMap<CreatePublicNewCommand, PublicNewEntity>()
-           .ForMember(c => c.CreatedAt, opt => opt.MapFrom(x => DateTime.UtcNow));
+           .ForMember(c => c.AuthorId, opt=>opt.MapFrom(x=>x.UserId));
        
     }
 }

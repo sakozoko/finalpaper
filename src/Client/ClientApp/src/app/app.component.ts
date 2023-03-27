@@ -1,11 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { formatDate } from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
-import { environment } from './environment/environment';
-import {HelpRequestRepositoryService} from './repositories/help-request-repository.service';
-
+import { OAuthService } from 'angular-oauth2-oidc';
+import { authConfig } from './auth/auth-config.module';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,13 +11,13 @@ import {HelpRequestRepositoryService} from './repositories/help-request-reposito
 export class AppComponent implements OnInit {
   public title = 'Інформаційна Волонтерська Система';
   isAdmin = false;
-  constructor(public OidcSecurityService: OidcSecurityService,
+  constructor(public oauthService: OAuthService,
               private router: Router) {
   }
   ngOnInit(): void {
-    this.OidcSecurityService.checkAuth().subscribe((isAuthenticated) => {
-      if(isAuthenticated.isAuthenticated)
-      isAuthenticated.userData['role'] === 'Admin' ? this.isAdmin = true : this.isAdmin = false;
+    this.oauthService.configure(authConfig);
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      this.isAdmin = this.oauthService.hasValidAccessToken() && this.oauthService.getIdentityClaims()['role'] === 'Admin';
     });
   }
   

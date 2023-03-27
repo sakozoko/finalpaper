@@ -1,5 +1,5 @@
 <div class="container-fluid p-0">
-  <app-nav [isAuthorized]="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated"
+  <app-nav [isAuthorized]="oauthService.hasValidAccessToken()"
            [title]="title"
            [isAdmin]="isAdmin"></app-nav>
 </div>

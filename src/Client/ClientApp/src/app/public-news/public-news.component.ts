@@ -5,7 +5,7 @@ import {publicNew} from "./public-new/public-new.component";
 import {PublicNewsRepositoryService} from "../repositories/public-news-repository.service";
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CreatePublicNewComponent} from './public-new/create-public-new/create-public-new.component';
-import {AuthorizationService} from '../auth/authorization.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-public-news',
@@ -23,7 +23,7 @@ export class PublicNewsComponent implements OnInit {
               public paginationService: PaginationService,
               public publicNewsRepository: PublicNewsRepositoryService,
               public dialog: MatDialog,
-              public authorizationService: AuthorizationService) {
+              public oauthService : OAuthService) {
 
   }
 

@@ -49,11 +49,9 @@ export class HelpRequestsComponent implements OnInit {
       this.getHelpRequests();
     }
   private setPageAndStatus(){
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.page = params['page'] || 1;
-      this.status = params['status'] || "new";
-      this.search = params['search'] || "";
-    });
+      this.page = this.activatedRoute.snapshot.queryParams['page'] || 1;
+      this.status = this.activatedRoute.snapshot.queryParams['status'] || "new";
+      this.search = this.activatedRoute.snapshot.queryParams['search'] || "";
   }
   private getHelpRequests(){
     this.loading = true;

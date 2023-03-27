@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthorizationService} from 'src/app/auth/authorization.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 import {PublicNewsRepositoryService} from "../../repositories/public-news-repository.service";
 import {EditPublicNewComponent} from './edit-public-new/edit-public-new.component';
 
@@ -23,7 +23,7 @@ export class PublicNewComponent implements OnInit {
               private _publicNewsRepository: PublicNewsRepositoryService,
               private _activatedRoute: ActivatedRoute,
               public dialog: MatDialog,
-              public authorizationService: AuthorizationService) {
+              public oauthService : OAuthService) {
 
   }
 

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {PublicNewsRepositoryService} from 'src/app/repositories/public-news-repository.service';
+import {publicNewEditModel, PublicNewsRepositoryService} from 'src/app/repositories/public-news-repository.service';
 import {publicNew} from '../public-new.component';
 
 export interface DialogData {
@@ -40,7 +40,15 @@ export class EditPublicNewComponent implements OnInit {
     this.data.publicNew.imageUrl = this.form.value.image;
     this.data.publicNew.author = this.form.value.author;
     this.data.publicNew.createdAt = new Date(this.form.value.date);
-    this._publicNewsRepository.editPublicNew(this.data.publicNew).subscribe(result => {
+    let model = {
+      id: this.data.publicNew.id,
+      title: this.data.publicNew.title,
+      description: this.data.publicNew.description,
+      imageUrl: this.data.publicNew.imageUrl,
+      author: this.data.publicNew.author,
+      createdAt: this.data.publicNew.createdAt
+    };
+    this._publicNewsRepository.editPublicNew(model).subscribe(result => {
       this.data.onEdited(result);
     });
     this.dialogRef.close();

@@ -74,7 +74,8 @@ public class PublicNewController : ControllerBase
             ImageUrl = inputModel.ImageUrl,
             UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
                 .FirstOrDefault()!),
-            Author = username.Value
+            Author = username.Value,
+            CreatedAt = inputModel.CreatedAt ?? DateTime.UtcNow
         };
         var result = await _mediator.Send(command);
         return Ok(result);
@@ -91,9 +92,7 @@ public class PublicNewController : ControllerBase
             ImageUrl = inputModel.ImageUrl,
             Id = inputModel.Id,
             CreatedAt = inputModel.CreatedAt,
-            Author = inputModel.Author,
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!),
+            Author = inputModel.Author
         };
         var result = await _mediator.Send(command);
         return Ok(result);

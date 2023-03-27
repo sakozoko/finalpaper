@@ -11,7 +11,7 @@
         <p class="lead">Для усіх громадян України</p>
       </div>
       <div class="col-12 col-md-3 text-center">
-        <div *ngIf="(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+        <div *ngIf="isAuthorized" class="row justify-content-end">
           <div class="col-6 col-sm-10 text-start d-md-none">
             <div (click)="collapsed=!collapsed" class="btn btn-outline-light d-inline-block rounded-3">
               <i class="fa fa-navicon"></i>
@@ -32,7 +32,7 @@
             </button>
           </div>
         </div>
-        <div *ngIf="!(OidcSecurityService.isAuthenticated$ | async)?.isAuthenticated" class="row justify-content-end">
+        <div *ngIf="!isAuthorized" class="row justify-content-end">
           <div class="col-6 col-sm-10 text-start d-md-none">
             <div (click)="collapsed=!collapsed" [attr.aria-expanded]="!collapsed"
                  aria-controls="collapseNavBar" class="btn btn-outline-light d-inline-block rounded-3">
@@ -80,7 +80,7 @@
       </li>
       <li *ngIf="isAdmin" class="nav-item col-12">
         <a [ngClass]="activatedRouteContains('admin/help-requests')?'disabled active':''"
-           [routerLink]="['admin/help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>
@@ -108,7 +108,7 @@
       </li>
       <li *ngIf="isAdmin" class="nav-item col-12 mb-2">
         <a (click)="collapsed=true" [ngClass]="activatedRouteContains('admin/helprequests')?'disabled active':''"
-           [routerLink]="['admin/help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
       </li>
     </ul>
   </div>

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {OidcSecurityService} from "angular-auth-oidc-client";
 import {Router} from "@angular/router";
 import {environment} from '../environment/environment';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-nav',
@@ -15,7 +15,7 @@ export class NavComponent {
   collapsed = true;
   collapsedPc = true;
 
-  constructor(public OidcSecurityService: OidcSecurityService, private router: Router) {
+  constructor(public ouathService: OAuthService, private router: Router) {
 
   }
 
@@ -37,7 +37,7 @@ export class NavComponent {
 
   logout() {
     window.location.href = environment.authority + '/Account/Logout' + '?returnUrl=' + environment.clientUrl;
-    this.OidcSecurityService.logoffLocal();
+    this.ouathService.logOut(true);
   }
 
   profile() {

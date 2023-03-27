@@ -23,11 +23,11 @@ const routes: Routes = [
   {path: 'last-news', component: LastNewsComponent},
   {path: 'get-help', component: GetHelpComponent, canActivate: [AuthGuard]},
   {path: 'help-requests', component: LastHelpRequestsComponent, canActivate: [AuthGuard]},
-  {path: 'admin/help-requests', component: HelpRequestsComponent, canActivate: [AdminGuard]},
+  {path: 'admin.help-requests', component: HelpRequestsComponent, canActivate: [AdminGuard]},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

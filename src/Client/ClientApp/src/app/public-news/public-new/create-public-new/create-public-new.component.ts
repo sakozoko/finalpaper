@@ -26,7 +26,8 @@ export class CreatePublicNewComponent implements OnInit {
     let createModel = new publicNewCreateModel();
     createModel.title = this.form.value.title;
     createModel.description = this.form.value.description;
-    createModel.image = this.form.value.image;
+    createModel.imageUrl = this.form.value.image;
+    createModel.createdAt = new Date();
     this.publicNewRepository.createPublicNew(createModel).subscribe(result => {
       this.data.onCreated(result)
     });

@@ -1,17 +1,14 @@
 import {Injectable} from '@angular/core';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
 import {publicNew} from "../public-news/public-new/public-new.component";
 import {HttpClient} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
-import {AuthorizationService} from "../auth/authorization.service";
 import {environment} from "../environment/environment";
-
 @Injectable({
   providedIn: 'root'
 })
 export class PublicNewsRepositoryService {
 
-  constructor(private authorizationService : AuthorizationService, private httpClient : HttpClient) {
+  constructor( private httpClient : HttpClient) {
   }
 
   getPublicNews(page: number, pageSize: number) : Observable<publicNew[]>{
@@ -28,34 +25,26 @@ export class PublicNewsRepositoryService {
 
   deletePublicNewById(id: string) : Observable<publicNew> {
     let subj = new Subject<publicNew>();
-    this.authorizationService.getAccessToken().subscribe(value => {
-      let header = {'Authorization':'Bearer '+ value};
-      this.httpClient.delete<publicNew>(environment.api+'/api/publicnew/'+id, {headers: header}).subscribe(result => {
+
+      this.httpClient.delete<publicNew>(environment.api+'/api/publicnew/'+id).subscribe(result => {
         subj.next(result);
       });
-    });
     return subj.asObservable();
   }
 
-  editPublicNew(publicNew: publicNew) {
+  editPublicNew(publicNew: publicNewEditModel) {
     let subj = new Subject<publicNew>();
-    this.authorizationService.getAccessToken().subscribe(value => {
-      let header = {'Authorization':'Bearer '+ value};
-      this.httpClient.put<publicNew>(environment.api+'/api/publicnew', publicNew, {headers: header}).subscribe(result => {
+      this.httpClient.put<publicNew>(environment.api+'/api/publicnew', publicNew).subscribe(result => {
         subj.next(result);
       });
-    });
     return subj.asObservable();
   }
 
   createPublicNew(createModel: publicNewCreateModel): Observable<publicNew> {
     let subj = new Subject<publicNew>();
-    this.authorizationService.getAccessToken().subscribe(value => {
-      let header = {'Authorization': 'Bearer ' + value};
-      this.httpClient.post<publicNew>(environment.api+'/api/publicnew', createModel, {headers: header}).subscribe(result => {
+      this.httpClient.post<publicNew>(environment.api+'/api/publicnew', createModel).subscribe(result => {
         subj.next(result);
       });
-    });
     return subj.asObservable();
   }
 }
@@ -63,5 +52,10 @@ export class PublicNewsRepositoryService {
 export class publicNewCreateModel {
   title: string;
   description: string;
-  image: string;
+  imageUrl: string;
+  createdAt:Date;
+}
+export class publicNewEditModel extends publicNewCreateModel {
+  id: string;
+  author: string;
 }

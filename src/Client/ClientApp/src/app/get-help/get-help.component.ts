@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
+import { OAuthService } from 'angular-oauth2-oidc';
 import {Subject} from 'rxjs';
 import {HelpRequestRepositoryService, HelpRequestRequestModel} from '../repositories/help-request-repository.service';
 
@@ -29,15 +29,12 @@ export class GetHelpComponent implements OnInit {
     ]),
   });
 
-  constructor(public OidcSecurityService: OidcSecurityService,
+  constructor(public oauthService: OAuthService,
               private helpRequestRepository: HelpRequestRepositoryService) {
-
   }
 
   ngOnInit(): void {
-    this.OidcSecurityService.getUserData().subscribe((userData) => {
-      this.CanSendRequest = userData['email_verified'];
-    });
+    this.CanSendRequest= false || this.oauthService.getIdentityClaims()['email_verified'];
   }
 
   onSubmit() {

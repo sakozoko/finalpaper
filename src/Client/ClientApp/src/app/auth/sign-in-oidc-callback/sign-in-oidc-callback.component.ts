@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {OidcSecurityService} from 'angular-auth-oidc-client';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-sign-in-oidc-callback',
@@ -8,15 +8,17 @@ import {OidcSecurityService} from 'angular-auth-oidc-client';
   styleUrls: ['./sign-in-oidc-callback.component.css']
 })
 export class SignInOidcCallbackComponent implements OnInit {
-  constructor(public OidcSecurityService: OidcSecurityService, private activatedRoute: ActivatedRoute,
+  constructor(public oauthService: OAuthService, private activatedRoute: ActivatedRoute,
               private router: Router) {
 
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      if (!params['code'])
+    this.oauthService.events.subscribe(e=>{
+      if(e.type.toString()=='token_received')
+      {
         this.router.navigate(['/']);
+      }
     });
   }
 }

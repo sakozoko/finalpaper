@@ -14,6 +14,7 @@ public class CreatePublicNewCommand : IRequest<PublicNewDto>
     public string? ImageUrl { get; set; }
     public Guid UserId { get; set; }
     public string Author { get; set; } = default!;
+    public DateTime CreatedAt{get;set;}
 
     public class CreatePublicNewCommandValidator : AbstractValidator<CreatePublicNewCommand>
     {
@@ -39,8 +40,6 @@ public class CreatePublicNewCommand : IRequest<PublicNewDto>
         public async Task<PublicNewDto> Handle(CreatePublicNewCommand request, CancellationToken cancellationToken)
         {
             var publicNew = _mapper.Map<PublicNewEntity>(request);
-            publicNew.CreatedAt = DateTime.UtcNow;
-            publicNew.IsDeleted = false;
             _context.PublicNews.Add(publicNew);
             await _context.SaveChangesAsync();
             return _mapper.Map<PublicNewDto>(publicNew);
