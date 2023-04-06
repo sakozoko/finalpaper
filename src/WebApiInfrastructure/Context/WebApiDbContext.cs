@@ -12,6 +12,7 @@ public class WebApiDbContext : DbContext, IWebApiDbContext
 
     public DbSet<HelpRequestEntity> HelpRequests { get; set; } = default!;
     public DbSet<PublicNewEntity> PublicNews { get; set; } = default!;
+    public DbSet<City> Cities { get; set; } = default!;
 
     public Task<int> SaveChangesAsync()
     {

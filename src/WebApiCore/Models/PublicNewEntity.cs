@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApiCore.Models;
 
-public class PublicNewEntity : BaseEntity
+public class PublicNewEntity : BaseEntity<Guid>
 {
     [Required] [MaxLength(100)] public string Title { get; set; } = default!;
 
