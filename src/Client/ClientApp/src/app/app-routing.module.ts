@@ -10,15 +10,15 @@ import {PublicNewsComponent} from './public-news/public-news.component';
 import {PublicNewComponent} from './public-news/public-new/public-new.component';
 import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
 import {HomeComponent} from './home/home.component';
-import { HelpRequestsComponent } from './help-requests/help-requests.component';
-import { AdminGuard } from './auth/admin.guard';
+import {HelpRequestsComponent} from './help-requests/help-requests.component';
+import {AdminGuard} from './auth/admin.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'sign-in-oidc', component: SignInOidcComponent},
   {path: 'sign-in-oidc-callback', component: SignInOidcCallbackComponent},
   {path: 'public-news', component: PublicNewsComponent},
-  {path: 'public-new/:id', component: PublicNewComponent},
+  {path: 'public-new', component: PublicNewComponent},
   {path: 'nezlamnist', component: NezlamnistComponent},
   {path: 'last-news', component: LastNewsComponent},
   {path: 'get-help', component: GetHelpComponent, canActivate: [AuthGuard]},

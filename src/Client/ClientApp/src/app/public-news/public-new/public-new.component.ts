@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from "@angular/router";
-import { OAuthService } from 'angular-oauth2-oidc';
+import {OAuthService} from 'angular-oauth2-oidc';
 import {PublicNewsRepositoryService} from "../../repositories/public-news-repository.service";
 import {EditPublicNewComponent} from './edit-public-new/edit-public-new.component';
 
@@ -33,11 +33,14 @@ export class PublicNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(!this._activatedRoute.snapshot.params['id'])
-      return;
-    if(!this.publicNew.id)
-      this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.params['id']).subscribe(result => {
-      this.publicNew = result});
+    if (!this._activatedRoute.snapshot.queryParams['id'] && this.fullViewed)
+      this._router.navigate(['/public-news']);
+    if (!this.publicNew.id)
+      this._publicNewsRepository.getPublicNewById(this._activatedRoute.snapshot.queryParams['id']).subscribe(result => {
+        if (!result)
+          this._router.navigate(['/public-news']);
+        this.publicNew = result
+      });
   }
 
   @Input()

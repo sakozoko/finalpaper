@@ -14,7 +14,8 @@
 <div *ngIf="fullViewed" class="card my-3 m-2">
   <div class="card-body">
     <h3 class="card-title">{{publicNew.title}}</h3>
-    <img alt="..." class="card-img-top" src="{{publicNew.imageUrl}}">
+    <img *ngIf="publicNew.imageUrl" alt="..." class="card-img-top img-thumbnail"
+         src="{{publicNew.imageUrl}}" style="max-height: 800px;max-width: 100%">
     <p class="card-text">{{publicNew.description}}</p>
     <div class="card-text">
       <small class="text-muted">{{publicNew.createdAt | date:'dd.MM.yyyy HH:mm:ss'}}</small>
@@ -45,7 +46,6 @@
     </div>
 
     <h5 class="card-title">{{publicNew.title}}</h5>
-    <img *ngIf="publicNew.imageUrl" alt="..." class="card-img-top" onerror="this.remove()" src="{{publicNew.imageUrl}}">
     <p class="card-text">{{truncated ? (publicNew.description | slice:0:30) :
       (publicNew.description | slice:0:100)}}
       <a (click)="truncated = !truncated" *ngIf="truncated && publicNew.description.length>30" class="card-link"
@@ -66,7 +66,8 @@
       <div class="col-12 col-sm-4">
         <div class="row align-items-center">
           <div class="col-6 col-sm-12">
-            <div [routerLink]="['/public-new/'+publicNew.id]" class="btn btn-secondary card-link float-sm-end">Читати
+            <div [queryParams]="{id:publicNew.id}" [routerLink]="['/public-new']"
+                 class="btn btn-secondary card-link float-sm-end">Читати
             </div>
           </div>
           <div *ngIf="oauthService.hasValidAccessToken() && oauthService.getIdentityClaims()['role']=='Admin'" class="col-6 d-sm-none float-end">

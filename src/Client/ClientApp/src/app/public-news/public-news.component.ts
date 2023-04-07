@@ -5,7 +5,7 @@ import {publicNew} from "./public-new/public-new.component";
 import {PublicNewsRepositoryService} from "../repositories/public-news-repository.service";
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {CreatePublicNewComponent} from './public-new/create-public-new/create-public-new.component';
-import { OAuthService } from 'angular-oauth2-oidc';
+import {OAuthService} from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-public-news',
@@ -70,9 +70,9 @@ export class PublicNewsComponent implements OnInit {
 
     this.publicNewsRepository.getPublicNews(this._page, this._pageSize).subscribe(result => {
       this.publicNews = result;
-      this.loading = false;
       this.publicNewsRepository.getPublicNewsCount().subscribe(count => {
         this.paginationService.setPagination(count, this._pageSize, this._page);
+        this.loading = false;
         this.paginationService.currentPageChanged = (num) => {
           this.loading = true;
           this._page = num;
