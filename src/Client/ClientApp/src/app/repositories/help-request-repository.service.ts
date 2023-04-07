@@ -45,39 +45,46 @@ export class HelpRequestRepositoryService {
 
   public getHelpRequestBySearchStringCount(filter: string) {
     let subj = new Subject<number>();
-      this._httpClient.get<number>(environment.api + '/api/helprequest/search/count?filter=' + filter).subscribe(result => {
-        subj.next(result);
-      });
-    return subj.asObservable();
-  }
-public getHelpRequsts(page:number, pageSize:number, status :string){
-  let subj = new Subject<HelpRequestModel[]>();
-    this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/getall?page=' + page + '&pageSize=' + pageSize+'&status=' + status).subscribe(result => {
+    this._httpClient.get<number>(environment.api + '/api/helprequest/search/count?filter=' + filter).subscribe(result => {
       subj.next(result);
     });
-  return subj.asObservable();
-}
-public getHelpRequestCount(status : string){
-  let subj = new Subject<number>();
+    return subj.asObservable();
+  }
+
+  public getHelpRequests(status: string) {
+    let subj = new Subject<HelpRequestModel[]>();
+    this._httpClient.get<HelpRequestModel[]>(environment.api + '/api/helprequest/getall?status=' + status).subscribe(result => {
+      subj.next(result);
+    });
+    return subj.asObservable();
+  }
+
+  public getHelpRequestCount(status: string) {
+    let subj = new Subject<number>();
     this._httpClient.get<number>(environment.api + '/api/helprequest/getall/count?status=' + status).subscribe(result => {
       subj.next(result);
     });
-  return subj.asObservable();
-}
-public deleteHelpRequest(id : string){
-  let subj = new Subject<HelpRequestModel>();
-    this._httpClient.delete<HelpRequestModel>(environment.api + '/api/helprequest/'+id).subscribe(result => {
+    return subj.asObservable();
+  }
+
+  public deleteHelpRequest(id: string) {
+    let subj = new Subject<HelpRequestModel>();
+    this._httpClient.delete<HelpRequestModel>(environment.api + '/api/helprequest/' + id).subscribe(result => {
       subj.next(result);
     });
-  return subj.asObservable();
-}
-public answerHelpRequest(id : string, answer : string){
-  let subj = new Subject<HelpRequestModel>();
-    this._httpClient.put<HelpRequestModel>(environment.api + '/api/helprequest/answer', {'id':id, 'answer':answer}).subscribe(result => {
+    return subj.asObservable();
+  }
+
+  public answerHelpRequest(id: string, answer: string) {
+    let subj = new Subject<HelpRequestModel>();
+    this._httpClient.put<HelpRequestModel>(environment.api + '/api/helprequest/answer', {
+      'id': id,
+      'answer': answer
+    }).subscribe(result => {
       subj.next(result);
     });
-  return subj.asObservable();
-}
+    return subj.asObservable();
+  }
 }
 
 export class HelpRequestRequestModel {

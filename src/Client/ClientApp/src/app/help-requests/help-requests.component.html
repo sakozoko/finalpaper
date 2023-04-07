@@ -36,9 +36,10 @@
       </div>
       <div class="card-body" >
         <div *ngIf="!loading">
-          <div  *ngFor="let helpRequest of helpRequests">
-            <app-help-request [helpRequest]="helpRequest" [onDeleted]="onUpdated" [onAnswered]="onUpdated"></app-help-request>    
-        </div>
+          <div *ngFor="let helpRequest of helpRequests">
+            <app-help-request [helpRequest]="helpRequest" [onAnswered]="onUpdated"
+                              [onDeleted]="onUpdated"></app-help-request>
+          </div>
         </div>
         <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
           <div class="d-flex justify-content-center p-5">
@@ -51,11 +52,9 @@
           <h6>Запитів немає, спробуйте змініти фільтри</h6>
         </div>
       </div>
-  
+
       <div class="card-footer">
         <app-pagination *ngIf="!loading && helpRequests.length!==0" [paginationService]="paginationService"></app-pagination>
-        <a *ngIf="!loading && paginationService.getPagination()?.hasNext()" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
       </div>
     </div>
   </div>
-  
