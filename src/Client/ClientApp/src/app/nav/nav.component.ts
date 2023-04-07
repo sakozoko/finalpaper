@@ -1,22 +1,41 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {environment} from '../environment/environment';
-import { OAuthService } from 'angular-oauth2-oidc';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {HelpRequestRepositoryService} from "../repositories/help-request-repository.service";
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
   @Input() public title: string;
-  @Input() public isAuthorized: boolean | undefined;
-  @Input() public isAdmin: boolean | undefined;
+  public isAuthorized: boolean = false;
+  public isAdmin: boolean = false;
   collapsed = true;
   collapsedPc = true;
+  helpRequestCount: number = 0;
 
-  constructor(public ouathService: OAuthService, private router: Router) {
+  constructor(public oauthService: OAuthService,
+              private router: Router,
+              private helpRequestRepository: HelpRequestRepositoryService) {
 
+  }
+
+  ngOnInit(): void {
+    this.isAuthorized = this.oauthService.hasValidAccessToken();
+    this.isAdmin = this.isAuthorized && this.oauthService.getIdentityClaims()['role'] === 'Admin';
+    if (this.isAdmin) {
+      this.helpRequestRepository.getHelpRequestCount('new').subscribe(count => {
+        this.helpRequestCount = count;
+      });
+      setInterval(() => {
+        this.helpRequestRepository.getHelpRequestCount('new').subscribe(count => {
+          this.helpRequestCount = count;
+        });
+      }, 10000);
+    }
   }
 
   activatedRouteContains(route: string): boolean {
@@ -37,7 +56,7 @@ export class NavComponent {
 
   logout() {
     window.location.href = environment.authority + '/Account/Logout' + '?returnUrl=' + environment.clientUrl;
-    this.ouathService.logOut(true);
+    this.oauthService.logOut(true);
   }
 
   profile() {

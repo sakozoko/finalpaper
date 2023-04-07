@@ -56,7 +56,7 @@
       </div>
     </div>
   </div>
-  <div class="col col-md-2 col-xxl-1 d-none d-md-block bg-dark bg-opacity-10 sidebar" id="fullmenu"
+  <div class="col col-md-2 d-none d-md-block bg-dark bg-opacity-10 sidebar" id="fullmenu"
        style="width:0px;padding:0px;">
     <ul class="nav nav-pills row py-2 sidebar" id="menu" style="width:0px;padding:0px;height: 0px;">
       <li class="nav-item col-12">
@@ -79,12 +79,13 @@
            class="nav-link">Отримати допомогу</a>
       </li>
       <li *ngIf="isAdmin" class="nav-item col-12">
-        <a [ngClass]="activatedRouteContains('admin/help-requests')?'disabled active':''"
-           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+        <a [ngClass]="activatedRouteContains('admin.help-requests')?'disabled active':''"
+           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги <span
+          class="badge bg-danger">{{helpRequestCount}}</span></a>
       </li>
     </ul>
   </div>
-  <div class="col col-md-2 col-xxl-1 bg-dark bg-opacity-10 d-md-none">
+  <div class="col col-md-2 bg-dark bg-opacity-10 d-md-none">
     <ul #collapse="ngbCollapse" [(ngbCollapse)]="collapsed" class="nav nav-pills row" id="collapseNavBar">
       <li class="nav-item col-12 mt-2">
         <a (click)="collapsed=true" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']"
@@ -107,14 +108,15 @@
            [routerLink]="['get-help']" aria-controls="collapseNavBar" class="nav-link">Отримати допомогу</a>
       </li>
       <li *ngIf="isAdmin" class="nav-item col-12 mb-2">
-        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('admin/helprequests')?'disabled active':''"
-           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги</a>
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('admin.help-requests')?'disabled active':''"
+           [routerLink]="['admin.help-requests']" aria-controls="collapseNavBar" class="nav-link">Запити допомоги <span
+          class="badge bg-danger">{{helpRequestCount}}</span></a>
       </li>
     </ul>
   </div>
 
 
-  <div [ngClass]="collapsedPc?'col-12':'col-12 col-md-10 col-xxl-11'" class="container p-0" style="transition: 0.5s;">
+  <div [ngClass]="collapsedPc?'col-12':'col-12 col-md-10'" class="container p-0" style="transition: 0.5s;">
     <router-outlet></router-outlet>
   </div>
 
