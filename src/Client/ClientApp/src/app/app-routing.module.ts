@@ -12,6 +12,7 @@ import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
 import {HomeComponent} from './home/home.component';
 import {HelpRequestsComponent} from './help-requests/help-requests.component';
 import {AdminGuard} from './auth/admin.guard';
+import {VolunteerOrganizationsComponent} from "./volunteer-organizations/volunteer-organizations.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'get-help', component: GetHelpComponent, canActivate: [AuthGuard]},
   {path: 'help-requests', component: LastHelpRequestsComponent, canActivate: [AuthGuard]},
   {path: 'admin.help-requests', component: HelpRequestsComponent, canActivate: [AdminGuard]},
+  {path: 'volunteer-organizations', component: VolunteerOrganizationsComponent}
 ];
 
 @NgModule({

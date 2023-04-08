@@ -1,0 +1,41 @@
+<div class="container-fluid mt-2">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Волонтерські організації</h3>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-start">
+        <div class="col-3">
+          <mat-form-field style="display: flex;">
+            <mat-select #singleSelect (selectionChange)="click()" [formControl]="formControl" placeholder="Категорія">
+              <mat-option>
+                <ngx-mat-select-search (ngModelChange)="filter($event)" [formControl]="formControlSelect" ngModel
+                                       noEntriesFoundLabel="Нічого не знайдено"
+                                       placeholderLabel="Введіть назву категорії"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let category of filterCategories" [value]="category">
+                {{getUkrainianCategoryName(category)}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <mat-form-field style="display: flex;">
+            <mat-select #singleSelect (selectionChange)="click()" [formControl]="cityCtrl" placeholder="Місто">
+              <mat-option>
+                <ngx-mat-select-search (ngModelChange)="filterCities($event)" [formControl]="citySelectCtrl" ngModel
+                                       noEntriesFoundLabel="Нічого не знайдено"
+                                       placeholderLabel="Введіть назву міста"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let city of filteredCities" [value]="city.id">
+                {{city.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

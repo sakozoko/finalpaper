@@ -11,18 +11,31 @@ export class VolunteerOrganizationRepositoryService {
   }
 
   public getVolunteerOrganizations(cityId: number, categoryId: number, page: number, pageSize: number) {
-    return this.httpClient.get(environment.api + '/api/volunteerorganization' + `?cityId=${cityId}&categoryId=${categoryId}&page=${page}&pageSize=${pageSize}`);
+    return this.httpClient.get<VolunteerOrganization[]>(environment.api + '/api/VolunteerOrganization' + `?cityId=${cityId}&categoryId=${categoryId}&page=${page}&pageSize=${pageSize}`);
   }
 
   public getAvailableCities() {
-    return this.httpClient.get(environment.api + '/api/volunteerorganization/availablecities');
+    return this.httpClient.get<City[]>(environment.api + '/api/VolunteerOrganization/availablecities');
   }
 
   public getAvailableCategories() {
-    return this.httpClient.get(environment.api + '/api/volunteerorganization/availablecategories');
+    return this.httpClient.get<string[]>(environment.api + '/api/VolunteerOrganization/availablecategories');
   }
 
   public getVolunteerOrganizationCount(cityId: number, categoryId: number) {
-    return this.httpClient.get(environment.api + '/api/volunteerorganization/count' + `?cityId=${cityId}&categoryId=${categoryId}`);
+    return this.httpClient.get<number>(environment.api + '/api/VolunteerOrganization/count' + `?cityId=${cityId}&categoryId=${categoryId}`);
   }
+}
+
+export class VolunteerOrganization {
+  title: string;
+  description: string;
+  phones: string[];
+  addresses: string[];
+  socialNetworks: string[];
+}
+
+export class City {
+  id: number;
+  name: string;
 }

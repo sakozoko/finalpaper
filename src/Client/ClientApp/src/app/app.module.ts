@@ -38,6 +38,12 @@ import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
 import {PublicNewComponent} from './public-news/public-new/public-new.component';
 import {PublicNewsComponent} from './public-news/public-news.component';
 import {DatePipe} from "@angular/common";
+import {VolunteerOrganizationsComponent} from './volunteer-organizations/volunteer-organizations.component';
+import {
+  VolunteerOrganizationComponent
+} from './volunteer-organizations/volunteer-organization/volunteer-organization.component';
+import {MatSelectModule} from "@angular/material/select";
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 
 @NgModule({
   declarations: [
@@ -61,7 +67,9 @@ import {DatePipe} from "@angular/common";
     PublicNewsComponent,
     LastHelpRequestsComponent,
     HomeComponent,
-    HelpRequestsComponent
+    HelpRequestsComponent,
+    VolunteerOrganizationsComponent,
+    VolunteerOrganizationComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +86,9 @@ import {DatePipe} from "@angular/common";
     MatDatepickerModule,
     MatInputModule,
     MatDialogModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatSelectModule,
+    NgxMatSelectSearchModule
   ],
   providers: [AuthGuard, AdminGuard, DatePipe],
   bootstrap: [AppComponent]

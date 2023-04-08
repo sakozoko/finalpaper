@@ -63,6 +63,10 @@
         <a [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']" class="nav-link">Головна</a>
       </li>
       <li class="nav-item col-12">
+        <a [ngClass]="activatedRouteContains('volunteer-organizations')?'disabled active':''"
+           [routerLink]="['volunteer-organizations']" class="nav-link">Волонтерські організації</a>
+      </li>
+      <li class="nav-item col-12">
         <a [ngClass]="activatedRouteContains('public-new')?'disabled active':''" [routerLink]="['public-news']"
            class="nav-link">Новини</a>
       </li>
@@ -90,6 +94,11 @@
       <li class="nav-item col-12 mt-2">
         <a (click)="collapsed=true" [ngClass]="activatedRouteIsIndex()?'disabled active':''" [routerLink]="['']"
            aria-controls="collapseNavBar" class="nav-link">Головна</a>
+      </li>
+      <li class="nav-item col-12">
+        <a (click)="collapsed=true" [ngClass]="activatedRouteContains('volunteer-organizations')?'disabled active':''"
+           [routerLink]="['volunteer-organizations']" aria-controls="collapseNavBar" class="nav-link">Волонтерські
+          організації</a>
       </li>
       <li class="nav-item col-12">
         <a (click)="collapsed=true" [ngClass]="activatedRouteContains('public-new')?'disabled active':''"
