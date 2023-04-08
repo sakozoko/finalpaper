@@ -17,7 +17,7 @@ public class VolunteerOrganizationRepository : IVolunteerOrganizationRepository
     public async Task<IEnumerable<VolunteerOrganization>> GetVolunteerOrganizationsAsync(
         VolunteerOrganizationCategory category, City city)
     {
-        if (category == VolunteerOrganizationCategory.None || city.Link == null)
+        if (city.Link == null)
             return Array.Empty<VolunteerOrganization>();
         var htmlDocument =
             await _htmlWeb.LoadFromWebAsync(RepositoryUrl + "cities/" + city.Link + "/" + category.ToLink());
@@ -42,7 +42,7 @@ public class VolunteerOrganizationRepository : IVolunteerOrganizationRepository
 
     public async Task<int> GetVolunteerOrganizationsCountAsync(VolunteerOrganizationCategory category, City city)
     {
-        if (category == VolunteerOrganizationCategory.None || city.Link == null)
+        if (city.Link == null)
             return 0;
         var htmlDocument =
             await _htmlWeb.LoadFromWebAsync(RepositoryUrl + "cities/" + city.Link + "/" + category.ToLink());

@@ -2,7 +2,6 @@
 
 public enum VolunteerOrganizationCategory
 {
-    None,
     Humanitarian = 1,
     BloodDonation = 2,
     HelpingChildren = 3,

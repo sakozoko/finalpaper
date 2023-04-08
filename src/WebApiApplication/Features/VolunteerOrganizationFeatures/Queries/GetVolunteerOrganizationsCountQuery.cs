@@ -10,7 +10,7 @@ namespace WebApiApplication.Features.VolunteerOrganizationFeatures.Queries;
 public class GetVolunteerOrganizationsCountQuery : IRequest<int>
 {
     public int CityId { get; set; }
-    public int CategoryNumber { get; set; }
+    public int CategoryId { get; set; }
 
     public class GetVolunteerOrganizationsCountQueryValidator : AbstractValidator<GetVolunteerOrganizationsCountQuery>
     {
@@ -18,7 +18,7 @@ public class GetVolunteerOrganizationsCountQuery : IRequest<int>
         {
             RuleFor(p => p.CityId).NotEmpty().WithMessage("{PropertyName} is required.")
                 .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.");
-            RuleFor(p => p.CategoryNumber).NotEmpty().WithMessage("{PropertyName} is required.")
+            RuleFor(p => p.CategoryId).NotEmpty().WithMessage("{PropertyName} is required.")
                 .Must(c => Enum.IsDefined(typeof(VolunteerOrganizationCategory), c))
                 .WithMessage("Category must be selected.");
         }
@@ -42,7 +42,7 @@ public class GetVolunteerOrganizationsCountQuery : IRequest<int>
             if (city == null)
                 throw new NotFoundException(nameof(City), request.CityId);
             return await _repository.GetVolunteerOrganizationsCountAsync(
-                (VolunteerOrganizationCategory)request.CategoryNumber, city);
+                (VolunteerOrganizationCategory)request.CategoryId, city);
         }
     }
 }

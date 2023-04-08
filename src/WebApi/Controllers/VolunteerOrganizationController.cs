@@ -21,7 +21,7 @@ public class VolunteerOrganizationController : ControllerBase
         return Ok(await _mediator.Send(command));
     }
 
-    [HttpGet("availableCitites")]
+    [HttpGet("availableCities")]
     public async Task<IActionResult> GetAvailableCities([FromQuery] GetAvailableCitiesQuery command)
     {
         return Ok(await _mediator.Send(command));
