@@ -10,7 +10,7 @@ namespace WebApiApplication.Features.VolunteerOrganizationFeatures.Queries;
 public class GetVolunteerOrganizationsQuery : IRequest<IEnumerable<VolunteerOrganization>>
 {
     public int CityId { get; set; }
-    public int CategoryNumber { get; set; }
+    public int CategoryId { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
 
@@ -20,7 +20,7 @@ public class GetVolunteerOrganizationsQuery : IRequest<IEnumerable<VolunteerOrga
         {
             RuleFor(p => p.CityId).NotEmpty().WithMessage("{PropertyName} is required.")
                 .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.");
-            RuleFor(p => p.CategoryNumber).NotEmpty().WithMessage("{PropertyName} is required.")
+            RuleFor(p => p.CategoryId).NotEmpty().WithMessage("{PropertyName} is required.")
                 .Must(c => Enum.IsDefined(typeof(VolunteerOrganizationCategory), c))
                 .WithMessage("Category must be selected.");
             RuleFor(p => p.PageNumber).NotEmpty().WithMessage("{PropertyName} is required.")
@@ -51,7 +51,7 @@ public class GetVolunteerOrganizationsQuery : IRequest<IEnumerable<VolunteerOrga
             if (city == null)
                 throw new NotFoundException(nameof(City), request.CityId);
             var volunteerOrganizations =
-                await _repository.GetVolunteerOrganizationsAsync((VolunteerOrganizationCategory)request.CategoryNumber,
+                await _repository.GetVolunteerOrganizationsAsync((VolunteerOrganizationCategory)request.CategoryId,
                     city);
             return volunteerOrganizations.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize);
         }
