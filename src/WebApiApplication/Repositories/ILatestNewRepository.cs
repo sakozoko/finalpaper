@@ -1,6 +1,6 @@
 ﻿using WebApiCore.Models;
 
-namespace WebApiAbstraction.Repositories;
+namespace WebApiApplication.Repositories;
 
 public interface ILatestNewRepository
 {

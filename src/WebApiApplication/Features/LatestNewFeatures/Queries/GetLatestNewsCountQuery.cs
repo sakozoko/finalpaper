@@ -1,5 +1,5 @@
 using MediatR;
-using WebApiAbstraction.Repositories;
+using WebApiApplication.Repositories;
 
 namespace WebApiApplication.Features.LatestNewFeatures.Queries;
 

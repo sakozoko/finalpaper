@@ -1,5 +1,5 @@
 ﻿using HtmlAgilityPack;
-using WebApiAbstraction.Repositories;
+using WebApiApplication.Repositories;
 using WebApiCore.Models;
 
 namespace WebApiInfrastructure.Repositories;

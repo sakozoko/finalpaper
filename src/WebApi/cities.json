@@ -1,0 +1,1202 @@
+[
+  {
+    "Name": "Агрономічне",
+    "Link": "ahranomichne"
+  },
+  {
+    "Name": "Бабчинці",
+    "Link": "babchyntsi"
+  },
+  {
+    "Name": "Бар",
+    "Link": "bar"
+  },
+  {
+    "Name": "Бершадь",
+    "Link": "bershad"
+  },
+  {
+    "Name": "Вапнярка",
+    "Link": "vapniarka"
+  },
+  {
+    "Name": "Вендичани",
+    "Link": "vendychany"
+  },
+  {
+    "Name": "Війтівці",
+    "Link": "viitivtsi"
+  },
+  {
+    "Name": "Вінниця",
+    "Link": "vinnytsia"
+  },
+  {
+    "Name": "Вороновиця",
+    "Link": "voronovytsia"
+  },
+  {
+    "Name": "Гайсин",
+    "Link": "haisyn"
+  },
+  {
+    "Name": "Глухівці",
+    "Link": "hlukhivtsi"
+  },
+  {
+    "Name": "Гнівань",
+    "Link": "hnivan"
+  },
+  {
+    "Name": "Городківка",
+    "Link": "horodkivka"
+  },
+  {
+    "Name": "Дашів",
+    "Link": "dashiv"
+  },
+  {
+    "Name": "Джулинка",
+    "Link": "dzhulynka"
+  },
+  {
+    "Name": "Джурин",
+    "Link": "dzhuryn"
+  },
+  {
+    "Name": "Жмеринка",
+    "Link": "zhmerynka"
+  },
+  {
+    "Name": "Забужжя",
+    "Link": "zabuzhzhia"
+  },
+  {
+    "Name": "Іванівка",
+    "Link": "ivanivka"
+  },
+  {
+    "Name": "Іллінці",
+    "Link": "illintsi"
+  },
+  {
+    "Name": "Козятин",
+    "Link": "koziatyn"
+  },
+  {
+    "Name": "Копайгород",
+    "Link": "kopaihorod"
+  },
+  {
+    "Name": "Краснопілка",
+    "Link": "krasnopilka"
+  },
+  {
+    "Name": "Крижопіль",
+    "Link": "kryzhopil"
+  },
+  {
+    "Name": "Кунка",
+    "Link": "kunka"
+  },
+  {
+    "Name": "Ладижин",
+    "Link": "ladyzhyn"
+  },
+  {
+    "Name": "Липовець",
+    "Link": "lypovets"
+  },
+  {
+    "Name": "Літин",
+    "Link": "lityn"
+  },
+  {
+    "Name": "Лука-Мелешківська",
+    "Link": "luka-meleshkivska"
+  },
+  {
+    "Name": "Махнівка",
+    "Link": "makhnivka"
+  },
+  {
+    "Name": "Мурафа",
+    "Link": "murafa"
+  },
+  {
+    "Name": "Муровані Курилівці",
+    "Link": "murovani-kurylivtsi"
+  },
+  {
+    "Name": "Немирів",
+    "Link": "nemyriv"
+  },
+  {
+    "Name": "Ободівка",
+    "Link": "obodivka"
+  },
+  {
+    "Name": "Обухів",
+    "Link": "obukhiv"
+  },
+  {
+    "Name": "Ольгопіль",
+    "Link": "olhopil"
+  },
+  {
+    "Name": "Оратів",
+    "Link": "orativ"
+  },
+  {
+    "Name": "Піщанка",
+    "Link": "pishchanka"
+  },
+  {
+    "Name": "Погребище",
+    "Link": "pohrebyshche"
+  },
+  {
+    "Name": "Райгород",
+    "Link": "raihorod"
+  },
+  {
+    "Name": "Самогородок",
+    "Link": "samohorodok"
+  },
+  {
+    "Name": "Северинівка",
+    "Link": "severynivka"
+  },
+  {
+    "Name": "смт. Чернівці",
+    "Link": "smt-chernivtsi"
+  },
+  {
+    "Name": "Соболівка",
+    "Link": "sobolivka"
+  },
+  {
+    "Name": "Станіславчик",
+    "Link": "stanislavchyk"
+  },
+  {
+    "Name": "Стрижавка",
+    "Link": "stryzhavka"
+  },
+  {
+    "Name": "Студена",
+    "Link": "studena"
+  },
+  {
+    "Name": "Сутиски",
+    "Link": "sutysky"
+  },
+  {
+    "Name": "Теплик",
+    "Link": "teplyk"
+  },
+  {
+    "Name": "Тиврів",
+    "Link": "tyvriv"
+  },
+  {
+    "Name": "Томашпіль",
+    "Link": "tomashpil"
+  },
+  {
+    "Name": "Тростянець",
+    "Link": "trostianets"
+  },
+  {
+    "Name": "Тульчин",
+    "Link": "tulchyn"
+  },
+  {
+    "Name": "Турбів",
+    "Link": "turbiv"
+  },
+  {
+    "Name": "Уланів",
+    "Link": "ulaniv"
+  },
+  {
+    "Name": "Хмільник",
+    "Link": "khmilnyk"
+  },
+  {
+    "Name": "Чечельник",
+    "Link": "chechelnyk"
+  },
+  {
+    "Name": "Шаргород",
+    "Link": "sharhorod"
+  },
+  {
+    "Name": "Шпиків",
+    "Link": "shpykiv"
+  },
+  {
+    "Name": "Якушенці",
+    "Link": "yakushentsi"
+  },
+  {
+    "Name": "Ямпіль",
+    "Link": "yampil-9648e645-a3ae-45da-a3b8-fa7cdf9257a6"
+  },
+  {
+    "Name": "Яришів",
+    "Link": "yaryshiv"
+  },
+  {
+    "Name": "Володимир",
+    "Link": "volodymyr"
+  },
+  {
+    "Name": "Володимир-Волинський",
+    "Link": "volodymyr-volonskyi"
+  },
+  {
+    "Name": "Горохів",
+    "Link": "horokhiv"
+  },
+  {
+    "Name": "Іваничі ",
+    "Link": "ivanychi"
+  },
+  {
+    "Name": "Ківерці",
+    "Link": "kivertsi"
+  },
+  {
+    "Name": "Ковель",
+    "Link": "kovel"
+  },
+  {
+    "Name": "Луцьк",
+    "Link": "lutsk"
+  },
+  {
+    "Name": "Любомль",
+    "Link": "liuboml"
+  },
+  {
+    "Name": "Нововолинськ",
+    "Link": "novovolynsk"
+  },
+  {
+    "Name": "Поромів",
+    "Link": "poromiv"
+  },
+  {
+    "Name": "Рожище",
+    "Link": "rozhyshche"
+  },
+  {
+    "Name": "с. Суходоли",
+    "Link": "s-sukhodoly"
+  },
+  {
+    "Name": "Вільногірськ",
+    "Link": "vilnohirsk"
+  },
+  {
+    "Name": "Дніпро",
+    "Link": "dnipro"
+  },
+  {
+    "Name": "Кам&#39;янське",
+    "Link": "kamianske"
+  },
+  {
+    "Name": "Кривий Ріг",
+    "Link": "kryvyi-rih"
+  },
+  {
+    "Name": "Марганець",
+    "Link": "marhanets"
+  },
+  {
+    "Name": "Нікополь",
+    "Link": "nikopol"
+  },
+  {
+    "Name": "Новомосковськ",
+    "Link": "novomoskovsk"
+  },
+  {
+    "Name": "Павлоград",
+    "Link": "pavlohrad"
+  },
+  {
+    "Name": "Покровське",
+    "Link": "pokrovske"
+  },
+  {
+    "Name": "с. Волоське",
+    "Link": "s-voloske"
+  },
+  {
+    "Name": "смт. Обухівка",
+    "Link": "smt-obukhivka"
+  },
+  {
+    "Name": "Бахмут",
+    "Link": "bakhmut"
+  },
+  {
+    "Name": "Волноваха",
+    "Link": "volnovakha"
+  },
+  {
+    "Name": "Добропілля",
+    "Link": "dobropillia"
+  },
+  {
+    "Name": "Донецьк",
+    "Link": "donetsk"
+  },
+  {
+    "Name": "Костянтинівка",
+    "Link": "kostiantynivka"
+  },
+  {
+    "Name": "Краматорськ",
+    "Link": "kramatorsk"
+  },
+  {
+    "Name": "Маріуполь",
+    "Link": "mariupol"
+  },
+  {
+    "Name": "Мирноград",
+    "Link": "myrnohrad"
+  },
+  {
+    "Name": "Покровськ",
+    "Link": "pokrovsk"
+  },
+  {
+    "Name": "Селидове",
+    "Link": "selydove"
+  },
+  {
+    "Name": "Слов&#39;янськ",
+    "Link": "sloviansk"
+  },
+  {
+    "Name": "Торець",
+    "Link": "torets"
+  },
+  {
+    "Name": "Торецьк",
+    "Link": "toretsk"
+  },
+  {
+    "Name": "Українськ",
+    "Link": "ukrainsk"
+  },
+  {
+    "Name": "Бердичів",
+    "Link": "berdychiv"
+  },
+  {
+    "Name": "Житомир",
+    "Link": "zhytomyr"
+  },
+  {
+    "Name": "Коростень",
+    "Link": "korosten"
+  },
+  {
+    "Name": "Коростишів",
+    "Link": "korostyshiv"
+  },
+  {
+    "Name": "Малин",
+    "Link": "malyn"
+  },
+  {
+    "Name": "Овруч",
+    "Link": "ovruch"
+  },
+  {
+    "Name": "Міжгір’я",
+    "Link": "mizhhiria"
+  },
+  {
+    "Name": "Мукачево",
+    "Link": "mukachevo"
+  },
+  {
+    "Name": "с.Баранівці",
+    "Link": "sbaranivtsi"
+  },
+  {
+    "Name": "с. Велика Добронь",
+    "Link": "s-velyka-dobron"
+  },
+  {
+    "Name": "с. Дубриничи",
+    "Link": "s-dubrynychy"
+  },
+  {
+    "Name": "с. Кострина",
+    "Link": "skostryna"
+  },
+  {
+    "Name": "смт Великий Березний",
+    "Link": "smt-velykyi-bereznyi"
+  },
+  {
+    "Name": "смт Середнє",
+    "Link": "smt-serednie"
+  },
+  {
+    "Name": "с. Оноківці",
+    "Link": "s-onokivtsi"
+  },
+  {
+    "Name": "с. Ставне",
+    "Link": "s-stavne"
+  },
+  {
+    "Name": "с. Сюрте",
+    "Link": "s-siurte"
+  },
+  {
+    "Name": "с. Тур’ї Ремети",
+    "Link": "s-turi-remety"
+  },
+  {
+    "Name": "с. Холмок",
+    "Link": "s-kholmok"
+  },
+  {
+    "Name": "Ужгород",
+    "Link": "uzhhorod"
+  },
+  {
+    "Name": "Хуст",
+    "Link": "khust"
+  },
+  {
+    "Name": "Чоп",
+    "Link": "khust-50b5a123-a469-44ed-800a-6f1691f04c75"
+  },
+  {
+    "Name": "Бердянськ",
+    "Link": "berdiansk"
+  },
+  {
+    "Name": "Василівка",
+    "Link": "vasylivka"
+  },
+  {
+    "Name": "Запоріжжя",
+    "Link": "zaporizhzhia"
+  },
+  {
+    "Name": "Мелітополь",
+    "Link": "melitopol"
+  },
+  {
+    "Name": "с. Біленьке",
+    "Link": "s-bilenke"
+  },
+  {
+    "Name": "смт. Кирилівка",
+    "Link": "kyrylivka"
+  },
+  {
+    "Name": "Токмак",
+    "Link": "tokmak"
+  },
+  {
+    "Name": "Болехів ",
+    "Link": "bolekhiv"
+  },
+  {
+    "Name": "Верховина",
+    "Link": "verkhovyna"
+  },
+  {
+    "Name": "Галич ",
+    "Link": "halych"
+  },
+  {
+    "Name": "Городенка",
+    "Link": "horodenka"
+  },
+  {
+    "Name": " Долина",
+    "Link": "dolyna"
+  },
+  {
+    "Name": "Заболотів",
+    "Link": "zabolotiv"
+  },
+  {
+    "Name": "Івано-Франківськ",
+    "Link": "ivano-frankivsk"
+  },
+  {
+    "Name": "Калуш",
+    "Link": "kalush"
+  },
+  {
+    "Name": "Коломия",
+    "Link": "kolomyia"
+  },
+  {
+    "Name": "Косів ",
+    "Link": "kosiv"
+  },
+  {
+    "Name": "Надвірна",
+    "Link": "nadvirna"
+  },
+  {
+    "Name": "Рогатин",
+    "Link": "rohatyn"
+  },
+  {
+    "Name": "Снятин",
+    "Link": "sniatyn"
+  },
+  {
+    "Name": "Тлумач",
+    "Link": "tlumach"
+  },
+  {
+    "Name": "Черніїв",
+    "Link": "cherniiv"
+  },
+  {
+    "Name": "Яремче",
+    "Link": "yaremche"
+  },
+  {
+    "Name": "Біла Церква",
+    "Link": "bila-tserkva"
+  },
+  {
+    "Name": "Борова",
+    "Link": "borova"
+  },
+  {
+    "Name": "Бровари",
+    "Link": "brovary"
+  },
+  {
+    "Name": "Буча",
+    "Link": "bucha"
+  },
+  {
+    "Name": "Вишгород",
+    "Link": "vyshhorod"
+  },
+  {
+    "Name": "Вишневе",
+    "Link": "vyshneve"
+  },
+  {
+    "Name": "Ірпінь",
+    "Link": "irpin"
+  },
+  {
+    "Name": "Київ",
+    "Link": "kyiv"
+  },
+  {
+    "Name": "Крюківщина",
+    "Link": "kriukivshchyna"
+  },
+  {
+    "Name": "смт. Велика Димерка",
+    "Link": "smt-velyka-dymerka"
+  },
+  {
+    "Name": "Фастів",
+    "Link": "fastiv"
+  },
+  {
+    "Name": "Аджамка",
+    "Link": "adzhamka"
+  },
+  {
+    "Name": "Знам&#39;янка",
+    "Link": "znamianka"
+  },
+  {
+    "Name": "Кропивницький",
+    "Link": "kropyvnytskyi"
+  },
+  {
+    "Name": "Новоукраїнськ",
+    "Link": "novoukrainsk-6fba7560-155d-465e-bf99-f11b9557df57"
+  },
+  {
+    "Name": "Олександрія",
+    "Link": "oleksandriia"
+  },
+  {
+    "Name": "Світловодськ",
+    "Link": "svitlovodsk"
+  },
+  {
+    "Name": "Устинівка",
+    "Link": "ustynivka"
+  },
+  {
+    "Name": "Лисичанськ",
+    "Link": "lysychansk"
+  },
+  {
+    "Name": "Луганськ",
+    "Link": "luhansk"
+  },
+  {
+    "Name": "Рубіжне",
+    "Link": "rubizhne"
+  },
+  {
+    "Name": "Северодонецьк",
+    "Link": "severodonetsk"
+  },
+  {
+    "Name": "Богодухів ",
+    "Link": "bohodukhiv"
+  },
+  {
+    "Name": "Городок",
+    "Link": "horodok-63e6fd25-12fe-4657-b042-99d8cb09740e"
+  },
+  {
+    "Name": "Дергачівка",
+    "Link": "derhachivka"
+  },
+  {
+    "Name": "Дрогобич",
+    "Link": "drohobych"
+  },
+  {
+    "Name": "Жовква",
+    "Link": "zhovkva"
+  },
+  {
+    "Name": "Золочів",
+    "Link": "zolochiv"
+  },
+  {
+    "Name": "Львів",
+    "Link": "lviv"
+  },
+  {
+    "Name": "Самбір",
+    "Link": "sambir"
+  },
+  {
+    "Name": "Сокаль",
+    "Link": "sokal"
+  },
+  {
+    "Name": "Стебник",
+    "Link": "stebnyk"
+  },
+  {
+    "Name": "Стрий",
+    "Link": "stryi"
+  },
+  {
+    "Name": "Трускавець",
+    "Link": "truskavets"
+  },
+  {
+    "Name": "Червоноград",
+    "Link": "chervonohrad"
+  },
+  {
+    "Name": "Яворів",
+    "Link": "yavoriv"
+  },
+  {
+    "Name": "Вознесенськ",
+    "Link": "voznesensk"
+  },
+  {
+    "Name": "Доманівка",
+    "Link": "domanivka"
+  },
+  {
+    "Name": "Казанка",
+    "Link": "kazanka"
+  },
+  {
+    "Name": "Миколаїв",
+    "Link": "mykolaiv"
+  },
+  {
+    "Name": "Нова Одеса",
+    "Link": "nova-odesa"
+  },
+  {
+    "Name": "Новий Буг",
+    "Link": "novyi-buh"
+  },
+  {
+    "Name": "Первомайськ",
+    "Link": "pervomaisk"
+  },
+  {
+    "Name": "с. Бузьке",
+    "Link": "s-buzke"
+  },
+  {
+    "Name": "с. Таборівка",
+    "Link": "s-taborivka"
+  },
+  {
+    "Name": "Южноукраїнськ",
+    "Link": "yuzhnoukrainsk"
+  },
+  {
+    "Name": "Балта",
+    "Link": "balta"
+  },
+  {
+    "Name": "Білгород-Дністровський",
+    "Link": "m-bilhorod-dnistrovskyi"
+  },
+  {
+    "Name": "Біляївка",
+    "Link": "biliaivka"
+  },
+  {
+    "Name": "Болград",
+    "Link": "m-bolhrad"
+  },
+  {
+    "Name": "Ізмаїл",
+    "Link": "m-izmail"
+  },
+  {
+    "Name": "Кілія",
+    "Link": "m-kiliia"
+  },
+  {
+    "Name": "Одеса",
+    "Link": "odesa"
+  },
+  {
+    "Name": "Подільськ",
+    "Link": "m-podilsk"
+  },
+  {
+    "Name": "Чорноморськ",
+    "Link": "m-chernomorsk"
+  },
+  {
+    "Name": "Южне",
+    "Link": "m-yuzhne"
+  },
+  {
+    "Name": "Глобине",
+    "Link": "m-hlobyne"
+  },
+  {
+    "Name": "Горішні Плавні",
+    "Link": "m-horishni-plavni"
+  },
+  {
+    "Name": "Кобеляки",
+    "Link": "m-kobeliaky"
+  },
+  {
+    "Name": "Кременчук",
+    "Link": "kremenchuk"
+  },
+  {
+    "Name": "Лохвица",
+    "Link": "m-lokhvytsa"
+  },
+  {
+    "Name": "Лубни",
+    "Link": "m-lubny"
+  },
+  {
+    "Name": "Миргород",
+    "Link": "m-myrhorod"
+  },
+  {
+    "Name": "Полтава",
+    "Link": "poltava"
+  },
+  {
+    "Name": "Хорол",
+    "Link": "m-khorol"
+  },
+  {
+    "Name": "Березне",
+    "Link": "berezne"
+  },
+  {
+    "Name": "Вараш",
+    "Link": "varash"
+  },
+  {
+    "Name": "Володимирець",
+    "Link": "volodymyrets"
+  },
+  {
+    "Name": "Гоща",
+    "Link": "hoshcha"
+  },
+  {
+    "Name": "Дубно",
+    "Link": "dubno"
+  },
+  {
+    "Name": "Здолбунів",
+    "Link": "zdolbuniv"
+  },
+  {
+    "Name": "Корець",
+    "Link": "korets"
+  },
+  {
+    "Name": "Острог",
+    "Link": "ostroh"
+  },
+  {
+    "Name": "Радивилів",
+    "Link": "radyvyliv"
+  },
+  {
+    "Name": "Рівне",
+    "Link": "rivne"
+  },
+  {
+    "Name": "Сарни",
+    "Link": "sarny"
+  },
+  {
+    "Name": "Хрінники",
+    "Link": "khrinnyky"
+  },
+  {
+    "Name": "Білопілля",
+    "Link": "bilopillia"
+  },
+  {
+    "Name": "Буринь",
+    "Link": "buryn"
+  },
+  {
+    "Name": "Глухів",
+    "Link": "hlukhiv"
+  },
+  {
+    "Name": "Конотоп",
+    "Link": "konotop"
+  },
+  {
+    "Name": "Кролевець",
+    "Link": "krolevets"
+  },
+  {
+    "Name": "Лебедин",
+    "Link": "lebedyn"
+  },
+  {
+    "Name": "Липова Долина",
+    "Link": "lypova-dolyna"
+  },
+  {
+    "Name": "Недригайлів",
+    "Link": "nedryhailiv"
+  },
+  {
+    "Name": "Охтирка",
+    "Link": "okhtyrka"
+  },
+  {
+    "Name": "Путивль",
+    "Link": "putyvl"
+  },
+  {
+    "Name": "Ромни",
+    "Link": "romny"
+  },
+  {
+    "Name": "Суми",
+    "Link": "sumy"
+  },
+  {
+    "Name": "Шостка",
+    "Link": "shostka"
+  },
+  {
+    "Name": "Ямпіль",
+    "Link": "yampil"
+  },
+  {
+    "Name": "Бережани",
+    "Link": "berezhany"
+  },
+  {
+    "Name": "Бучач",
+    "Link": "buchach"
+  },
+  {
+    "Name": "Збараж",
+    "Link": "zbarazh"
+  },
+  {
+    "Name": "Копичинці",
+    "Link": "kopychyntsi"
+  },
+  {
+    "Name": "Кременець",
+    "Link": "kremenets"
+  },
+  {
+    "Name": "Ланівці",
+    "Link": "lanivtsi"
+  },
+  {
+    "Name": "Підгайці",
+    "Link": "pidhaitsi"
+  },
+  {
+    "Name": "Скалат",
+    "Link": "skalat"
+  },
+  {
+    "Name": "Теребовля",
+    "Link": "terebovlia"
+  },
+  {
+    "Name": "Тернопіль",
+    "Link": "ternopil"
+  },
+  {
+    "Name": "Чортків",
+    "Link": "chortkiv"
+  },
+  {
+    "Name": "Шумськ",
+    "Link": "shumsk"
+  },
+  {
+    "Name": "Балаклія",
+    "Link": "balakliia"
+  },
+  {
+    "Name": "Зміїв ",
+    "Link": "zmiiv"
+  },
+  {
+    "Name": "Ізюм ",
+    "Link": "izium"
+  },
+  {
+    "Name": "Кегичівка",
+    "Link": "kehychivka"
+  },
+  {
+    "Name": "Красноград",
+    "Link": "krasnohrad"
+  },
+  {
+    "Name": "Краснокутськ ",
+    "Link": "krasnokutsk"
+  },
+  {
+    "Name": "Куп&#39;янськ ",
+    "Link": "kupiansk"
+  },
+  {
+    "Name": "Лозова ",
+    "Link": "lozova"
+  },
+  {
+    "Name": "Люботин ",
+    "Link": "liubotyn"
+  },
+  {
+    "Name": "Мерефа ",
+    "Link": "merefa"
+  },
+  {
+    "Name": "Пісочин",
+    "Link": "pisochyn"
+  },
+  {
+    "Name": "Рогань",
+    "Link": "rohan"
+  },
+  {
+    "Name": "Слобожанське ",
+    "Link": "slobozhanske"
+  },
+  {
+    "Name": "Харків",
+    "Link": "kharkiv"
+  },
+  {
+    "Name": "Чугуїв ",
+    "Link": "chuhuiv"
+  },
+  {
+    "Name": "Нова Каховка",
+    "Link": "nova-kakhovka"
+  },
+  {
+    "Name": "Скадовськ",
+    "Link": "skadovsk"
+  },
+  {
+    "Name": "Херсон",
+    "Link": "kherson"
+  },
+  {
+    "Name": "Волочиськ",
+    "Link": "volochynsk"
+  },
+  {
+    "Name": "Городок",
+    "Link": "horodok"
+  },
+  {
+    "Name": "Деражня",
+    "Link": "derazhnia"
+  },
+  {
+    "Name": "Ізяслав",
+    "Link": "iziaslav"
+  },
+  {
+    "Name": "Кам&#39;янець-Подільський",
+    "Link": "kamianets-podilskyi"
+  },
+  {
+    "Name": "Красилів",
+    "Link": "krasyliv"
+  },
+  {
+    "Name": "Нетішин",
+    "Link": "netishyn"
+  },
+  {
+    "Name": "Славута",
+    "Link": "slavuta"
+  },
+  {
+    "Name": "Хмельницький",
+    "Link": "khmelnytskyi"
+  },
+  {
+    "Name": "Шепетівка",
+    "Link": "shepetivka"
+  },
+  {
+    "Name": "Жашків",
+    "Link": "zhashkiv"
+  },
+  {
+    "Name": "Звенигородка",
+    "Link": "zvenyhorodka"
+  },
+  {
+    "Name": "Золотоноша",
+    "Link": "zolotonosha"
+  },
+  {
+    "Name": "с. Білозір&#39;я",
+    "Link": "s-biloziria"
+  },
+  {
+    "Name": "Сміла",
+    "Link": "smila"
+  },
+  {
+    "Name": "Умань",
+    "Link": "uman"
+  },
+  {
+    "Name": "Черкаси",
+    "Link": "cherkasy"
+  },
+  {
+    "Name": "Чигирин",
+    "Link": "chyhyryn"
+  },
+  {
+    "Name": "Братанівске",
+    "Link": "bratanivske"
+  },
+  {
+    "Name": "Вижниця ",
+    "Link": "vyzhnytsia"
+  },
+  {
+    "Name": "Кіцмань",
+    "Link": "kitsman"
+  },
+  {
+    "Name": "Новоселиця",
+    "Link": "novoselytsia"
+  },
+  {
+    "Name": "с. Ванчиківці",
+    "Link": "s-vanchykivtsi"
+  },
+  {
+    "Name": "смт Глибока",
+    "Link": "smt-hlyboka"
+  },
+  {
+    "Name": "Сокиряни",
+    "Link": "sokyriany"
+  },
+  {
+    "Name": "с. Ржавинці",
+    "Link": "s-rzhavyntsi"
+  },
+  {
+    "Name": "Старожинець",
+    "Link": "starozhynets"
+  },
+  {
+    "Name": "Хотин",
+    "Link": "khotyn"
+  },
+  {
+    "Name": "Чернівці",
+    "Link": "chernivtsi"
+  },
+  {
+    "Name": "Бахмач",
+    "Link": "bakhmach"
+  },
+  {
+    "Name": "Корюківка",
+    "Link": "koriukivka"
+  },
+  {
+    "Name": "м. Новгород-Сіверський",
+    "Link": "m-novhorod-siverskyi"
+  },
+  {
+    "Name": "Ніжин",
+    "Link": "nizhyn"
+  },
+  {
+    "Name": "Прилуки",
+    "Link": "pryluky"
+  },
+  {
+    "Name": "Чернігів",
+    "Link": "cherhiniv"
+  }
+]

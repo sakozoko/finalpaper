@@ -1,8 +1,8 @@
 using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WebApiAbstraction.Repositories;
 using WebApiApplication.Context;
+using WebApiApplication.Repositories;
 using WebApiInfrastructure.Context;
 using WebApiInfrastructure.Repositories;
 
@@ -14,6 +14,7 @@ public static class DependencyInjection
     {
         services.AddScoped(typeof(HtmlWeb));
         services.AddScoped<ILatestNewRepository, LatestNewRepository>();
+        services.AddScoped<IVolunteerOrganizationRepository, VolunteerOrganizationRepository>();
         services.AddDbContext<WebApiDbContext>(options => { options.UseSqlServer(connectionString); });
         services.AddScoped<IWebApiDbContext>(c => c.GetService<WebApiDbContext>()!);
     }
