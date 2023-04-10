@@ -11,7 +11,7 @@ export class VolunteerOrganizationRepositoryService {
   }
 
   public getVolunteerOrganizations(cityId: number, categoryId: number, page: number, pageSize: number) {
-    return this.httpClient.get<VolunteerOrganization[]>(environment.api + '/api/VolunteerOrganization' + `?cityId=${cityId}&categoryId=${categoryId}&page=${page}&pageSize=${pageSize}`);
+    return this.httpClient.get<VolunteerOrganization[]>(environment.api + '/api/VolunteerOrganization' + `?cityId=${cityId}&categoryId=${categoryId}&pageNumber=${page}&pageSize=${pageSize}`);
   }
 
   public getAvailableCities() {

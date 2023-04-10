@@ -1,13 +1,13 @@
-<div class="container-fluid mt-2">
+<div class="container-fluid my-2">
   <div class="card">
     <div class="card-header">
       <h3 class="card-title">Волонтерські організації</h3>
     </div>
     <div class="card-body">
       <div class="row justify-content-start">
-        <div class="col-3">
+        <div class="col-12 col-md-6">
           <mat-form-field style="display: flex;">
-            <mat-select #singleSelect (selectionChange)="click()" [formControl]="formControl" placeholder="Категорія">
+            <mat-select #singleSelect (selectionChange)="updated()" [formControl]="formControl" placeholder="Категорія">
               <mat-option>
                 <ngx-mat-select-search (ngModelChange)="filter($event)" [formControl]="formControlSelect" ngModel
                                        noEntriesFoundLabel="Нічого не знайдено"
@@ -19,9 +19,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-3">
+        <div class="col-12 col-md-6">
           <mat-form-field style="display: flex;">
-            <mat-select #singleSelect (selectionChange)="click()" [formControl]="cityCtrl" placeholder="Місто">
+            <mat-select #singleSelect (selectionChange)="updated()" [formControl]="cityCtrl" placeholder="Місто">
               <mat-option>
                 <ngx-mat-select-search (ngModelChange)="filterCities($event)" [formControl]="citySelectCtrl" ngModel
                                        noEntriesFoundLabel="Нічого не знайдено"
@@ -34,6 +34,23 @@
           </mat-form-field>
         </div>
       </div>
+      <div *ngIf="loading" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="loaded && !loading">
+        <div *ngFor="let volunteerOrganization of volunteerOrganizations">
+          <app-volunteer-organization [volunteerOrganization]="volunteerOrganization"></app-volunteer-organization>
+        </div>
+      </div>
+
+    </div>
+    <div *ngIf="loaded && !loading && fullViewing" class="card-footer">
+      <app-pagination [paginationService]="paginationService"></app-pagination>
+    </div>
+    <div *ngIf="loaded && !loading && !fullViewing" class="card-footer">
+      <button [routerLink]="['/volunteer-organizations']" class="btn btn-primary" type="button">Переглянути всі</button>
     </div>
 
   </div>

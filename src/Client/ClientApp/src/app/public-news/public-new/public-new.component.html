@@ -11,7 +11,7 @@
   </mat-dialog-actions>
 </ng-template>
 
-<div *ngIf="fullViewed" class="card my-3 m-2">
+<div *ngIf="fullViewed" class="card m-3 my-2">
   <div class="card-body">
     <h3 class="card-title">{{publicNew.title}}</h3>
     <img *ngIf="publicNew.imageUrl" alt="..." class="card-img-top img-thumbnail"
@@ -24,9 +24,10 @@
   </div>
 </div>
 
-<div *ngIf="!fullViewed" class="card my-3">
+<div *ngIf="!fullViewed" class="card">
   <div class="card-body">
-    <div *ngIf="oauthService.hasValidAccessToken() && oauthService.getIdentityClaims()['role']=='Admin'" class="float-end d-none d-sm-block">
+    <div *ngIf="oauthService.hasValidAccessToken() && oauthService.getIdentityClaims()['role']=='Admin'"
+         class="float-end d-none d-sm-block">
       <div class="row">
         <div class="col px-1">
           <div (click)="openEditModal()" [closeDelay]="200" [openDelay]="200" class="btn btn-outline-dark"

@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {LastNewsRepositoryService} from "../repositories/last-news-repository.service";
 import {ActivatedRoute} from "@angular/router";
 import {PaginationService} from "../services/pagination.service";
+import {last} from "rxjs";
 
 @Component({
   selector: 'app-last-news',
@@ -13,7 +14,10 @@ export class LastNewsComponent implements OnInit {
   public tLastNews: LastNew[] = [];
   public _page: number;
   public loading = true;
-  private pageSize = 10;
+  @Input()
+  public pageSize = 10;
+  @Input()
+  public fullViewing: boolean = true;
 
   constructor(private lastNewsRepository: LastNewsRepositoryService,
               private activatedRoute: ActivatedRoute,
@@ -69,6 +73,8 @@ export class LastNewsComponent implements OnInit {
     });
   }
 
+  protected readonly last = last;
+  protected readonly LastNew = LastNew;
 }
 
 export class LastNew {

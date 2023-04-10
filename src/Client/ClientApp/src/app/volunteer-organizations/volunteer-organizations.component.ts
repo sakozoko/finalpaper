@@ -15,17 +15,20 @@ import {FormControl} from "@angular/forms";
 export class VolunteerOrganizationsComponent implements OnInit {
   page: number = 1;
   @Input()
-  pageSize: number = 10;
+  pageSize: number = 7;
   formControl = new FormControl('');
   formControlSelect = new FormControl('');
   cityCtrl = new FormControl('');
   citySelectCtrl = new FormControl('');
-
+  loaded: boolean = false;
+  loading: boolean = false;
   categories: string[] = [];
   filterCategories: string[];
   cities: City[] = []
   filteredCities: City[];
-  volunteerOrganizations: VolunteerOrganization[]
+  volunteerOrganizations: VolunteerOrganization[] = [];
+  @Input()
+  fullViewing: boolean = true;
 
   constructor(private repository: VolunteerOrganizationRepositoryService,
               public paginationService: PaginationService) {
@@ -77,11 +80,25 @@ export class VolunteerOrganizationsComponent implements OnInit {
     this.filteredCities = this.cities.filter(x => x.name.toLowerCase().includes($event.toLowerCase()));
   }
 
-  click() {
+  updated() {
     if (this.cityCtrl.value !== '' && this.formControl.value !== '') {
+      this.loading = true;
       let numberOfCategory = this.categories.indexOf(this.formControl.value ?? '') + 1;
       this.repository.getVolunteerOrganizationCount(Number.parseInt(this.cityCtrl.value ?? ''), numberOfCategory).subscribe(result => {
-        console.log(result)
+        this.paginationService.setPagination(result, this.pageSize, this.page);
+        this.paginationService.currentPageChanged = () => {
+          this.loading = true;
+          this.page = this.paginationService.getPagination().pageNumber;
+          this.repository.getVolunteerOrganizations(Number.parseInt(this.cityCtrl.value ?? ''), numberOfCategory, this.page, this.pageSize).subscribe(result => {
+            this.volunteerOrganizations = result;
+            this.loading = false;
+          });
+        }
+        this.loaded = true;
+      });
+      this.repository.getVolunteerOrganizations(Number.parseInt(this.cityCtrl.value ?? ''), numberOfCategory, this.page, this.pageSize).subscribe(result => {
+        this.volunteerOrganizations = result;
+        this.loading = false;
       });
     }
   }

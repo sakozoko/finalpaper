@@ -10,8 +10,10 @@
     </div>
     <div class="card-body" >
       <div *ngIf="!loading">
-        <div  *ngFor="let publicNew of publicNews">
-          <app-public-new [fullViewed]="false" [onDeleted]="onDeleted" [publicNew]="publicNew"></app-public-new>
+        <div *ngFor="let publicNew of publicNews;let i=index;">
+          <div [ngClass]="{'mt-0':i==0,'mb-0':i==publicNews.length-1}" class="my-3">
+            <app-public-new [fullViewed]="false" [onDeleted]="onDeleted" [publicNew]="publicNew"></app-public-new>
+          </div>
         </div>
       </div>
       <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
@@ -27,8 +29,10 @@
     </div>
 
     <div class="card-footer">
-      <app-pagination *ngIf="!homeViewed && !loading && publicNews.length!==0" [paginationService]="paginationService"></app-pagination>
-      <a *ngIf="homeViewed && !loading && paginationService.getPagination()?.hasNext()" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі новини</a>
+      <app-pagination *ngIf="!homeViewed && !loading && publicNews.length!==0"
+                      [paginationService]="paginationService"></app-pagination>
+      <a *ngIf="homeViewed && !loading" [routerLink]="['public-news']" class="btn btn-primary">Переглянути всі
+        новини</a>
     </div>
   </div>
 </div>

@@ -44,6 +44,7 @@ import {
 } from './volunteer-organizations/volunteer-organization/volunteer-organization.component';
 import {MatSelectModule} from "@angular/material/select";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
     MatDialogModule,
     AppRoutingModule,
     MatSelectModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatProgressSpinnerModule
   ],
   providers: [AuthGuard, AdminGuard, DatePipe],
   bootstrap: [AppComponent]

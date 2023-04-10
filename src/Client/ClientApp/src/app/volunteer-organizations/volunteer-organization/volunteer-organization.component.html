@@ -1,1 +1,26 @@
-<p>volunteer-organization works!</p>
+<div class="card mt-2">
+  <div class="card-body">
+    <h5 class="card-title">{{volunteerOrganization.title}}</h5>
+    <div class="card-text">
+      <p>{{volunteerOrganization.description}}</p>
+    </div>
+    <div *ngFor="let socialNetwork of volunteerOrganization.socialNetworks" class="card-text">
+      <span style=""> <div class="d-inline float-start" style="width:30px;height:16px;"><i
+        *ngIf="socialNetwork.includes('t.me')" class="fa-brands fa-telegram m-1"></i>
+        <i *ngIf="socialNetwork.includes('facebook')" class="fa-brands fa-facebook-f m-1"></i>
+        <i *ngIf="socialNetwork.includes('instagram')" class="fa-brands fa-instagram m-1"></i>
+        <i *ngIf="!socialNetwork.includes('instagram')
+        && !socialNetwork.includes('t.me')
+        && !socialNetwork.includes('facebook')" class="fa fa-link m-1"></i>
+        </div><a href="{{socialNetwork}}">{{socialNetwork}}</a></span>
+    </div>
+    <div *ngFor="let address of volunteerOrganization.addresses" class="card-text">
+      <span><div class="d-inline float-start" style="width:30px;height:16px;"><i class="fa fa-map-marked m-1"></i></div>
+        {{address}}</span>
+    </div>
+    <div *ngFor="let phone of volunteerOrganization.phones" class="card-text">
+      <span><div class="d-inline float-start" style="width:30px;height:16px;"><i class="fa fa-phone m-1"></i></div><a
+        href="tel:{{phone}}">{{phone}}</a></span>
+    </div>
+  </div>
+</div>
