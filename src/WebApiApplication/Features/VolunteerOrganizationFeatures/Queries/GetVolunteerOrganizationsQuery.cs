@@ -53,7 +53,22 @@ public class GetVolunteerOrganizationsQuery : IRequest<IEnumerable<VolunteerOrga
             var volunteerOrganizations =
                 await _repository.GetVolunteerOrganizationsAsync((VolunteerOrganizationCategory)request.CategoryId,
                     city);
-            return volunteerOrganizations.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize);
+            var targetVolunteerOrganizations = volunteerOrganizations.Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize).ToList();
+
+            var modifyingVolunteerOrganizations =
+                targetVolunteerOrganizations.Where(c => c.Title?.Contains("&quot;") ?? false).ToList();
+            var modifiedVolunteerOrganizations = modifyingVolunteerOrganizations.Select(c => new VolunteerOrganization
+            {
+                Addresses = c.Addresses,
+                Description = c.Description,
+                Phones = c.Phones,
+                SocialNetworks = c.SocialNetworks,
+                Title = c.Title?.Replace("&quot;", "\"")
+            });
+            var returningVolunteerOrganizations = targetVolunteerOrganizations.Except(modifyingVolunteerOrganizations)
+                .Concat(modifiedVolunteerOrganizations);
+            return returningVolunteerOrganizations;
         }
     }
 }

@@ -33,7 +33,15 @@ public class GetLatestNewsByPageQuery : IRequest<IEnumerable<LatestNew>>
         {
             if (command.Page < 1) command.Page = 1;
             if (command.PageSize < 1) command.PageSize = 10;
-            return await _repository.GetLatestNewsByPage(command.Page, command.PageSize);
+            var latestNews = (await _repository.GetLatestNewsByPage(command.Page, command.PageSize)).ToList();
+            var modifyingLatestNews = latestNews.Where(c => c.Title?.Contains("&#039;") ?? false).ToList();
+            var modifiedLatestNews = modifyingLatestNews.Select(n => new LatestNew
+            {
+                DateTime = n.DateTime,
+                Link = n.Link,
+                Title = n.Title?.Replace("&#039;", "'")
+            });
+            return latestNews.Except(modifyingLatestNews).Concat(modifiedLatestNews);
         }
     }
 }

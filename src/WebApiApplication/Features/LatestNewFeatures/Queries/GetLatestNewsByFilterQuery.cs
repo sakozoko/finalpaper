@@ -3,7 +3,7 @@ using MediatR;
 using WebApiApplication.Repositories;
 using WebApiCore.Models;
 
-namespace WebApiApplication.Features.LatestNewFeatures.Commands;
+namespace WebApiApplication.Features.LatestNewFeatures.Queries;
 
 public class GetLatestNewsByFilterQuery : IRequest<IEnumerable<LatestNew>>
 {
@@ -30,10 +30,17 @@ public class GetLatestNewsByFilterQuery : IRequest<IEnumerable<LatestNew>>
         public async Task<IEnumerable<LatestNew>> Handle(GetLatestNewsByFilterQuery command,
             CancellationToken cancellationToken)
         {
-            var latestNews = await _repository.GetLatestNews();
+            var latestNews = (await _repository.GetLatestNews()).ToList();
             if (!string.IsNullOrWhiteSpace(command.Filter))
-                latestNews = latestNews.Where(x => x.Title is not null && x.Title.Contains(command.Filter));
-            return latestNews;
+                latestNews = latestNews.Where(x => x.Title is not null && x.Title.Contains(command.Filter)).ToList();
+            var modifyingLatestNews = latestNews.Where(c => c.Title?.Contains("&#039;") ?? false).ToList();
+            var modifiedLatestNews = modifyingLatestNews.Select(n => new LatestNew
+            {
+                DateTime = n.DateTime,
+                Link = n.Link,
+                Title = n.Title?.Replace("&#039;", "'")
+            });
+            return latestNews.Except(modifyingLatestNews).Concat(modifiedLatestNews);
         }
     }
 }
