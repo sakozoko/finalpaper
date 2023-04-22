@@ -10,9 +10,9 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Queries;
 
 public class GetHelpRequestForUserByPageQuery : IRequest<IEnumerable<HelpRequestDto>>
 {
-    public int Page { get; set; }
-    public int PageSize { get; set; }
-    public Guid UserId { get; set; }
+    public int? Page { get; set; }
+    public int? PageSize { get; set; }
+    public Guid? UserId { get; set; }
 
     public class GetHelpRequestForUserByPageQueryValidator : AbstractValidator<GetHelpRequestForUserByPageQuery>
     {
@@ -45,8 +45,8 @@ public class GetHelpRequestForUserByPageQuery : IRequest<IEnumerable<HelpRequest
             var helpRequests = await _context.HelpRequests
                 .Where(x => x.UserId == request.UserId)
                 .OrderByDescending(x => x.CreatedAt)
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.Page!.Value - 1) * request.PageSize!.Value)
+                .Take(request.PageSize.Value)
                 .AsNoTracking()
                 .ProjectTo<HelpRequestDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);

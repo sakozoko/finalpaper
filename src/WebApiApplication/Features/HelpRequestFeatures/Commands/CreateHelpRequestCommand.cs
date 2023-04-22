@@ -8,12 +8,12 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Commands;
 
 public class CreateHelpRequestCommand : IRequest<Guid>
 {
-    public string Title { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string Username { get; set; } = default!;
-    public string UserEmail { get; set; } = default!;
-    public Guid UserId { get; set; }
-    public bool EmailConfirmed { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
+    public string? Username { get; set; }
+    public string? UserEmail { get; set; }
+    public Guid? UserId { get; set; }
+    public bool? EmailConfirmed { get; set; }
 
     public class CreateHelpRequestCommandValidator : AbstractValidator<CreateHelpRequestCommand>
     {
@@ -42,8 +42,7 @@ public class CreateHelpRequestCommand : IRequest<Guid>
 
         public async Task<Guid> Handle(CreateHelpRequestCommand command, CancellationToken cancellationToken)
         {
-            var helpRequest = new HelpRequestEntity();
-            helpRequest = _mapper.Map<HelpRequestEntity>(command);
+            var helpRequest = _mapper.Map<HelpRequestEntity>(command);
             _context.HelpRequests.Add(helpRequest);
             await _context.SaveChangesAsync();
             return helpRequest.Id;

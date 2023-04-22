@@ -1,12 +1,10 @@
-using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApiApplication.Features.HelpRequestFeatures.Commands;
-using WebApiApplication.Features.HelpRequestFeatures.Queries;
-using IdentityModel.Client;
 using WebApi.Features;
 using WebApi.InputModels.HelpRequest;
+using WebApiApplication.Features.HelpRequestFeatures.Commands;
+using WebApiApplication.Features.HelpRequestFeatures.Queries;
 
 namespace WebApi.Controllers;
 
@@ -14,7 +12,7 @@ namespace WebApi.Controllers;
 [Route("api/helprequest")]
 public class HelpRequestController : ControllerBase
 {
-        private readonly IMediator _mediatr;
+    private readonly IMediator _mediatr;
 
     public HelpRequestController(IMediator mediatr)
     {
@@ -24,18 +22,14 @@ public class HelpRequestController : ControllerBase
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] CreateHelpRequestInputModel model)
     {
-        var emailConfirmed = bool.Parse(User.Claims.FirstOrDefault(c=>c.Type == "email_verified")?.Value!);
-        var username = User.Claims.FirstOrDefault(c=>c.Type == "name")?.Value!;
-        var userEmail = User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Email)?.Value!;
         var command = new CreateHelpRequestCommand
         {
             Title = model.Title,
             Description = model.Description,
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!),
-            EmailConfirmed = emailConfirmed,
-            Username = username,
-            UserEmail = userEmail
+            UserId = User.Claims.GetGuidUserId(),
+            EmailConfirmed = User.Claims.GetEmailConfirmed(),
+            Username = User.Claims.GetUserName(),
+            UserEmail = User.Claims.GetUserEmail()
         };
         var result = await _mediatr.Send(command);
         return Ok(result);
@@ -46,8 +40,7 @@ public class HelpRequestController : ControllerBase
     {
         var query = new GetHelpRequestForUserByPageQuery
         {
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!),
+            UserId = User.Claims.GetGuidUserId(),
             Page = page,
             PageSize = pageSize
         };
@@ -60,20 +53,19 @@ public class HelpRequestController : ControllerBase
     {
         var query = new GetHelpRequestCountForUserQuery
         {
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!)
+            UserId = User.Claims.GetGuidUserId()
         };
         var result = await _mediatr.Send(query);
         return Ok(result);
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> SearchForUser([FromQuery] string filter, [FromQuery] int page, [FromQuery] int pageSize)
+    public async Task<IActionResult> SearchForUser([FromQuery] string filter, [FromQuery] int page,
+        [FromQuery] int pageSize)
     {
         var query = new GetHelpRequestsByFilterQuery
         {
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!),
+            UserId = User.Claims.GetGuidUserId(),
             Filter = filter,
             Page = page,
             PageSize = pageSize
@@ -87,13 +79,13 @@ public class HelpRequestController : ControllerBase
     {
         var query = new GetHelpRequestCountByFilterQuery
         {
-            UserId = Guid.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(x => x.Value)
-                .FirstOrDefault()!),
+            UserId = User.Claims.GetGuidUserId(),
             Filter = filter
         };
         var result = await _mediatr.Send(query);
         return Ok(result);
     }
+
     [Authorize("Admin")]
     [HttpGet("getall")]
     public async Task<IActionResult> GetAll(GetHelpRequestsQuery query)
@@ -101,6 +93,7 @@ public class HelpRequestController : ControllerBase
         var result = await _mediatr.Send(query);
         return Ok(result);
     }
+
     [Authorize("Admin")]
     [HttpGet("getall/count")]
     public async Task<IActionResult> GetAllCount(GetHelpRequestCountQuery query)
@@ -116,6 +109,7 @@ public class HelpRequestController : ControllerBase
         var result = await _mediatr.Send(command);
         return Ok(result);
     }
+
     [Authorize("Admin")]
     [HttpPut("answer")]
     public async Task<IActionResult> Answer([FromBody] AnswerToHelpRequestCommand command)
@@ -123,5 +117,4 @@ public class HelpRequestController : ControllerBase
         var result = await _mediatr.Send(command);
         return Ok(result);
     }
-
 }

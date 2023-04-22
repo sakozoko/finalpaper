@@ -7,7 +7,7 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Queries;
 
 public class GetHelpRequestCountForUserQuery : IRequest<int>
 {
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
     public class GetHelpRequestCountForUserQueryValidator : AbstractValidator<GetHelpRequestCountForUserQuery>
     {
@@ -28,7 +28,8 @@ public class GetHelpRequestCountForUserQuery : IRequest<int>
 
         public async Task<int> Handle(GetHelpRequestCountForUserQuery request, CancellationToken cancellationToken)
         {
-            return await _context.HelpRequests.AsNoTracking().CountAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
+            return await _context.HelpRequests.AsNoTracking()
+                .CountAsync(x => x.UserId == request.UserId, cancellationToken: cancellationToken);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Queries;
 
 public class GetHelpRequestCountByFilterQuery : IRequest<int>
 {
-    public string Filter { get; set; } = default!;
-    public Guid UserId { get; set; }
+    public string? Filter { get; set; } = default!;
+    public Guid? UserId { get; set; }
 
     public class GetHelpRequestCountByFilterValidator : AbstractValidator<GetHelpRequestCountByFilterQuery>
     {
@@ -32,8 +32,8 @@ public class GetHelpRequestCountByFilterQuery : IRequest<int>
         {
             var helpRequestCount = _context.HelpRequests
                 .Where(x => x.UserId == request.UserId)
-                .Where(x => x.Title.Contains(request.Filter)
-                            || x.Description.Contains(request.Filter)).AsNoTracking()
+                .Where(x => x.Title.Contains(request.Filter!)
+                            || x.Description.Contains(request.Filter!)).AsNoTracking()
                 .CountAsync(cancellationToken: cancellationToken);
             return await helpRequestCount;
         }

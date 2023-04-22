@@ -2,7 +2,6 @@ using System.Security.Claims;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using WebApi.Features;
 using WebApiApplication;
 using WebApiInfrastructure;
 
@@ -23,7 +22,6 @@ var secretClient = new SecretClient(new Uri(builder.Configuration["KeyVaultUri"]
 // Add services to the container.
 builder.Services.AddInfrastructure(((KeyVaultSecret)secretClient.GetSecret("connectionString")).Value);
 builder.Services.AddApplication();
-builder.Services.AddScoped(typeof(UserClaimsHandler));
 builder.Services.AddControllers();
 builder.Services.AddAuthentication().AddJwtBearer("Bearer", opt =>
 {
@@ -31,8 +29,8 @@ builder.Services.AddAuthentication().AddJwtBearer("Bearer", opt =>
     opt.Audience = "webapi";
 });
 
-builder.Services.AddAuthorization(c => 
-    c.AddPolicy("Admin", p => 
+builder.Services.AddAuthorization(c =>
+    c.AddPolicy("Admin", p =>
         p.RequireClaim(ClaimTypes.Role, "Admin")));
 
 builder.Services.AddCors(opt =>

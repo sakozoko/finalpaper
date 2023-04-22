@@ -10,10 +10,10 @@ namespace WebApiApplication.Features.HelpRequestFeatures.Queries;
 
 public class GetHelpRequestsByFilterQuery : IRequest<IEnumerable<HelpRequestDto>>
 {
-    public string Filter { get; set; } = default!;
-    public Guid UserId { get; set; }
-    public int Page { get; set; }
-    public int PageSize { get; set; }
+    public string? Filter { get; set; }
+    public Guid? UserId { get; set; }
+    public int? Page { get; set; }
+    public int? PageSize { get; set; }
 
     public class GetHelpRequestsByFilterQueryValidator : AbstractValidator<GetHelpRequestsByFilterQuery>
     {
@@ -47,10 +47,10 @@ public class GetHelpRequestsByFilterQuery : IRequest<IEnumerable<HelpRequestDto>
                 request.PageSize = 10;
             var helpRequests = await _context.HelpRequests
                 .Where(x => x.UserId == request.UserId)
-                .Where(x => x.Title.Contains(request.Filter)
-                            || x.Description.Contains(request.Filter))
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Where(x => x.Title.Contains(request.Filter!)
+                            || x.Description.Contains(request.Filter!))
+                .Skip((request.Page!.Value - 1) * request.PageSize!.Value)
+                .Take(request.PageSize.Value)
                 .AsNoTracking()
                 .ProjectTo<HelpRequestDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
