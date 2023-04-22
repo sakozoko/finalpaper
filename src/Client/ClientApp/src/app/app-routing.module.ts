@@ -1,18 +1,19 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LastHelpRequestsComponent} from './last-help-requests/last-help-requests.component';
-import {LastNewsComponent} from './last-news/last-news.component';
-import {GetHelpComponent} from './get-help/get-help.component';
-import {SignInOidcComponent} from './auth/sign-in-oidc/sign-in-oidc.component';
-import {SignInOidcCallbackComponent} from './auth/sign-in-oidc-callback/sign-in-oidc-callback.component';
-import {AuthGuard} from './auth/auth.guard';
-import {PublicNewsComponent} from './public-news/public-news.component';
-import {PublicNewComponent} from './public-news/public-new/public-new.component';
-import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
-import {HomeComponent} from './home/home.component';
-import {HelpRequestsComponent} from './help-requests/help-requests.component';
-import {AdminGuard} from './auth/admin.guard';
-import {VolunteerOrganizationsComponent} from "./volunteer-organizations/volunteer-organizations.component";
+import {HomeComponent} from "./pages/home/home.component";
+import {SignInOidcComponent} from "./auth/sign-in-oidc/sign-in-oidc.component";
+import {SignInOidcCallbackComponent} from "./auth/sign-in-oidc-callback/sign-in-oidc-callback.component";
+import {PublicNewsComponent} from "./pages/public-news/public-news.component";
+import {PublicNewComponent} from "./pages/public-news/public-new/public-new.component";
+import {NezlamnistComponent} from "./pages/nezlamnist/nezlamnist.component";
+import {LastNewsComponent} from "./pages/last-news/last-news.component";
+import {GetHelpComponent} from "./pages/get-help/get-help.component";
+import {AuthGuard} from "./auth/auth.guard";
+import {LastHelpRequestsComponent} from "./pages/last-help-requests/last-help-requests.component";
+import {AdminGuard} from "./auth/admin.guard";
+import {VolunteerOrganizationsComponent} from "./pages/volunteer-organizations/volunteer-organizations.component";
+import {AdminHelpRequestComponent} from "./pages/admin-help-requests/admin-help-request.component";
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -24,7 +25,7 @@ const routes: Routes = [
   {path: 'last-news', component: LastNewsComponent},
   {path: 'get-help', component: GetHelpComponent, canActivate: [AuthGuard]},
   {path: 'help-requests', component: LastHelpRequestsComponent, canActivate: [AuthGuard]},
-  {path: 'admin.help-requests', component: HelpRequestsComponent, canActivate: [AdminGuard]},
+  {path: 'admin.help-requests', component: AdminHelpRequestComponent, canActivate: [AdminGuard]},
   {path: 'volunteer-organizations', component: VolunteerOrganizationsComponent}
 ];
 

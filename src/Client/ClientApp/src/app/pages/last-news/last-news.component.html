@@ -1,0 +1,36 @@
+<div class="container-fluid mt-2">
+  <app-search *ngIf="fullViewing" [clear]="clear" [search]="search"></app-search>
+  <div class="card my-2">
+    <div class="card-header">
+      <h3>Останні події</h3>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
+        <div class="d-flex justify-content-center p-5">
+          <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="lastNews.length===0 && !loading" class="bg-secondary bg-opacity-10 p-3 rounded-2">
+        <h6>Немає подій</h6>
+      </div>
+      <div *ngIf="lastNews.length>0 && !loading;">
+        <div *ngFor="let news of lastNews;let i=index;" [ngClass]="{'mt-0':i==0,'mb-0':i==lastNews.length-1}"
+             class="btn card bg-opacity-10 p-1 px-3 my-3 text-start">
+          <a class="text-decoration-none text-dark" href="{{news.link}}">
+            <h6>{{news.title}}</h6>
+            <div class="card-link">{{news.dateTime}}</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!loading && fullViewing" class="card-footer">
+      <app-pagination [paginationService]="paginationService"></app-pagination>
+    </div>
+    <div *ngIf="!fullViewing && !loading" class="card-footer">
+      <button [routerLink]="['/last-news']" class="btn btn-primary" type="button">Переглянути всі події</button>
+    </div>
+  </div>
+
+</div>

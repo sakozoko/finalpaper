@@ -3,17 +3,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {NgbCollapseModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NavComponent} from './nav/nav.component';
-import {FooterComponent} from './footer/footer.component';
-import {StatisticsComponent} from './home/statistics/statistics.component';
-import {LastHelpRequestComponent} from './last-help-requests/last-help-request/last-help-request.component';
-import {PaginationComponent} from './pagination/pagination.component';
-import {EditPublicNewComponent} from './public-news/public-new/edit-public-new/edit-public-new.component';
-import {SearchComponent} from './search/search.component';
 import {AuthGuard} from './auth/auth.guard';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthConfigModule} from './auth/auth-config.module';
-import {CreatePublicNewComponent} from './public-news/public-new/create-public-new/create-public-new.component';
 import {
   NgxMatDatetimePickerModule,
   NgxMatNativeDateModule,
@@ -24,34 +16,40 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
-import {HelpRequestComponent} from './help-requests/help-request/help-request.component';
 import {AdminGuard} from './auth/admin.guard';
-import {AnswerComponent} from './help-requests/help-request/answer/answer.component';
 import {SignInOidcCallbackComponent} from './auth/sign-in-oidc-callback/sign-in-oidc-callback.component';
 import {SignInOidcComponent} from './auth/sign-in-oidc/sign-in-oidc.component';
-import {GetHelpComponent} from './get-help/get-help.component';
-import {HelpRequestsComponent} from './help-requests/help-requests.component';
-import {HomeComponent} from './home/home.component';
-import {LastHelpRequestsComponent} from './last-help-requests/last-help-requests.component';
-import {LastNewsComponent} from './last-news/last-news.component';
-import {NezlamnistComponent} from './nezlamnist/nezlamnist.component';
-import {PublicNewComponent} from './public-news/public-new/public-new.component';
-import {PublicNewsComponent} from './public-news/public-news.component';
 import {DatePipe} from "@angular/common";
-import {VolunteerOrganizationsComponent} from './volunteer-organizations/volunteer-organizations.component';
-import {
-  VolunteerOrganizationComponent
-} from './volunteer-organizations/volunteer-organization/volunteer-organization.component';
 import {MatSelectModule} from "@angular/material/select";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {FooterComponent} from "./components/footer/footer.component";
+import {NavComponent} from "./components/nav/nav.component";
+import {LastHelpRequestComponent} from "./pages/last-help-requests/last-help-request/last-help-request.component";
+import {EditPublicNewComponent} from "./pages/public-news/public-new/edit-public-new/edit-public-new.component";
+import {CreatePublicNewComponent} from "./pages/public-news/public-new/create-public-new/create-public-new.component";
+import {HelpRequestComponent} from "./pages/admin-help-requests/help-request/help-request.component";
+import {AnswerComponent} from "./pages/admin-help-requests/help-request/answer/answer.component";
+import {GetHelpComponent} from "./pages/get-help/get-help.component";
+import {LastNewsComponent} from "./pages/last-news/last-news.component";
+import {NezlamnistComponent} from "./pages/nezlamnist/nezlamnist.component";
+import {PublicNewComponent} from "./pages/public-news/public-new/public-new.component";
+import {PublicNewsComponent} from "./pages/public-news/public-news.component";
+import {LastHelpRequestsComponent} from "./pages/last-help-requests/last-help-requests.component";
+import {HomeComponent} from "./pages/home/home.component";
+import {AdminHelpRequestComponent} from "./pages/admin-help-requests/admin-help-request.component";
+import {VolunteerOrganizationsComponent} from "./pages/volunteer-organizations/volunteer-organizations.component";
+import {
+  VolunteerOrganizationComponent
+} from "./pages/volunteer-organizations/volunteer-organization/volunteer-organization.component";
+import {SearchComponent} from "./components/search/search.component";
+import {PaginationComponent} from "./components/pagination/pagination.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     FooterComponent,
-    StatisticsComponent,
     PaginationComponent,
     SearchComponent,
     LastHelpRequestComponent,
@@ -68,7 +66,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     PublicNewsComponent,
     LastHelpRequestsComponent,
     HomeComponent,
-    HelpRequestsComponent,
+    AdminHelpRequestComponent,
     VolunteerOrganizationsComponent,
     VolunteerOrganizationComponent
   ],
